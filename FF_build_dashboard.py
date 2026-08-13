@@ -200,7 +200,7 @@ def build():
         "{{SEGMENT_SPLIT}}": segment_split,
         "{{AGE_RANGE}}": age_range,
         "{{AGE_RANGE_NOTE}}": "Days since trigger, oldest to newest",
-        "{{DATA_CURRENCY_NOTE}}": "Fully current \u2014 Dhan refresh applied",
+        "{{DATA_CURRENCY_NOTE}}": "Fully current \u2014 auto-refreshed daily",
         "{{GENERATED_TIMESTAMP}}": as_of.strftime("%d-%b-%Y"),
     }
     for placeholder, value in replacements.items():
