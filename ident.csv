@@ -1,0 +1,752 @@
+company,market_type,symbol,bse_code,bse_id
+360 One Wam Ltd.,Mid Cap,360ONE,542772,360ONE
+3M India Ltd.,Mid Cap,3MINDIA,523395,3MINDIA
+A B B India Ltd.,Large Cap,ABB,500002,ABB
+A C C Ltd.,Mid Cap,ACC,500410,ACC
+A I A Engineering Ltd.,Mid Cap,AIAENG,532683,AIAENG
+A P L Apollo Tubes Ltd.,Mid Cap,APLAPOLLO,533758,APLAPOLLO
+A S K Automotive Ltd.,Micro Cap,ASKAUTOLTD,544022,ASKAUTOLTD
+A U Small Finance Bank Ltd.,Mid Cap,AUBANK,540611,AUBANK
+A W L Agri Business Ltd.,Mid Cap,AWL,543458,AWL
+Aadhar Housing Finance Ltd.,Small Cap,AADHARHFC,544176,AADHARHFC
+Aarti Drugs Ltd.,Micro Cap,AARTIDRUGS,524348,AARTIDRUGS
+Aarti Industries Ltd.,Small Cap,AARTIIND,524208,AARTIIND
+Aarti Pharmalabs Ltd.,Micro Cap,AARTIPHARM,543748,AARTIPHARM
+Aavas Financiers Ltd.,Small Cap,AAVAS,541988,AAVAS
+Abbott India Ltd.,Mid Cap,ABBOTINDIA,500488,ABBOTINDIA
+Acme Solar Holdings Ltd.,Small Cap,ACMESOLAR,544283,ACMESOLAR
+Action Construction Equipment Ltd.,Small Cap,ACE,532762,ACE
+Acutaas Chemicals Ltd.,Small Cap,ACUTAAS,543349,ACUTAAS
+Adani Energy Solutions Ltd.,Large Cap,ADANIENSOL,539254,ADANIENSOL
+Adani Enterprises Ltd.,Large Cap,ADANIENT,512599,ADANIENT
+Adani Green Energy Ltd.,Large Cap,ADANIGREEN,541450,ADANIGREEN
+Adani Ports & Special Economic Zone Ltd.,Large Cap,ADANIPORTS,532921,ADANIPORTS
+Adani Power Ltd.,Large Cap,ADANIPOWER,533096,ADANIPOWER
+Adani Total Gas Ltd.,Mid Cap,ATGL,542066,ATGL
+Aditya Birla Capital Ltd.,Mid Cap,ABCAPITAL,540691,ABCAPITAL
+Aditya Birla Fashion & Retail Ltd.,Small Cap,ABFRL,535755,ABFRL
+Aditya Birla Lifestyle Brands Ltd.,Small Cap,ABLBL,544403,ABLBL
+Aditya Birla Real Estate Ltd.,Small Cap,ABREL,500040,ABREL
+Aditya Birla Sun Life A M C Ltd.,Small Cap,ABSLAMC,543374,ABSLAMC
+Aditya Infotech Ltd.,Small Cap,CPPLUS,544466,CPPLUS
+Aditya Vision Ltd.,Micro Cap,AVL,540205,AVL
+Advanced Enzyme Technologies Ltd.,Micro Cap,ADVENZYMES,540025,ADVENZYMES
+Aegis Logistics Ltd.,Small Cap,AEGISLOG,500003,AEGISLOG
+Aegis Vopak Terminals Ltd.,Small Cap,AEGISVOPAK,544407,AEGISVOPAK
+Aequs Ltd.,Micro Cap,AEQUS,544634,AEQUS
+Aether Industries Ltd.,Micro Cap,AETHER,543534,AETHER
+Afcons Infrastructure Ltd.,Small Cap,AFCONS,544280,AFCONS
+Affle 3I Ltd.,Small Cap,AFFLE,542752,AFFLE
+Ahluwalia Contracts (India) Ltd.,Micro Cap,AHLUCONT,532811,AHLUCONT
+Ajanta Pharma Ltd.,Mid Cap,AJANTPHARM,532331,AJANTPHARM
+Akums Drugs & Pharmaceuticals Ltd.,Micro Cap,AKUMS,544222,AKUMS
+Alembic Pharmaceuticals Ltd.,Micro Cap,APLLTD,533573,APLLTD
+Alivus Life Sciences Ltd.,Micro Cap,ALIVUS,543322,ALIVUS
+Alkem Laboratories Ltd.,Mid Cap,ALKEM,539523,ALKEM
+Alkyl Amines Chemicals Ltd.,Micro Cap,ALKYLAMINE,506767,ALKYLAMINE
+Allcargo Global Ltd.,Micro Cap,AGL,544602,AGL
+Allied Blenders & Distillers Ltd.,Small Cap,ABDL,544203,ABDL
+Alok Industries Ltd.,Micro Cap,ALOKINDS,521070,ALOKINDS
+Amara Raja Energy & Mobility Ltd.,Small Cap,ARE&M,500008,ARE&M
+Amber Enterprises India Ltd.,Small Cap,AMBER,540902,AMBER
+Ambuja Cements Ltd.,Large Cap,AMBUJACEM,500425,AMBUJACEM
+Anand Rathi Wealth Ltd.,Small Cap,ANANDRATHI,543415,ANANDRATHI
+Anant Raj Ltd.,Small Cap,ANANTRAJ,515055,ANANTRAJ
+Angel One Ltd.,Small Cap,ANGELONE,543235,ANGELONE
+Anthem Biosciences Ltd.,Mid Cap,ANTHEM,544449,ANTHEM
+Anup Engineering Ltd.,Micro Cap,ANUP,542460,ANUP
+Anupam Rasayan India Ltd.,Small Cap,ANURAS,543275,ANURAS
+Apar Industries Ltd.,Mid Cap,APARINDS,532259,APARINDS
+Apollo Hospitals Enterprise Ltd.,Large Cap,APOLLOHOSP,508869,APOLLOHOSP
+Apollo Micro Systems Ltd.,Micro Cap,APOLLO,540879,APOLLO
+Apollo Tyres Ltd.,Mid Cap,APOLLOTYRE,500877,APOLLOTYRE
+Aptus Value Housing Finance India Ltd.,Small Cap,APTUS,543335,APTUS
+Archean Chemical Inds. Ltd.,Micro Cap,ACI,543657,ACI
+Arvind Fashions Ltd.,Micro Cap,ARVINDFASN,542484,ARVINDFASN
+Arvind Ltd.,Micro Cap,ARVIND,500101,ARVIND
+Asahi India Glass Ltd.,Small Cap,ASAHIINDIA,515030,ASAHIINDIA
+Ashapura Minechem Ltd.,Micro Cap,ASHAPURMIN,527001,ASHAPURMIN
+Ashok Leyland Ltd.,Mid Cap,ASHOKLEY,500477,ASHOKLEY
+Ashoka Buildcon Ltd.,Micro Cap,ASHOKA,533271,ASHOKA
+Asian Paints Ltd.,Large Cap,ASIANPAINT,500820,ASIANPAINT
+Aster D M Healthcare Ltd.,Small Cap,ASTERDM,540975,ASTERDM
+Astra Microwave Products Ltd.,Micro Cap,ASTRAMICRO,532493,ASTRAMICRO
+Astral Ltd.,Mid Cap,ASTRAL,532830,ASTRAL
+Ather Energy Ltd.,Small Cap,ATHERENERG,544397,ATHERENERG
+Atlanta Electricals Ltd.,Micro Cap,ATLANTAELE,544527,ATLANTAELE
+Atul Ltd.,Small Cap,ATUL,500027,ATUL
+Aurionpro Solutions Ltd.,Micro Cap,AURIONPRO,532668,AURIONPRO
+Aurobindo Pharma Ltd.,Mid Cap,AUROPHARMA,524804,AUROPHARMA
+Authum Investment & Infrastructure Ltd.,Mid Cap,AIIL,539177,AIIL
+Avalon Technologies Ltd.,Micro Cap,AVALON,543896,AVALON
+Avanti Feeds Ltd.,Micro Cap,AVANTIFEED,512573,AVANTIFEED
+Avenue Supermarts Ltd.,Large Cap,DMART,540376,DMART
+Avenuesai Ltd.,Micro Cap,CCAVENUE,539807,CCAVENUE
+Awfis Space Solutions Ltd.,Micro Cap,AWFIS,544181,AWFIS
+Axis Bank Ltd.,Large Cap,AXISBANK,532215,AXISBANK
+Axiscades Technologies Ltd.,Micro Cap,AXISCADES,532395,AXISCADES
+Azad Engineering Ltd.,Micro Cap,AZAD,544061,AZAD
+B E M L Ltd.,Small Cap,BEML,500048,BEML
+B L S International Services Ltd.,Small Cap,BLS,540073,BLS
+B S E Ltd.,Mid Cap,BSE,,
+Bajaj Auto Ltd.,Large Cap,BAJAJ-AUTO,532977,BAJAJ-AUTO
+Bajaj Electricals Ltd.,Micro Cap,BAJAJELEC,500031,BAJAJELEC
+Bajaj Finance Ltd.,Large Cap,BAJFINANCE,500034,BAJFINANCE
+Bajaj Finserv Ltd.,Large Cap,BAJAJFINSV,532978,BAJAJFINSV
+Bajaj Holdings & Invst. Ltd.,Large Cap,BAJAJHLDNG,500490,BAJAJHLDNG
+Bajaj Housing Finance Ltd.,Mid Cap,BAJAJHFL,544252,BAJAJHFL
+Balaji Amines Ltd.,Micro Cap,BALAMINES,530999,BALAMINES
+Balkrishna Industries Ltd.,Mid Cap,BALKRISIND,502355,BALKRISIND
+Balrampur Chini Mills Ltd.,Small Cap,BALRAMCHIN,500038,BALRAMCHIN
+Balu Forge Inds. Ltd.,Micro Cap,BALUFORGE,531112,BALUFORGE
+Banco Products (India) Ltd.,Micro Cap,BANCOINDIA,500039,BANCOINDIA
+Bandhan Bank Ltd.,Small Cap,BANDHANBNK,541153,BANDHANBNK
+Bank Of Baroda,Large Cap,BANKBARODA,532134,BANKBARODA
+Bank Of India,Mid Cap,BANKINDIA,532149,BANKINDIA
+Bank Of Maharashtra,Mid Cap,MAHABANK,532525,MAHABANK
+Bata India Ltd.,Small Cap,BATAINDIA,500043,BATAINDIA
+Bayer Cropscience Ltd.,Small Cap,BAYERCROP,506285,BAYERCROP
+Belrise Industries Ltd.,Small Cap,BELRISE,544405,BELRISE
+Berger Paints India Ltd.,Mid Cap,BERGEPAINT,509480,BERGEPAINT
+Bharat Dynamics Ltd.,Mid Cap,BDL,541143,BDL
+Bharat Electronics Ltd.,Large Cap,BEL,500049,BEL
+Bharat Forge Ltd.,Mid Cap,BHARATFORG,500493,BHARATFORG
+Bharat Heavy Electricals Ltd.,Mid Cap,BHEL,500103,BHEL
+Bharat Petroleum Corpn. Ltd.,Large Cap,BPCL,500547,BPCL
+Bharti Airtel Ltd.,Large Cap,BHARTIARTL,532454,BHARTIARTL
+Bharti Hexacom Ltd.,Mid Cap,BHARTIHEXA,544162,BHARTIHEXA
+Bikaji Foods Intl. Ltd.,Small Cap,BIKAJI,543653,BIKAJI
+Billionbrains Garage Ventures Ltd.,Mid Cap,GROWW,544603,GROWW
+Biocon Ltd.,Mid Cap,BIOCON,532523,BIOCON
+Birla Corporation Ltd.,Micro Cap,BIRLACORPN,500335,BIRLACORPN
+Birlasoft Ltd.,Small Cap,BSOFT,532400,BSOFT
+Black Box Ltd.,Micro Cap,BBOX,500463,BBOX
+Blackbuck Ltd.,Micro Cap,BLACKBUCK,544288,BLACKBUCK
+Blue Dart Express Ltd.,Small Cap,BLUEDART,526612,BLUEDART
+Blue Jet Healthcare Ltd.,Small Cap,BLUEJET,544009,BLUEJET
+Blue Star Ltd.,Mid Cap,BLUESTARCO,500067,BLUESTARCO
+Bluestone Jewellery & Lifestyle Ltd.,Micro Cap,BLUESTONE,544484,BLUESTONE
+Bombay Burmah Trdg. Corpn. Ltd.,Small Cap,BBTC,501425,BBTC
+Borosil Renewables Ltd.,Micro Cap,BORORENEW,502219,BORORENEW
+Bosch Ltd.,Large Cap,BOSCHLTD,500530,BOSCHLTD
+Brainbees Solutions Ltd.,Small Cap,FIRSTCRY,544226,FIRSTCRY
+Brigade Enterprises Ltd.,Small Cap,BRIGADE,532929,BRIGADE
+Britannia Industries Ltd.,Large Cap,BRITANNIA,500825,BRITANNIA
+C C L Products (India) Ltd.,Small Cap,CCL,519600,CCL
+C E Info Systems Ltd.,Small Cap,MAPMYINDIA,543425,MAPMYINDIA
+C E S C Ltd.,Small Cap,CESC,500084,CESC
+C G Power & Indl. Solutions Ltd.,Large Cap,CGPOWER,500093,CGPOWER
+C I E Automotive India Ltd.,Small Cap,CIEINDIA,532756,CIEINDIA
+C M S Info Systems Ltd.,Micro Cap,CMSINFO,543441,CMSINFO
+C S B Bank Ltd.,Micro Cap,CSBBANK,542867,CSBBANK
+Campus Activewear Ltd.,Micro Cap,CAMPUS,543523,CAMPUS
+Can Fin Homes Ltd.,Small Cap,CANFINHOME,511196,CANFINHOME
+Canara Bank,Large Cap,CANBK,532483,CANBK
+Canara H S B C Life Insurance Co. Ltd.,Small Cap,CANHLIFE,544583,CANHLIFE
+Canara Robeco Asset Mgmt. Co. Ltd.,Micro Cap,CRAMC,544580,CRAMC
+Capillary Technologies India Ltd.,Micro Cap,CAPILLARY,544614,CAPILLARY
+Caplin Point Laboratories Ltd.,Small Cap,CAPLIPOINT,524742,CAPLIPOINT
+Capri Global Capital Ltd.,Small Cap,CGCL,531595,CGCL
+Carborundum Universal Ltd.,Small Cap,CARBORUNIV,513375,CARBORUNIV
+Cartrade Tech Ltd.,Small Cap,CARTRADE,543333,CARTRADE
+Castrol India Ltd.,Small Cap,CASTROLIND,500870,CASTROLIND
+Ceat Ltd.,Small Cap,CEATLTD,500878,CEATLTD
+Cello World Ltd.,Micro Cap,CELLO,544012,CELLO
+Cemindia Projects Ltd.,Small Cap,CEMPRO,509496,CEMPRO
+Central Bank Of India Ltd.,Small Cap,CENTRALBK,532885,CENTRALBK
+Central Depository Services (India) Ltd.,Small Cap,CDSL,,
+Century Plyboards (India) Ltd.,Micro Cap,CENTURYPLY,532548,CENTURYPLY
+Cera Sanitaryware Ltd.,Micro Cap,CERA,532443,CERA
+Chalet Hotels Ltd.,Small Cap,CHALET,542399,CHALET
+Chambal Fertilisers & Chemicals Ltd.,Small Cap,CHAMBLFERT,500085,CHAMBLFERT
+Chennai Petroleum Corpn. Ltd.,Small Cap,CHENNPETRO,500110,CHENNPETRO
+Choice International Ltd.,Small Cap,CHOICEIN,531358,CHOICEIN
+Cholamandalam Financial Holdings Ltd.,Small Cap,CHOLAHLDNG,504973,CHOLAHLDNG
+Cholamandalam Investment & Finance Co. Ltd.,Large Cap,CHOLAFIN,511243,CHOLAFIN
+Cipla Ltd.,Large Cap,CIPLA,500087,CIPLA
+City Union Bank Ltd.,Small Cap,CUB,532210,CUB
+Clean Science & Technology Ltd.,Small Cap,CLEAN,543318,CLEAN
+Coal India Ltd.,Large Cap,COALINDIA,533278,COALINDIA
+Cochin Shipyard Ltd.,Mid Cap,COCHINSHIP,540678,COCHINSHIP
+Coforge Ltd.,Mid Cap,COFORGE,532541,COFORGE
+Cohance Lifesciences Ltd.,Small Cap,COHANCE,543064,COHANCE
+Colgate-Palmolive (India) Ltd.,Mid Cap,COLPAL,500830,COLPAL
+Computer Age Mgmt. Services Ltd.,Small Cap,CAMS,543232,CAMS
+Concord Biotech Ltd.,Small Cap,CONCORDBIO,543960,CONCORDBIO
+Container Corpn. Of India Ltd.,Mid Cap,CONCOR,531344,CONCOR
+Coromandel International Ltd.,Mid Cap,COROMANDEL,506395,COROMANDEL
+Corona Remedies Ltd.,Micro Cap,CORONA,544644,CORONA
+Craftsman Automation Ltd.,Small Cap,CRAFTSMAN,543276,CRAFTSMAN
+Creditaccess Grameen Ltd.,Small Cap,CREDITACC,541770,CREDITACC
+Crisil Ltd.,Mid Cap,CRISIL,500092,CRISIL
+Crizac Ltd.,Micro Cap,CRIZAC,544439,CRIZAC
+Crompton Greaves Consumer Electricals Ltd.,Small Cap,CROMPTON,539876,CROMPTON
+Cummins India Ltd.,Large Cap,CUMMINSIND,500480,CUMMINSIND
+Cupid Ltd.,Micro Cap,CUPID,530843,CUPID
+Cyient Ltd.,Small Cap,CYIENT,532175,CYIENT
+D C B Bank Ltd.,Micro Cap,DCBBANK,532772,DCBBANK
+D C M Shriram Ltd.,Small Cap,DCMSHRIRAM,523367,DCMSHRIRAM
+D L F Ltd.,Large Cap,DLF,532868,DLF
+Dabur India Ltd.,Mid Cap,DABUR,500096,DABUR
+Dalmia Bharat Ltd.,Mid Cap,DALBHARAT,542216,DALBHARAT
+Data Patterns (India) Ltd.,Small Cap,DATAPATTNS,543428,DATAPATTNS
+Datamatics Global Services Ltd.,Micro Cap,DATAMATICS,532528,DATAMATICS
+Deepak Fertilisers & Petrochemicals Corpn. Ltd.,Small Cap,DEEPAKFERT,500645,DEEPAKFERT
+Deepak Nitrite Ltd.,Small Cap,DEEPAKNTR,506401,DEEPAKNTR
+Delhivery Ltd.,Small Cap,DELHIVERY,543529,DELHIVERY
+Devyani International Ltd.,Small Cap,DEVYANI,543330,DEVYANI
+Diamond Power Infrastructure Ltd.,Micro Cap,DIACABS,522163,DIACABS
+Dilip Buildcon Ltd.,Micro Cap,DBL,540047,DBL
+Divi'S Laboratories Ltd.,Large Cap,DIVISLAB,532488,DIVISLAB
+Dixon Technologies (India) Ltd.,Mid Cap,DIXON,540699,DIXON
+Doms Industries Ltd.,Small Cap,DOMS,544045,DOMS
+Dr. Agarwal'S Health Care Ltd.,Micro Cap,AGARWALEYE,544350,AGARWALEYE
+Dr. Lal Pathlabs Ltd.,Small Cap,LALPATHLAB,539524,LALPATHLAB
+Dr. Reddy'S Laboratories Ltd.,Large Cap,DRREDDY,500124,DRREDDY
+Dynamatic Technologies Ltd.,Micro Cap,DYNAMATECH,505242,DYNAMATECH
+E I D-Parry (India) Ltd.,Small Cap,EIDPARRY,500125,EIDPARRY
+E I H Ltd.,Small Cap,EIHOTEL,500840,EIHOTEL
+E P L Ltd.,Micro Cap,EPL,500135,EPL
+Eclerx Services Ltd.,Small Cap,ECLERX,532927,ECLERX
+Edelweiss Financial Services Ltd.,Micro Cap,EDELWEISS,532922,EDELWEISS
+Eicher Motors Ltd.,Large Cap,EICHERMOT,505200,EICHERMOT
+Elecon Engineering Co. Ltd.,Small Cap,ELECON,505700,ELECON
+Electronics Mart India Ltd.,Micro Cap,EMIL,543626,EMIL
+Electrosteel Castings Ltd.,Micro Cap,ELECTCAST,500128,ELECTCAST
+Elgi Equipments Ltd.,Small Cap,ELGIEQUIP,522074,ELGIEQUIP
+Ellenbarrie Industrial Gases Ltd.,Micro Cap,ELLEN,544421,ELLEN
+Emami Ltd.,Small Cap,EMAMILTD,531162,EMAMILTD
+Embassy Developments Ltd.,Micro Cap,EMBDL,532832,EMBDL
+Emcure Pharmaceuticals Ltd.,Small Cap,EMCURE,544210,EMCURE
+Emmvee Photovoltaic Power Ltd.,Small Cap,EMMVEE,544608,EMMVEE
+Endurance Technologies Ltd.,Mid Cap,ENDURANCE,540153,ENDURANCE
+Engineers India Ltd.,Small Cap,ENGINERSIN,532178,ENGINERSIN
+Entero Healthcare Solutions Ltd.,Micro Cap,ENTERO,544122,ENTERO
+Enviro Infra Engineers Ltd.,Micro Cap,EIEL,544290,EIEL
+Equitas Small Finance Bank Ltd.,Micro Cap,EQUITASBNK,543243,EQUITASBNK
+Eris Lifesciences Ltd.,Small Cap,ERIS,540596,ERIS
+Escorts Kubota Ltd.,Mid Cap,ESCORTS,500495,ESCORTS
+Eternal Ltd.,Large Cap,ETERNAL,543320,ETERNAL
+Ethos Ltd.,Micro Cap,ETHOSLTD,543532,ETHOSLTD
+Eureka Forbes Ltd.,Micro Cap,EUREKAFORB,543482,EUREKAFORB
+Exide Industries Ltd.,Mid Cap,EXIDEIND,500086,EXIDEIND
+F S N E-Commerce Ventures Ltd.,Mid Cap,NYKAA,543384,NYKAA
+Fedbank Financial Services Ltd.,Micro Cap,FEDFINA,544027,FEDFINA
+Federal Bank Ltd.,Mid Cap,FEDERALBNK,500469,FEDERALBNK
+"Fertilisers & Chemicals, Travancore Ltd.",Small Cap,FACT,590024,FACT
+Fiem Industries Ltd.,Micro Cap,FIEMIND,532768,FIEMIND
+Finolex Cables Ltd.,Small Cap,FINCABLES,500144,FINCABLES
+Finolex Industries Ltd.,Micro Cap,FINPIPE,500940,FINPIPE
+Firstsource Solutions Ltd.,Small Cap,FSL,532809,FSL
+Five-Star Business Finance Ltd.,Small Cap,FIVESTAR,543663,FIVESTAR
+Force Motors Ltd.,Small Cap,FORCEMOT,500033,FORCEMOT
+Fortis Healthcare Ltd.,Mid Cap,FORTIS,532843,FORTIS
+Fujiyama Power Systems Ltd.,Micro Cap,UTLSOLAR,544613,UTLSOLAR
+G A I L (India) Ltd.,Large Cap,GAIL,532155,GAIL
+G E Vernova T & D India Ltd.,Mid Cap,GVT&D,522275,GVT&D
+G H C L Ltd.,Micro Cap,GHCL,500171,GHCL
+G M M Pfaudler Ltd.,Micro Cap,GMMPFAUDLR,505255,GMMPFAUDLR
+G M R Airports Ltd.,Mid Cap,GMRAIRPORT,532754,GMRAIRPORT
+G M R Power & Urban Infra Ltd.,Micro Cap,GMRP&UI,543490,GMRP&UI
+Gabriel India Ltd.,Small Cap,GABRIEL,505714,GABRIEL
+Gallantt Ispat Ltd.,Small Cap,GALLANTT,532726,GALLANTT
+Garden Reach Shipbuilders & Engineers Ltd.,Small Cap,GRSE,542011,GRSE
+Garware Hi-Tech Films Ltd.,Micro Cap,GRWRHITECH,500655,GRWRHITECH
+General Insurance Corpn. Of India,Mid Cap,GICRE,540755,GICRE
+Gillette India Ltd.,Small Cap,GILLETTE,507815,GILLETTE
+Gland Pharma Ltd.,Small Cap,GLAND,543245,GLAND
+Glaxosmithkline Pharmaceuticals Ltd.,Mid Cap,GLAXO,500660,GLAXO
+Glenmark Pharmaceuticals Ltd.,Mid Cap,GLENMARK,532296,GLENMARK
+Global Health Ltd.,Mid Cap,MEDANTA,543654,MEDANTA
+Go Digit General Insurance Ltd.,Small Cap,GODIGIT,544179,GODIGIT
+Godawari Power & Ispat Ltd.,Small Cap,GPIL,532734,GPIL
+Godfrey Phillips India Ltd.,Mid Cap,GODFRYPHLP,500163,GODFRYPHLP
+Godrej Agrovet Ltd.,Micro Cap,GODREJAGRO,540743,GODREJAGRO
+Godrej Consumer Products Ltd.,Large Cap,GODREJCP,532424,GODREJCP
+Godrej Industries Ltd.,Mid Cap,GODREJIND,500164,GODREJIND
+Godrej Properties Ltd.,Mid Cap,GODREJPROP,533150,GODREJPROP
+Gokaldas Exports Ltd.,Micro Cap,GOKEX,532630,GOKEX
+Gokul Agro Resources Ltd.,Micro Cap,GOKULAGRO,539725,GOKULAGRO
+Granules India Ltd.,Small Cap,GRANULES,532482,GRANULES
+Graphite India Ltd.,Small Cap,GRAPHITE,509488,GRAPHITE
+Grasim Industries Ltd.,Large Cap,GRASIM,500300,GRASIM
+Gravita India Ltd.,Small Cap,GRAVITA,533282,GRAVITA
+Great Eastern Shipping Co. Ltd.,Small Cap,GESHIP,500620,GESHIP
+Greaves Cotton Ltd.,Micro Cap,GREAVESCOT,501455,GREAVESCOT
+Grindwell Norton Ltd.,Micro Cap,GRINDWELL,506076,GRINDWELL
+Gujarat Ambuja Exports Ltd.,Micro Cap,GAEL,524226,GAEL
+Gujarat Fluorochemicals Ltd.,Mid Cap,FLUOROCHEM,542812,FLUOROCHEM
+Gujarat Mineral Devp. Corpn. Ltd.,Small Cap,GMDCLTD,532181,GMDCLTD
+Gujarat Narmada Valley Fertilizers & Chemicals Ltd.,Micro Cap,GNFC,500670,GNFC
+Gujarat Pipavav Port Ltd.,Micro Cap,GPPL,533248,GPPL
+Gujarat State Fertilizers & Chemicals Ltd.,Micro Cap,GSFC,500690,GSFC
+H B L Engineering Ltd.,Small Cap,HBLENGINE,517271,HBLENGINE
+H C L Technologies Ltd.,Large Cap,HCLTECH,532281,HCLTECH
+H D B Financial Services Ltd.,Mid Cap,HDBFS,544429,HDBFS
+H D F C Asset Mgmt. Co. Ltd.,Large Cap,HDFCAMC,541729,HDFCAMC
+H D F C Bank Ltd.,Large Cap,HDFCBANK,500180,HDFCBANK
+H D F C Life Insurance Co. Ltd.,Large Cap,HDFCLIFE,540777,HDFCLIFE
+H E G Ltd.,Small Cap,HEG,509631,HEG
+H F C L Ltd.,Small Cap,HFCL,500183,HFCL
+H G Infra Engg. Ltd.,Micro Cap,HGINFRA,541019,HGINFRA
+Happiest Minds Technologies Ltd.,Micro Cap,HAPPSTMNDS,543227,HAPPSTMNDS
+Havells India Ltd.,Mid Cap,HAVELLS,517354,HAVELLS
+Healthcare Global Enterprises Ltd.,Micro Cap,HCG,539787,HCG
+Hemisphere Properties India Ltd.,Micro Cap,HEMIPROP,543242,HEMIPROP
+Heritage Foods Ltd.,Micro Cap,HERITGFOOD,519552,HERITGFOOD
+Hero Motocorp Ltd.,Mid Cap,HEROMOTOCO,500182,HEROMOTOCO
+Hexaware Technologies Ltd.,Mid Cap,HEXT,544362,HEXT
+Himadri Speciality Chemical Ltd.,Small Cap,HSCL,500184,HSCL
+Hindalco Industries Ltd.,Large Cap,HINDALCO,500440,HINDALCO
+Hindustan Aeronautics Ltd.,Large Cap,HAL,541154,HAL
+Hindustan Construction Co. Ltd.,Micro Cap,HCC,500185,HCC
+Hindustan Copper Ltd.,Small Cap,HINDCOPPER,513599,HINDCOPPER
+Hindustan Petroleum Corpn. Ltd.,Mid Cap,HINDPETRO,500104,HINDPETRO
+Hindustan Unilever Ltd.,Large Cap,HINDUNILVR,500696,HINDUNILVR
+Hindustan Zinc Ltd.,Large Cap,HINDZINC,500188,HINDZINC
+Hitachi Energy India Ltd.,Mid Cap,POWERINDIA,543187,POWERINDIA
+Home First Finance Co. India Ltd.,Small Cap,HOMEFIRST,543259,HOMEFIRST
+Honasa Consumer Ltd.,Small Cap,HONASA,544014,HONASA
+Honeywell Automation India Ltd.,Mid Cap,HONAUT,517174,HONAUT
+Housing & Urban Devp. Corpn. Ltd.,Mid Cap,HUDCO,540530,HUDCO
+Hyundai Motor India Ltd.,Large Cap,HYUNDAI,544274,HYUNDAI
+I C I C I Bank Ltd.,Large Cap,ICICIBANK,532174,ICICIBANK
+I C I C I Lombard General Insurance Co. Ltd.,Mid Cap,ICICIGI,540716,ICICIGI
+I C I C I Prudential Asset Mgmt. Co. Ltd.,Mid Cap,ICICIAMC,544658,ICICIAMC
+I C I C I Prudential Life Insurance Co. Ltd.,Mid Cap,ICICIPRULI,540133,ICICIPRULI
+I D B I Bank Ltd.,Small Cap,IDBI,500116,IDBI
+I D F C First Bank Ltd.,Mid Cap,IDFCFIRSTB,539437,IDFCFIRSTB
+I F B Industries Ltd.,Micro Cap,IFBIND,505726,IFBIND
+I F C I Ltd.,Small Cap,IFCI,500106,IFCI
+I I F L Capital Services Ltd.,Micro Cap,IIFLCAPS,542773,IIFLCAPS
+I I F L Finance Ltd.,Small Cap,IIFL,532636,IIFL
+I R B Infrastructure Developers Ltd.,Small Cap,IRB,532947,IRB
+I T C Hotels Ltd.,Mid Cap,ITCHOTELS,544325,ITCHOTELS
+I T C Ltd.,Large Cap,ITC,500875,ITC
+I T I Ltd.,Small Cap,ITI,523610,ITI
+Indegene Ltd.,Small Cap,INDGN,544172,INDGN
+India Cements Ltd.,Small Cap,INDIACEM,530005,INDIACEM
+India Glycols Ltd.,Micro Cap,INDIAGLYCO,500201,INDIAGLYCO
+India Shelter Finance Corpn. Ltd.,Micro Cap,INDIASHLTR,544044,INDIASHLTR
+Indiamart Intermesh Ltd.,Small Cap,INDIAMART,542726,INDIAMART
+Indian Bank,Mid Cap,INDIANB,532814,INDIANB
+Indian Energy Exchange Ltd.,Small Cap,IEX,540750,IEX
+Indian Hotels Co. Ltd.,Large Cap,INDHOTEL,500850,INDHOTEL
+Indian Metals & Ferro Alloys Ltd.,Micro Cap,IMFA,533047,IMFA
+Indian Oil Corpn. Ltd.,Large Cap,IOC,530965,IOC
+Indian Overseas Bank,Small Cap,IOB,532388,IOB
+Indian Railway Catering & Tourism Corpn. Ltd.,Mid Cap,IRCTC,542830,IRCTC
+Indian Railway Finance Corpn. Ltd.,Large Cap,IRFC,543257,IRFC
+Indian Renewable Energy Devp. Agency Ltd.,Mid Cap,IREDA,544026,IREDA
+Indigo Paints Ltd.,Micro Cap,INDIGOPNTS,543258,INDIGOPNTS
+Indo Count Inds. Ltd.,Micro Cap,ICIL,521016,ICIL
+Indraprastha Gas Ltd.,Small Cap,IGL,532514,IGL
+Indus Towers Ltd.,Mid Cap,INDUSTOWER,534816,INDUSTOWER
+Indusind Bank Ltd.,Mid Cap,INDUSINDBK,532187,INDUSINDBK
+Info Edge (India) Ltd.,Mid Cap,NAUKRI,532777,NAUKRI
+Infosys Ltd.,Large Cap,INFY,500209,INFY
+Inox Green Energy Services Ltd.,Micro Cap,INOXGREEN,543667,INOXGREEN
+Inox India Ltd.,Micro Cap,INOXINDIA,544046,INOXINDIA
+Inox Wind Ltd.,Small Cap,INOXWIND,539083,INOXWIND
+Intellect Design Arena Ltd.,Small Cap,INTELLECT,538835,INTELLECT
+Interglobe Aviation Ltd.,Large Cap,INDIGO,539448,INDIGO
+International Gemological Institute Ltd.,Small Cap,IGIL,544311,IGIL
+Inventurus Knowledge Solutions Ltd.,Small Cap,IKS,544309,IKS
+Ion Exchange (India) Ltd.,Micro Cap,IONEXCHANG,500214,IONEXCHANG
+Ipca Laboratories Ltd.,Mid Cap,IPCALAB,524494,IPCALAB
+Ircon International Ltd.,Small Cap,IRCON,541956,IRCON
+J B M Auto Ltd.,Small Cap,JBMA,532605,JBMA
+J K Cement Ltd.,Mid Cap,JKCEMENT,532644,JKCEMENT
+J K Lakshmi Cement Ltd.,Micro Cap,JKLAKSHMI,500380,JKLAKSHMI
+J K Paper Ltd.,Micro Cap,JKPAPER,532162,JKPAPER
+J K Tyre & Inds. Ltd.,Small Cap,JKTYRE,530007,JKTYRE
+J M Financial Ltd.,Small Cap,JMFINANCIL,523405,JMFINANCIL
+J S W Cement Ltd.,Small Cap,JSWCEMENT,544480,JSWCEMENT
+J S W Energy Ltd.,Mid Cap,JSWENERGY,533148,JSWENERGY
+J S W Infrastructure Ltd.,Mid Cap,JSWINFRA,543994,JSWINFRA
+J S W Steel Ltd.,Large Cap,JSWSTEEL,500228,JSWSTEEL
+Jai Balaji Inds. Ltd.,Micro Cap,JAIBALAJI,532976,JAIBALAJI
+Jain Resource Recycling Ltd.,Small Cap,JAINREC,544537,JAINREC
+Jaiprakash Power Ventures Ltd.,Small Cap,JPPOWER,532627,JPPOWER
+Jammu & Kashmir Bank Ltd.,Small Cap,J&KBANK,532209,J&KBANK
+Jamna Auto Inds. Ltd.,Micro Cap,JAMNAAUTO,520051,JAMNAAUTO
+Jana Small Finance Bank Ltd.,Micro Cap,JSFB,544118,JSFB
+Jayaswal Neco Inds. Ltd.,Micro Cap,JAYNECOIND,522285,JAYNECOIND
+Jeena Sikho Lifecare Ltd.,Micro Cap,JSLL,544476,JSLL
+Jindal Saw Ltd.,Small Cap,JINDALSAW,500378,JINDALSAW
+Jindal Stainless Ltd.,Mid Cap,JSL,532508,JSL
+Jindal Steel Ltd.,Large Cap,JINDALSTEL,532286,JINDALSTEL
+Jio Financial Services Ltd.,Large Cap,JIOFIN,543940,JIOFIN
+Jsw Dulux Ltd.,Small Cap,JSWDULUX,500710,JSWDULUX
+Jubilant Foodworks Ltd.,Mid Cap,JUBLFOOD,533155,JUBLFOOD
+Jubilant Ingrevia Ltd.,Small Cap,JUBLINGREA,543271,JUBLINGREA
+Jubilant Pharmova Ltd.,Small Cap,JUBLPHARMA,530019,JUBLPHARMA
+Jupiter Life Line Hospitals Ltd.,Micro Cap,JLHL,543980,JLHL
+Jupiter Wagons Ltd.,Small Cap,JWL,533272,JWL
+Just Dial Ltd.,Micro Cap,JUSTDIAL,535648,JUSTDIAL
+Jyothy Labs Ltd.,Micro Cap,JYOTHYLAB,532926,JYOTHYLAB
+Jyoti C N C Automation Ltd.,Small Cap,JYOTICNC,544081,JYOTICNC
+K E C International Ltd.,Small Cap,KEC,532714,KEC
+K N R Constructions Ltd.,Micro Cap,KNRCON,532942,KNRCON
+K P I Green Energy Ltd.,Micro Cap,KPIGREEN,542323,KPIGREEN
+K P I T Technologies Ltd.,Mid Cap,KPITTECH,542651,KPITTECH
+K P R Mill Ltd.,Mid Cap,KPRMILL,532889,KPRMILL
+K R B L Ltd.,Micro Cap,KRBL,530813,KRBL
+K R N Heat Exchanger & Refrigeration Ltd.,Micro Cap,KRN,544263,KRN
+K S B Ltd.,Micro Cap,KSB,500249,KSB
+Kajaria Ceramics Ltd.,Small Cap,KAJARIACER,500233,KAJARIACER
+Kalpataru Projects Intl. Ltd.,Small Cap,KPIL,522287,KPIL
+Kalyan Jewellers India Ltd.,Mid Cap,KALYANKJIL,543278,KALYANKJIL
+Kansai Nerolac Paints Ltd.,Micro Cap,KANSAINER,500165,KANSAINER
+Karnataka Bank Ltd.,Micro Cap,KTKBANK,532652,KTKBANK
+Karur Vysya Bank Ltd.,Small Cap,KARURVYSYA,590003,KARURVYSYA
+Kaveri Seed Co. Ltd.,Micro Cap,KSCL,532899,KSCL
+Kaynes Technology India Ltd.,Small Cap,KAYNES,543664,KAYNES
+Kei Industries Ltd.,Mid Cap,KEI,517569,KEI
+Kfin Technologies Ltd.,Small Cap,KFINTECH,543720,KFINTECH
+Kirloskar Brothers Ltd.,Micro Cap,KIRLOSBROS,500241,KIRLOSBROS
+Kirloskar Oil Engines Ltd.,Small Cap,KIRLOSENG,533293,KIRLOSENG
+Kirloskar Pneumatic Co. Ltd.,Micro Cap,KIRLPNU,505283,KIRLPNU
+Kitex Garments Ltd.,Micro Cap,KITEX,521248,KITEX
+Kotak Mahindra Bank Ltd.,Large Cap,KOTAKBANK,500247,KOTAKBANK
+Krishna Institute Of Medical Sciences Ltd.,Small Cap,KIMS,543308,KIMS
+L & T Finance Ltd.,Mid Cap,LTF,533519,LTF
+L & T Technology Services Ltd.,Mid Cap,LTTS,540115,LTTS
+L G Electronics India Ltd.,Mid Cap,LGEINDIA,544576,LGEINDIA
+L I C Housing Finance Ltd.,Mid Cap,LICHSGFIN,500253,LICHSGFIN
+L T Foods Ltd.,Small Cap,LTFOODS,532783,LTFOODS
+Larsen & Toubro Ltd.,Large Cap,LT,500510,LT
+Latent View Analytics Ltd.,Small Cap,LATENTVIEW,543398,LATENTVIEW
+Laurus Labs Ltd.,Mid Cap,LAURUSLABS,540222,LAURUSLABS
+Laxmi Organic Inds. Ltd.,Micro Cap,LXCHEM,543277,LXCHEM
+Le Travenues Technology Ltd.,Micro Cap,IXIGO,544192,IXIGO
+Leela Palaces Hotels & Resorts Ltd.,Small Cap,THELEELA,544408,THELEELA
+Lemon Tree Hotels Ltd.,Small Cap,LEMONTREE,541233,LEMONTREE
+Lenskart Solutions Ltd.,Mid Cap,LENSKART,544600,LENSKART
+Life Insurance Corpn. Of India,Mid Cap,LICI,543526,LICI
+Linde India Ltd.,Mid Cap,LINDEINDIA,523457,LINDEINDIA
+Lloyds Engineering Works Ltd.,Micro Cap,LLOYDSENGG,539992,LLOYDSENGG
+Lloyds Enterprises Ltd.,Micro Cap,LLOYDSENT,512463,LLOYDSENT
+Lloyds Metals & Energy Ltd.,Mid Cap,LLOYDSME,512455,LLOYDSME
+Lodha Developers Ltd.,Large Cap,LODHA,543287,LODHA
+Ltm Ltd.,Large Cap,LTM,540005,LTM
+Lumax Auto Technologies Ltd.,Micro Cap,LUMAXTECH,532796,LUMAXTECH
+Lupin Ltd.,Mid Cap,LUPIN,500257,LUPIN
+M M T C Ltd.,Small Cap,MMTC,513377,MMTC
+M O I L Ltd.,Micro Cap,MOIL,533286,MOIL
+M R F Ltd.,Mid Cap,MRF,500290,MRF
+M S T C Ltd.,Micro Cap,MSTCLTD,542597,MSTCLTD
+M T A R Technologies Ltd.,Micro Cap,MTARTECH,543270,MTARTECH
+Mahanagar Gas Ltd.,Small Cap,MGL,539957,MGL
+Maharashtra Scooters Ltd.,Micro Cap,MAHSCOOTER,500266,MAHSCOOTER
+Maharashtra Seamless Ltd.,Micro Cap,MAHSEAMLES,500265,MAHSEAMLES
+Mahindra & Mahindra Financial Services Ltd.,Mid Cap,M&MFIN,532720,M&MFIN
+Mahindra & Mahindra Ltd.,Large Cap,M&M,500520,M&M
+Manappuram Finance Ltd.,Small Cap,MANAPPURAM,531213,MANAPPURAM
+Mangalore Refinery & Petrochemicals Ltd.,Small Cap,MRPL,500109,MRPL
+Mankind Pharma Ltd.,Mid Cap,MANKIND,543904,MANKIND
+Manorama Industries Ltd.,Micro Cap,MANORAMA,541974,MANORAMA
+Marico Ltd.,Mid Cap,MARICO,531642,MARICO
+Marksans Pharma Ltd.,Micro Cap,MARKSANS,524404,MARKSANS
+Maruti Suzuki India Ltd.,Large Cap,MARUTI,532500,MARUTI
+Mastek Ltd.,Micro Cap,MASTEK,523704,MASTEK
+Max Financial Services Ltd.,Mid Cap,MFSL,500271,MFSL
+Max Healthcare Institute Ltd.,Large Cap,MAXHEALTH,543220,MAXHEALTH
+Mazagon Dock Shipbuilders Ltd.,Large Cap,MAZDOCK,543237,MAZDOCK
+Medplus Health Services Ltd.,Micro Cap,MEDPLUS,543427,MEDPLUS
+Meesho Ltd.,Small Cap,MEESHO,544632,MEESHO
+Metropolis Healthcare Ltd.,Micro Cap,METROPOLIS,542650,METROPOLIS
+Minda Corporation Ltd.,Small Cap,MINDACORP,538962,MINDACORP
+Mishra Dhatu Nigam Ltd.,Micro Cap,MIDHANI,541195,MIDHANI
+Motherson Sumi Wiring India Ltd.,Small Cap,MSUMI,543498,MSUMI
+Motilal Oswal Financial Services Ltd.,Mid Cap,MOTILALOFS,532892,MOTILALOFS
+Mphasis Ltd.,Mid Cap,MPHASIS,526299,MPHASIS
+Mrs. Bectors Food Specialities Ltd.,Micro Cap,BECTORFOOD,543253,BECTORFOOD
+Multi Commodity Exchange Of India Ltd.,Mid Cap,MCX,534091,MCX
+Muthoot Finance Ltd.,Large Cap,MUTHOOTFIN,533398,MUTHOOTFIN
+N B C C (India) Ltd.,Small Cap,NBCC,534309,NBCC
+N C C Ltd.,Small Cap,NCC,500294,NCC
+N H P C Ltd.,Mid Cap,NHPC,533098,NHPC
+N L C India Ltd.,Mid Cap,NLCINDIA,513683,NLCINDIA
+N M D C Ltd.,Mid Cap,NMDC,526371,NMDC
+N M D C Steel Ltd.,Small Cap,NSLNISP,543768,NSLNISP
+N T P C Green Energy Ltd.,Mid Cap,NTPCGREEN,544289,NTPCGREEN
+N T P C Ltd.,Large Cap,NTPC,532555,NTPC
+Narayana Hrudayalaya Ltd.,Small Cap,NH,539551,NH
+Natco Pharma Ltd.,Small Cap,NATCOPHARM,524816,NATCOPHARM
+National Aluminium Co. Ltd.,Mid Cap,NATIONALUM,532234,NATIONALUM
+National Fertilizers Ltd.,Micro Cap,NFL,523630,NFL
+Nava Ltd.,Small Cap,NAVA,513023,NAVA
+Navin Fluorine Intl. Ltd.,Small Cap,NAVINFLUOR,532504,NAVINFLUOR
+Nazara Technologies Ltd.,Micro Cap,NAZARA,543280,NAZARA
+Neogen Chemicals Ltd.,Micro Cap,NEOGEN,542665,NEOGEN
+Nesco Ltd.,Micro Cap,NESCO,505355,NESCO
+Nestle India Ltd.,Large Cap,NESTLEIND,500790,NESTLEIND
+Netweb Technologies India Ltd.,Small Cap,NETWEB,543945,NETWEB
+Network18 Media & Invst. Ltd.,Micro Cap,NETWORK18,532798,NETWORK18
+Neuland Laboratories Ltd.,Small Cap,NEULANDLAB,524558,NEULANDLAB
+New India Assurance Co. Ltd.,Mid Cap,NIACL,540769,NIACL
+Newgen Software Technologies Ltd.,Small Cap,NEWGEN,540900,NEWGEN
+Nippon Life India Asset Mgmt. Ltd.,Mid Cap,NAM-INDIA,540767,NAM-INDIA
+Niva Bupa Health Insurance Co. Ltd.,Small Cap,NIVABUPA,544286,NIVABUPA
+Nuvama Wealth Mgmt. Ltd.,Small Cap,NUVAMA,543988,NUVAMA
+Nuvoco Vistas Corporation Ltd.,Small Cap,NUVOCO,543334,NUVOCO
+Oberoi Realty Ltd.,Mid Cap,OBEROIRLTY,533273,OBEROIRLTY
+Oil & Natural Gas Corpn. Ltd.,Large Cap,ONGC,500312,ONGC
+Oil India Ltd.,Mid Cap,OIL,533106,OIL
+Ola Electric Mobility Ltd.,Small Cap,OLAELEC,544225,OLAELEC
+Olectra Greentech Ltd.,Small Cap,OLECTRA,532439,OLECTRA
+One 97 Communications Ltd.,Mid Cap,PAYTM,543396,PAYTM
+Onesource Specialty Pharma Ltd.,Small Cap,ONESOURCE,544292,ONESOURCE
+Optiemus Infracom Ltd.,Micro Cap,OPTIEMUS,530135,OPTIEMUS
+Oracle Financial Services Software Ltd.,Mid Cap,OFSS,532466,OFSS
+Orient Cement Ltd.,Micro Cap,ORIENTCEM,535754,ORIENTCEM
+Orkla India Ltd.,Micro Cap,ORKLAINDIA,544595,ORKLAINDIA
+Oswal Pumps Ltd.,Micro Cap,OSWALPUMPS,544418,OSWALPUMPS
+P B Fintech Ltd.,Mid Cap,POLICYBZR,543390,POLICYBZR
+P C B L Chemical Ltd.,Small Cap,PCBL,506590,PCBL
+P C Jeweller Ltd.,Micro Cap,PCJEWELLER,534809,PCJEWELLER
+P G Electroplast Ltd.,Small Cap,PGEL,533581,PGEL
+P I Industries Ltd.,Mid Cap,PIIND,523642,PIIND
+P N B Housing Finance Ltd.,Small Cap,PNBHOUSING,540173,PNBHOUSING
+P N C Infratech Ltd.,Micro Cap,PNCINFRA,539150,PNCINFRA
+P N Gadgil Jewellers Ltd.,Micro Cap,PNGJL,544256,PNGJL
+P T C India Ltd.,Micro Cap,PTC,532524,PTC
+P T C Industries Ltd.,Small Cap,PTCIL,539006,PTCIL
+P V R Inox Ltd.,Small Cap,PVRINOX,532689,PVRINOX
+Page Industries Ltd.,Mid Cap,PAGEIND,532827,PAGEIND
+Paradeep Phosphates Ltd.,Small Cap,PARADEEP,543530,PARADEEP
+Paras Defence & Space Technologies Ltd.,Micro Cap,PARAS,543367,PARAS
+Park Medi World Ltd.,Micro Cap,PARKHOSPS,544645,PARKHOSPS
+Patanjali Foods Ltd.,Mid Cap,PATANJALI,500368,PATANJALI
+Pearl Global Inds. Ltd.,Micro Cap,PGIL,532808,PGIL
+Persistent Systems Ltd.,Mid Cap,PERSISTENT,533179,PERSISTENT
+Petronet L N G Ltd.,Mid Cap,PETRONET,532522,PETRONET
+Pfizer Ltd.,Small Cap,PFIZER,500680,PFIZER
+Phoenix Mills Ltd.,Mid Cap,PHOENIXLTD,503100,PHOENIXLTD
+Physicswallah Ltd.,Small Cap,PWL,544609,PWL
+Piccadily Agro Inds. Ltd.,Micro Cap,PICCADIL,530305,PICCADIL
+Pidilite Industries Ltd.,Large Cap,PIDILITIND,500331,PIDILITIND
+Pine Labs Ltd.,Small Cap,PINELABS,544606,PINELABS
+Piramal Finance Ltd.,Small Cap,PIRAMALFIN,544597,PIRAMALFIN
+Piramal Pharma Ltd.,Small Cap,PPLPHARMA,543635,PPLPHARMA
+Poly Medicure Ltd.,Small Cap,POLYMED,531768,POLYMED
+Polycab India Ltd.,Mid Cap,POLYCAB,542652,POLYCAB
+Poonawalla Fincorp Ltd.,Small Cap,POONAWALLA,524000,POONAWALLA
+Power Finance Corpn. Ltd.,Large Cap,PFC,532810,PFC
+Power Grid Corpn. Of India Ltd.,Large Cap,POWERGRID,532898,POWERGRID
+Power Mech Projects Ltd.,Micro Cap,POWERMECH,539302,POWERMECH
+Praj Industries Ltd.,Micro Cap,PRAJIND,522205,PRAJIND
+Premier Energies Ltd.,Mid Cap,PREMIERENE,544238,PREMIERENE
+Prestige Estates Projects Ltd.,Mid Cap,PRESTIGE,533274,PRESTIGE
+Pricol Ltd.,Micro Cap,PRICOLLTD,540293,PRICOLLTD
+Prime Focus Ltd.,Small Cap,PFOCUS,532748,PFOCUS
+Prism Johnson Ltd.,Micro Cap,PRSMJOHNSN,500338,PRSMJOHNSN
+Privi Speciality Chemicals Ltd.,Micro Cap,PRIVISCL,530117,PRIVISCL
+Prudent Corporate Advisory Services Ltd.,Micro Cap,PRUDENT,543527,PRUDENT
+Punjab National Bank,Large Cap,PNB,532461,PNB
+Puravankara Ltd.,Micro Cap,PURVA,532891,PURVA
+Quality Power Electrical Equipments Ltd.,Micro Cap,QPOWER,544367,QPOWER
+Quess Corp Ltd.,Micro Cap,QUESS,539978,QUESS
+R B L Bank Ltd.,Small Cap,RBLBANK,540065,RBLBANK
+R E C Ltd.,Large Cap,RECLTD,532955,RECLTD
+R H I Magnesita India Ltd.,Small Cap,RHIM,534076,RHIM
+R R Kabel Ltd.,Small Cap,RRKABEL,543981,RRKABEL
+Radico Khaitan Ltd.,Mid Cap,RADICO,532497,RADICO
+Rail Vikas Nigam Ltd.,Mid Cap,RVNL,542649,RVNL
+Railtel Corporation Of India Ltd.,Small Cap,RAILTEL,543265,RAILTEL
+Rain Industries Ltd.,Micro Cap,RAIN,500339,RAIN
+Rainbow Children'S Medicare Ltd.,Small Cap,RAINBOW,543524,RAINBOW
+Rallis India Ltd.,Micro Cap,RALLIS,500355,RALLIS
+Ramco Cements Ltd.,Small Cap,RAMCOCEM,500260,RAMCOCEM
+Ramkrishna Forgings Ltd.,Small Cap,RKFORGE,532527,RKFORGE
+Rashtriya Chemicals & Fertilizers Ltd.,Micro Cap,RCF,524230,RCF
+Rategain Travel Technologies Ltd.,Micro Cap,RATEGAIN,543417,RATEGAIN
+Ratnamani Metals & Tubes Ltd.,Micro Cap,RATNAMANI,520111,RATNAMANI
+Rattanindia Enterprises Ltd.,Micro Cap,RTNINDIA,534597,RTNINDIA
+Rattanindia Power Ltd.,Micro Cap,RTNPOWER,533122,RTNPOWER
+Raymond Lifestyle Ltd. (2018),Micro Cap,RAYMONDLSL,544240,RAYMONDLSL
+Redington Ltd.,Small Cap,REDINGTON,532805,REDINGTON
+Redtape Ltd.,Micro Cap,REDTAPE,543957,REDTAPE
+Refex Industries Ltd.,Micro Cap,REFEX,532884,REFEX
+Relaxo Footwears Ltd.,Micro Cap,RELAXO,530517,RELAXO
+Reliance Industries Ltd.,Large Cap,RELIANCE,500325,RELIANCE
+Reliance Power Ltd.,Small Cap,RPOWER,532939,RPOWER
+Religare Enterprises Ltd.,Micro Cap,RELIGARE,532915,RELIGARE
+Restaurant Brands Asia Ltd.,Micro Cap,RBA,543248,RBA
+Rites Ltd.,Small Cap,RITES,541556,RITES
+Route Mobile Ltd.,Micro Cap,ROUTE,543228,ROUTE
+Rubicon Research Ltd.,Micro Cap,RUBICON,544578,RUBICON
+S B F C Finance Ltd.,Small Cap,SBFC,543959,SBFC
+S B I Cards & Payment Services Ltd.,Mid Cap,SBICARD,543066,SBICARD
+S B I Life Insurance Co. Ltd.,Large Cap,SBILIFE,540719,SBILIFE
+S J V N Ltd.,Mid Cap,SJVN,533206,SJVN
+S K F India (Industrial) Ltd.,Micro Cap,SKFINDUS,544572,SKFINDUS
+S K F India Ltd.,Micro Cap,SKFINDIA,500472,SKFINDIA
+S M L Mahindra Ltd.,Micro Cap,SMLMAH,505192,SMLMAH
+S R F Ltd.,Mid Cap,SRF,503806,SRF
+Saatvik Green Energy Ltd.,Micro Cap,SAATVIKGL,544526,SAATVIKGL
+Safari Industries (India) Ltd.,Micro Cap,SAFARI,523025,SAFARI
+Sagility Ltd.,Small Cap,SAGILITY,544282,SAGILITY
+Sai Life Sciences Ltd.,Small Cap,SAILIFE,544306,SAILIFE
+Samhi Hotels Ltd.,Micro Cap,SAMHI,543984,SAMHI
+Sammaan Capital Ltd.,Small Cap,SAMMAANCAP,535789,SAMMAANCAP
+Samvardhana Motherson Intl. Ltd.,Large Cap,MOTHERSON,517334,MOTHERSON
+Sandur Manganese & Iron Ores Ltd.,Micro Cap,SANDUMA,504918,SANDUMA
+Sanofi Consumer Healthcare India Ltd.,Micro Cap,SANOFICONR,544250,SANOFICONR
+Sansera Engineering Ltd.,Micro Cap,SANSERA,543358,SANSERA
+Sapphire Foods India Ltd.,Small Cap,SAPPHIRE,543397,SAPPHIRE
+Sarda Energy & Minerals Ltd.,Small Cap,SARDAEN,504614,SARDAEN
+Saregama India Ltd.,Small Cap,SAREGAMA,532163,SAREGAMA
+Schaeffler India Ltd.,Mid Cap,SCHAEFFLER,505790,SCHAEFFLER
+Schneider Electric Infrastructure Ltd.,Small Cap,SCHNEIDER,534139,SCHNEIDER
+Senco Gold Ltd.,Micro Cap,SENCO,543936,SENCO
+Seshaasai Technologies Ltd.,Micro Cap,STYL,544533,STYL
+Shaily Engineering Plastics Ltd.,Micro Cap,SHAILY,501423,SHAILY
+Shakti Pumps (India) Ltd.,Micro Cap,SHAKTIPUMP,531431,SHAKTIPUMP
+Sharda Cropchem Ltd.,Micro Cap,SHARDACROP,538666,SHARDACROP
+Share India Securities Ltd.,Micro Cap,SHAREINDIA,540725,SHAREINDIA
+Sheela Foam Ltd.,Micro Cap,SFL,540203,SFL
+Shilpa Medicare Ltd.,Micro Cap,SHILPAMED,530549,SHILPAMED
+Shipping Corpn. Of India Ltd.,Small Cap,SCI,523598,SCI
+Shree Cement Ltd.,Large Cap,SHREECEM,500387,SHREECEM
+Shree Renuka Sugars Ltd.,Micro Cap,RENUKA,532670,RENUKA
+Shriram Finance Ltd.,Large Cap,SHRIRAMFIN,511218,SHRIRAMFIN
+Shyam Metalics & Energy Ltd.,Small Cap,SHYAMMETL,543299,SHYAMMETL
+Siemens Energy India Ltd.,Large Cap,ENRIN,544390,ENRIN
+Siemens Ltd.,Large Cap,SIEMENS,500550,SIEMENS
+Signatureglobal (India) Ltd.,Small Cap,SIGNATURE,543990,SIGNATURE
+Skipper Ltd.,Micro Cap,SKIPPER,538562,SKIPPER
+Sky Gold & Diamonds Ltd.,Micro Cap,SKYGOLD,541967,SKYGOLD
+Smartworks Coworking Spaces Ltd.,Micro Cap,SMARTWORKS,544447,SMARTWORKS
+Sobha Ltd.,Small Cap,SOBHA,532784,SOBHA
+Solar Industries India Ltd.,Large Cap,SOLARINDS,532725,SOLARINDS
+Sona B L W Precision Forgings Ltd.,Small Cap,SONACOMS,543300,SONACOMS
+Sonata Software Ltd.,Small Cap,SONATSOFTW,532221,SONATSOFTW
+South Indian Bank Ltd.,Micro Cap,SOUTHBANK,532218,SOUTHBANK
+Spr Auto Technologies Ltd.,Micro Cap,SHRIPISTON,544344,SHRIPISTON
+Sri Lotus Developers & Realty Ltd.,Micro Cap,LOTUSDEV,544469,LOTUSDEV
+Star Cement Ltd.,Micro Cap,STARCEMENT,540575,STARCEMENT
+Star Health & Allied Insurance Co. Ltd.,Small Cap,STARHEALTH,543412,STARHEALTH
+State Bank Of India,Large Cap,SBIN,500112,SBIN
+Steel Authority Of India Ltd.,Mid Cap,SAIL,500113,SAIL
+Sterling & Wilson Renewable Energy Ltd.,Micro Cap,SWSOLAR,542760,SWSOLAR
+Sterlite Technologies Ltd.,Micro Cap,STLTECH,532374,STLTECH
+Strides Pharma Science Ltd.,Micro Cap,STAR,532531,STAR
+Styrenix Performance Materials Ltd.,Micro Cap,STYRENIX,506222,STYRENIX
+Subros Ltd.,Micro Cap,SUBROS,517168,SUBROS
+Sudarshan Chemical Inds. Ltd.,Micro Cap,SUDARSCHEM,506655,SUDARSCHEM
+Sudeep Pharma Ltd.,Micro Cap,SUDEEPPHRM,544619,SUDEEPPHRM
+Sumitomo Chemical India Ltd.,Small Cap,SUMICHEM,542920,SUMICHEM
+Sun Pharma Advanced Research Co. Ltd.,Micro Cap,SPARC,532872,SPARC
+Sun Pharmaceutical Inds. Ltd.,Large Cap,SUNPHARMA,524715,SUNPHARMA
+Sun T V Network Ltd.,Small Cap,SUNTV,532733,SUNTV
+Sundaram Finance Ltd.,Mid Cap,SUNDARMFIN,590071,SUNDARMFIN
+Sunteck Realty Ltd.,Micro Cap,SUNTECK,512179,SUNTECK
+Supreme Industries Ltd.,Mid Cap,SUPREMEIND,509930,SUPREMEIND
+Supreme Petrochem Ltd.,Small Cap,SPLPETRO,500405,SPLPETRO
+Supriya Lifescience Ltd.,Micro Cap,SUPRIYA,543434,SUPRIYA
+Surya Roshni Ltd.,Micro Cap,SURYAROSNI,500336,SURYAROSNI
+Suzlon Energy Ltd.,Mid Cap,SUZLON,532667,SUZLON
+Swan Corp Ltd.,Small Cap,SWANCORP,503310,SWANCORP
+Swiggy Ltd.,Mid Cap,SWIGGY,544285,SWIGGY
+Syngene International Ltd.,Small Cap,SYNGENE,539268,SYNGENE
+Syrma S G S Technology Ltd.,Small Cap,SYRMA,543573,SYRMA
+T A R C Ltd.,Micro Cap,TARC,543249,TARC
+T B O Tek Ltd.,Small Cap,TBOTEK,544174,TBOTEK
+T D Power Systems Ltd.,Micro Cap,TDPOWERSYS,533553,TDPOWERSYS
+T S F Investments Ltd.,Micro Cap,TSFINV,,
+T V S Motor Co. Ltd.,Large Cap,TVSMOTOR,532343,TVSMOTOR
+T V S Supply Chain Solutions Ltd.,Micro Cap,TVSSCS,543965,TVSSCS
+Tamilnad Mercantile Bank Ltd.,Micro Cap,TMB,543596,TMB
+Tanla Platforms Ltd.,Micro Cap,TANLA,532790,TANLA
+Tata Capital Ltd.,Large Cap,TATACAP,544574,TATACAP
+Tata Chemicals Ltd.,Small Cap,TATACHEM,500770,TATACHEM
+Tata Communications Ltd.,Mid Cap,TATACOMM,500483,TATACOMM
+Tata Consultancy Services Ltd.,Large Cap,TCS,532540,TCS
+Tata Consumer Products Ltd.,Large Cap,TATACONSUM,500800,TATACONSUM
+Tata Elxsi Ltd.,Mid Cap,TATAELXSI,500408,TATAELXSI
+Tata Investment Corpn. Ltd.,Mid Cap,TATAINVEST,501301,TATAINVEST
+Tata Motors Ltd.,Large Cap,TMCV,544569,TMCV
+Tata Motors Passenger Vehicles Ltd.,Large Cap,TMPV,500570,TMPV
+Tata Power Co. Ltd.,Large Cap,TATAPOWER,500400,TATAPOWER
+Tata Steel Ltd.,Large Cap,TATASTEEL,500470,TATASTEEL
+Tata Technologies Ltd.,Small Cap,TATATECH,544028,TATATECH
+Tata Teleservices (Maharashtra) Ltd.,Small Cap,TTML,532371,TTML
+Tech Mahindra Ltd.,Large Cap,TECHM,532755,TECHM
+Techno Electric & Engg. Co. Ltd.,Small Cap,TECHNOE,542141,TECHNOE
+Tega Industries Ltd.,Small Cap,TEGA,543413,TEGA
+Tejas Networks Ltd.,Small Cap,TEJASNET,540595,TEJASNET
+Tenneco Clean Air India Ltd.,Small Cap,TENNIND,544612,TENNIND
+Texmaco Rail & Engg. Ltd.,Micro Cap,TEXRAIL,533326,TEXRAIL
+Thangamayil Jewellery Ltd.,Micro Cap,THANGAMAYL,533158,THANGAMAYL
+Thermax Ltd.,Mid Cap,THERMAX,500411,THERMAX
+Thomas Cook (India) Ltd.,Micro Cap,THOMASCOOK,500413,THOMASCOOK
+Thyrocare Technologies Ltd.,Micro Cap,THYROCARE,539871,THYROCARE
+Tilaknagar Industries Ltd.,Micro Cap,TI,507205,TI
+Time Technoplast Ltd.,Micro Cap,TIMETECHNO,532856,TIMETECHNO
+Timken India Ltd.,Small Cap,TIMKEN,522113,TIMKEN
+Tips Music Ltd.,Micro Cap,TIPSMUSIC,532375,TIPSMUSIC
+Titagarh Rail Systems Ltd.,Small Cap,TITAGARH,532966,TITAGARH
+Titan Company Ltd.,Large Cap,TITAN,500114,TITAN
+Torrent Pharmaceuticals Ltd.,Large Cap,TORNTPHARM,500420,TORNTPHARM
+Torrent Power Ltd.,Mid Cap,TORNTPOWER,532779,TORNTPOWER
+Transformers & Rectifiers (India) Ltd.,Small Cap,TARIL,532928,TARIL
+Transrail Lighting Ltd.,Micro Cap,TRANSRAILL,544317,TRANSRAILL
+Travel Food Services Ltd.,Small Cap,TRAVELFOOD,544443,TRAVELFOOD
+Trent Ltd.,Large Cap,TRENT,500251,TRENT
+Trident Ltd.,Small Cap,TRIDENT,521064,TRIDENT
+Triveni Engineering & Inds. Ltd.,Micro Cap,TRIVENI,532356,TRIVENI
+Triveni Turbine Ltd.,Small Cap,TRITURBINE,533655,TRITURBINE
+Tube Investments Of India Ltd.,Mid Cap,TIINDIA,540762,TIINDIA
+U P L Ltd.,Mid Cap,UPL,512070,UPL
+U T I Asset Mgmt. Co. Ltd.,Small Cap,UTIAMC,543238,UTIAMC
+Uco Bank,Small Cap,UCOBANK,532505,UCOBANK
+Ujjivan Small Finance Bank Ltd.,Micro Cap,UJJIVANSFB,542904,UJJIVANSFB
+Ultratech Cement Ltd.,Large Cap,ULTRACEMCO,532538,ULTRACEMCO
+Union Bank Of India,Large Cap,UNIONBANK,532477,UNIONBANK
+United Breweries Ltd.,Mid Cap,UBL,532478,UBL
+United Spirits Ltd.,Large Cap,UNITDSPR,532432,UNITDSPR
+Uno Minda Ltd.,Mid Cap,UNOMINDA,532539,UNOMINDA
+Urban Company Ltd.,Small Cap,URBANCO,544515,URBANCO
+Usha Martin Ltd.,Small Cap,USHAMART,517146,USHAMART
+V 2 Retail Ltd.,Micro Cap,V2RETAIL,532867,V2RETAIL
+V A Tech Wabag Ltd.,Micro Cap,WABAG,533269,WABAG
+V I P Industries Ltd.,Micro Cap,VIPIND,507880,VIPIND
+Vaibhav Global Ltd.,Micro Cap,VAIBHAVGBL,532156,VAIBHAVGBL
+Valor Estate Ltd.,Micro Cap,DBREALTY,533160,DBREALTY
+Vardhman Textiles Ltd.,Small Cap,VTL,502986,VTL
+Varroc Engineering Ltd.,Micro Cap,VARROC,541578,VARROC
+Varun Beverages Ltd.,Large Cap,VBL,540180,VBL
+Vedant Fashions Ltd.,Micro Cap,MANYAVAR,543463,MANYAVAR
+Vedanta Ltd.,Large Cap,VEDL,500295,VEDL
+V-Guard Industries Ltd.,Micro Cap,VGUARD,532953,VGUARD
+Vijaya Diagnostic Centre Ltd.,Small Cap,VIJAYA,543350,VIJAYA
+Vikram Solar Ltd.,Micro Cap,VIKRAMSOLR,544488,VIKRAMSOLR
+Vishal Mega Mart Ltd.,Mid Cap,VMM,544307,VMM
+Viyash Scientific Ltd.,Micro Cap,VIYASH,512529,VIYASH
+V-Mart Retail Ltd.,Micro Cap,VMART,534976,VMART
+Vodafone Idea Ltd.,Mid Cap,IDEA,532822,IDEA
+Voltamp Transformers Ltd.,Micro Cap,VOLTAMP,532757,VOLTAMP
+Voltas Ltd.,Mid Cap,VOLTAS,500575,VOLTAS
+Waaree Energies Ltd.,Mid Cap,WAAREEENER,544277,WAAREEENER
+Waaree Renewable Technologies Ltd.,Micro Cap,WAAREERTL,534618,WAAREERTL
+Wakefit Innovations Ltd.,Micro Cap,WAKEFIT,544642,WAKEFIT
+Websol Energy System Ltd.,Micro Cap,WEBELSOLAR,517498,WEBELSOLAR
+Welspun Corp Ltd.,Small Cap,WELCORP,532144,WELCORP
+Welspun Enterprises Ltd.,Micro Cap,WELENT,532553,WELENT
+Welspun Living Ltd.,Small Cap,WELSPUNLIV,514162,WELSPUNLIV
+Westlife Foodworld Ltd.,Micro Cap,WESTLIFE,505533,WESTLIFE
+Wework India Mgmt. Ltd.,Micro Cap,WEWORK,544570,WEWORK
+Whirlpool Of India Ltd.,Small Cap,WHIRLPOOL,500238,WHIRLPOOL
+Wipro Ltd.,Large Cap,WIPRO,507685,WIPRO
+Wockhardt Ltd.,Small Cap,WOCKPHARMA,532300,WOCKPHARMA
+Yatharth Hospital & Trauma Care Services Ltd.,Micro Cap,YATHARTH,543950,YATHARTH
+Yes Bank Ltd.,Mid Cap,YESBANK,532648,YESBANK
+Z F Commercial Vehicle Control Systems India Ltd.,Small Cap,ZFCVINDIA,533023,ZFCVINDIA
+Zaggle Prepaid Ocean Services Ltd.,Micro Cap,ZAGGLE,543985,ZAGGLE
+Zee Entertainment Enterprises Ltd.,Small Cap,ZEEL,505537,ZEEL
+Zen Technologies Ltd.,Small Cap,ZENTEC,533339,ZENTEC
+Zensar Technologies Ltd.,Small Cap,ZENSARTECH,504067,ZENSARTECH
+Zydus Lifesciences Ltd.,Large Cap,ZYDUSLIFE,532321,ZYDUSLIFE
+Zydus Wellness Ltd.,Small Cap,ZYDUSWELL,531335,ZYDUSWELL

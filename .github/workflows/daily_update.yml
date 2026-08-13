@@ -1,0 +1,61 @@
+# FF — Daily Live Dashboard Update
+# ====================================
+# Runs automatically every trading-day evening (after NSE market close), with
+# zero manual action needed. Does exactly what you used to do by hand in
+# Colab: refresh OHLC -> scan for fresh signals -> rebuild the dashboard ->
+# publish it to a permanent URL (GitHub Pages).
+#
+# You can also trigger it manually any time from the "Actions" tab on
+# GitHub -> select this workflow -> "Run workflow" button. Useful for
+# testing, or if you want a same-minute refresh instead of waiting for the
+# schedule.
+
+name: Daily Dashboard Update
+
+on:
+  schedule:
+    # 13:30 UTC = 7:00 PM IST, Monday-Friday only (trading days).
+    # This is well after NSE's 3:30 PM close, giving Yahoo Finance time to
+    # publish end-of-day data.
+    - cron: '30 13 * * 1-5'
+  workflow_dispatch: {}   # adds the manual "Run workflow" button
+
+permissions:
+  contents: write   # needed so the workflow can commit the updated dashboard back
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install yfinance pandas beautifulsoup4 lxml
+
+      - name: Refresh OHLC data
+        run: python FF_Yahoo_OHLC_Updater.py
+
+      - name: Scan for fresh signals
+        run: python FF_Fresh_Signal_Scanner.py
+
+      - name: Build the dashboard
+        run: python FF_build_dashboard.py
+
+      - name: Publish dashboard to GitHub Pages
+        run: |
+          mkdir -p docs
+          cp FF_Live_Tracking_Dashboard.html docs/index.html
+
+      - name: Commit and push updated data + dashboard
+        run: |
+          git config user.name "FF Automation"
+          git config user.email "actions@github.com"
+          git add ohlc_data/ fresh_signals.csv docs/index.html
+          git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
+          git push
