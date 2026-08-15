@@ -153,15 +153,13 @@ def ingest():
         existing = fund[(fund["symbol"] == symbol) & (fund["report_date"] == report_date)]
         if not existing.empty:
             skipped_existing += 1
-            existing_row = existing.iloc[0]
-            existing_avail = existing_row["avail_date"]
-            existing_source = existing_row.get("source", "historical")
-            if (existing_source == "live_scrape" and pd.notna(correct_avail_date)
-                    and existing_avail != correct_avail_date):
-                fund.loc[existing.index, "avail_date"] = correct_avail_date
-                corrections.append((symbol, report_date.strftime("%Y-%m-%d"),
-                                     existing_avail.strftime("%Y-%m-%d"),
-                                     correct_avail_date.strftime("%Y-%m-%d")))
+            # NOTE: previously this block updated avail_date on every re-scrape,
+            # even for rows that already had a correct, first-observed date —
+            # that pushed avail_date forward each time (to whatever day the
+            # re-scrape happened to run), which could push it PAST the latest
+            # OHLC date and silently disable a stock's fundamental condition.
+            # avail_date must be set ONCE, at first observation, and never
+            # touched again. So: existing rows are now always just skipped.
             continue
 
         # pull this symbol's trailing history from fund_flags.csv, then add the new quarter
