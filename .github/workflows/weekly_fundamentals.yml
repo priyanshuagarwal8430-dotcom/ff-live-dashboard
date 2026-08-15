@@ -47,16 +47,7 @@ jobs:
           if [ -s failed_tickers_gemini.txt ]; then
             echo "Retrying failed tickers..."
             python FF_Fixed_Gemini_Scraper.py --tickers failed_tickers_gemini.txt --output fundamentals_retry.csv || true
-            python - << 'PYEOF'
-import os, pandas as pd
-if os.path.exists('fundamentals_retry.csv'):
-    main_df = pd.read_csv('fundamentals_master.csv')
-    retry_df = pd.read_csv('fundamentals_retry.csv')
-    combined = pd.concat([main_df, retry_df], ignore_index=True)
-    combined = combined.drop_duplicates(subset=['symbol','quarter_label'], keep='last')
-    combined.to_csv('fundamentals_master.csv', index=False)
-    print(f"Recovered {retry_df['symbol'].nunique()} tickers on retry.")
-PYEOF
+            python merge_retry.py
           fi
 
       - name: Merge into fund_flags.csv

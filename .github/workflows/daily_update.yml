@@ -58,4 +58,8 @@ jobs:
           git config user.email "actions@github.com"
           git add ohlc_data/ fresh_signals.csv docs/index.html
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
+          # Pull-with-rebase before pushing, in case something else (a manual
+          # push, or another workflow) updated the remote while this run was
+          # in progress — avoids the "rejected, fetch first" error.
+          git pull --rebase origin main
           git push
