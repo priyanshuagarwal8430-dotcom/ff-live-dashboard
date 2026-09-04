@@ -62,7 +62,11 @@ jobs:
         run: |
           git config user.name "FF Automation"
           git config user.email "actions@github.com"
-          git add ohlc_data/ fresh_signals.csv docs/index.html ohlc_update_report.json ohlc_quarantine.txt
+          # The run report and quarantine list are build output, not repository
+          # content: they are in .gitignore and are kept as the run artifact
+          # below. Naming them here made git add fail with exit 1 and took the
+          # whole run down after every other step had succeeded.
+          git add ohlc_data/ fresh_signals.csv docs/index.html
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
           git pull --rebase origin main
           git push
