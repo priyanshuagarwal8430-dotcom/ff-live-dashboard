@@ -64,6 +64,7 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/122.0 Safari/537.36")
 MON = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 SERIES_OK = ("EQ", "BE")
+CA_LEDGER = "corporate_actions.csv"   # append-only record of accepted actions
 
 
 # --------------------------------------------------------------------------
@@ -287,6 +288,23 @@ def run(dry_run=False):
     if actions:
         print(f"corporate actions in the window: "
               f"{sum(len(v) for v in actions.values())} across {len(actions)} symbols")
+        # Record them. The fundamentals ingest needs this to restate EPS after a
+        # split: EPS is per-share, so an unrestated pre-split quarter in the
+        # trailing window makes an 8-quarter high arithmetically impossible and
+        # silently suppresses qualifications. This updater is the only thing that
+        # talks to the corporate-action feed, so it is the only thing that should
+        # be writing the ledger.
+        rows = [dict(symbol=s, ex_date=pd.Timestamp(d).date(), factor=fac,
+                     recorded=date.today())
+                for s, v in actions.items() for d, fac in v]
+        led = pd.DataFrame(rows)
+        if os.path.exists(CA_LEDGER):
+            old_led = pd.read_csv(CA_LEDGER, parse_dates=["ex_date"])
+            old_led["ex_date"] = old_led.ex_date.dt.date
+            led = pd.concat([old_led, led], ignore_index=True)
+        led = led.drop_duplicates(subset=["symbol", "ex_date"], keep="first")
+        led.sort_values(["symbol", "ex_date"]).to_csv(CA_LEDGER, index=False)
+        print(f"corporate-action ledger now holds {len(led)} events -> {CA_LEDGER}")
     for r in refused:
         print(f"  refused: {r}")
     print()

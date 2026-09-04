@@ -1,45 +1,28 @@
 # FF — Weekly Fundamentals Check
 # ==================================
-# Runs every Sunday, year-round. Most weeks it will find nothing new (results
-# only actually land during the ~6-8 week window after each quarter-end) —
-# that's expected and harmless, it just logs "0 new rows" and exits. Running
-# weekly year-round is simpler and more robust than trying to precisely
-# predict each quarter's results-season window, and costs almost nothing
-# (GitHub gives free compute minutes for this kind of job).
-#
-# IMPORTANT — this step is NOT yet confirmed reliable. Screener.in's scraper
-# needs to be tested from GitHub's servers before trusting this fully — see
-# the note in the conversation. Until confirmed, treat this as best-effort;
-# check the Actions tab occasionally to see if it's actually finding data.
-#
-# You can also trigger it manually from the "Actions" tab -> this workflow
-# -> "Run workflow" — useful right after you know results have started
-# coming out for a quarter.
+# Scrapes the latest quarterly results and merges them into the corrected
+# fundamentals base the signal engine reads.
 
 name: Weekly Fundamentals Check
 
 on:
   schedule:
-    - cron: '0 6 * * 0'   # 06:00 UTC every Sunday (~11:30 AM IST)
+    - cron: '30 4 * * 0'        # 10:00 IST Sunday
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  fundamentals:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 pandas lxml
+        run: pip install requests beautifulsoup4 pandas lxml numpy
 
       - name: Scrape latest fundamentals from Screener
         run: |
@@ -50,13 +33,23 @@ jobs:
             python merge_retry.py
           fi
 
-      - name: Merge into fund_flags.csv
-        run: python FF_fundamentals_ingest.py
+      # Replaces FF_fundamentals_ingest.py, which wrote fund_flags.csv - the
+      # pre-v3 format, with no positivity filter and a 4-quarter window for
+      # Micro Cap. Nothing reads that file any more, so the base it maintained
+      # had become a dead end while the engine read a frozen snapshot.
+      - name: Merge into the v3 fundamentals base
+        run: python FF_fundamentals_ingest_v3.py
+
+      # A new quarter must not break the reproduction. If it does, something is
+      # wrong with the ingest and the base should not be committed.
+      - name: Signal engine acceptance test
+        run: python FF_Signal_Engine_v2.py --verify FF_FINAL_v5_n500.csv
 
       - name: Commit and push updated fundamentals
         run: |
           git config user.name "FF Automation"
           git config user.email "actions@github.com"
-          git add fund_flags.csv fundamentals_master.csv
+          git add fund_flags_v3.csv fundamentals_master.csv corporate_actions.csv
           git diff --quiet --cached || git commit -m "Weekly fundamentals check: $(date +'%Y-%m-%d')"
+          git pull --rebase origin main
           git push

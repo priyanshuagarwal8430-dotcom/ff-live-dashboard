@@ -47,8 +47,18 @@ jobs:
       - name: Refresh OHLC data
         run: python FF_OHLC_Updater_v2.py
 
-      - name: Scan for fresh signals
-        run: python FF_Fresh_Signal_Scanner.py
+      # The acceptance test: rebuild the whole history from the repository's own
+      # files and compare against the reference set. If a change ever breaks the
+      # 358-trade reproduction, the run stops here rather than publishing a
+      # dashboard built on rules that have quietly drifted.
+      - name: Signal engine acceptance test
+        run: python FF_Signal_Engine_v2.py --verify FF_FINAL_v5_n500.csv
+
+      # Replaces FF_Fresh_Signal_Scanner.py, which fired on an intraday Low
+      # instead of a Close, scanned Micro Cap into the recommendations, and used
+      # a fundamentals flag with no positivity filter.
+      - name: Scan for signals
+        run: python FF_Signal_Engine_v2.py --since 2026-06-01
 
       - name: Build the dashboard
         run: python FF_build_dashboard.py
@@ -66,7 +76,7 @@ jobs:
           # content: they are in .gitignore and are kept as the run artifact
           # below. Naming them here made git add fail with exit 1 and took the
           # whole run down after every other step had succeeded.
-          git add ohlc_data/ fresh_signals.csv docs/index.html
+          git add ohlc_data/ fresh_signals.csv signals.csv watchlist_microcap.csv docs/index.html
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
           git pull --rebase origin main
           git push

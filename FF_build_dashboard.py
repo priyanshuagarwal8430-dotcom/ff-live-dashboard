@@ -148,7 +148,7 @@ def detect_fund_quarter_label():
     of relying on a hardcoded label that needs manual updates every quarter.
     Reads only the report_date column for speed (fund_flags.csv is large).
     """
-    fund_dates = pd.read_csv("fund_flags.csv", usecols=["report_date"], parse_dates=["report_date"])
+    fund_dates = pd.read_csv("fund_flags_v3.csv", usecols=["report_date"], parse_dates=["report_date"])
     latest = fund_dates["report_date"].max()
     return latest.strftime("%b-%y") + " quarter"
 

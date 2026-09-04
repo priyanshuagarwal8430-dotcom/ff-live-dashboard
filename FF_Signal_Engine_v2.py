@@ -122,20 +122,21 @@ def simulate(sigs, px, data_end):
         ti = np.searchsorted(d["dates"], np.datetime64(td), side="right") - 1
         if ti < 0 or not np.isfinite(ep) or ep <= 0: continue
         tgt = float(d["ath"][ti])
+        trig_close = float(d["close"][ti])
         hz = np.datetime64(min(ed + pd.Timedelta(days=CAP_DAYS), pd.Timestamp(data_end)))
         seg = slice(j, len(d["dates"]))
         hit = np.where((d["high"][seg] >= tgt) & (d["dates"][seg] <= hz))[0]
         if len(hit):
             k = j + hit[0]
             rows.append(dict(symbol=sym, trigger_date=pd.Timestamp(td), entry_date=ed,
-                             entry_price=ep, target_ath=tgt,
+                             entry_price=ep, target_ath=tgt, trigger_close=trig_close,
                              exit_date=pd.Timestamp(d["dates"][k]), exit_price=tgt,
                              reason="ATH_TARGET"))
         else:
             m = np.searchsorted(d["dates"], hz, side="right") - 1
             m = max(m, j)
             rows.append(dict(symbol=sym, trigger_date=pd.Timestamp(td), entry_date=ed,
-                             entry_price=ep, target_ath=tgt,
+                             entry_price=ep, target_ath=tgt, trigger_close=trig_close,
                              exit_date=pd.Timestamp(d["dates"][m]),
                              exit_price=float(d["close"][m]),
                              reason="TIME_STOP" if hz < end else "DATA_END"))
@@ -144,6 +145,20 @@ def simulate(sigs, px, data_end):
         t["ret_pct"] = (t.exit_price / t.entry_price - 1) * 100
         t = t.sort_values(["entry_date", "symbol"]).reset_index(drop=True)
     return t
+
+
+def data_end():
+    """The last date the price files actually carry. A live run must use this:
+    leaving the reference set's fixed 2026-07-27 in place would silently drop
+    every signal since, with no error to notice."""
+    last = None
+    for fn in os.listdir(OHLC_DIR):
+        if not fn.endswith(".csv"): continue
+        t = pd.read_csv(os.path.join(OHLC_DIR, fn), usecols=["Date"])
+        if len(t):
+            d = pd.to_datetime(t.Date.iloc[-1])
+            last = d if last is None or d > last else last
+    return last
 
 
 def build(tiers, analysis_end, from_date="2012-01-01"):
@@ -223,18 +238,35 @@ def verify(ref_path, analysis_end):
     return 0 if ok else 1
 
 
+LEGACY_OUT = "fresh_signals.csv"     # what the current dashboard builder reads
+LEGACY_COLS = ["symbol", "market_type", "trigger_date", "entry_date",
+               "entry_price", "target_ath", "drawdown_pct"]
+
+
 def live(since, analysis_end):
+    end = analysis_end
+    if end in (None, "auto"):
+        end = data_end()
+        print(f"data ends {end.date()}; scanning to there")
     for tiers, out, label in ((N500, OUT_SIG, "recommendable (Nifty 500)"),
                               (MICRO, OUT_WATCH, "watchlist only (Micro Cap)")):
-        t, mt = build(tiers, analysis_end)
+        t, mt = build(tiers, end)
         t = t[t.trigger_date >= pd.Timestamp(since)].copy()
         if len(t):
             t["market_type"] = t.symbol.map(mt)
-            t["drawdown_pct"] = (t.entry_price / t.target_ath - 1) * 100
-            t = t[["symbol", "market_type", "trigger_date", "entry_date", "entry_price",
-                   "target_ath", "drawdown_pct", "exit_date", "exit_price", "reason"]]
+            # the depth the RULE saw: the trigger day's close against the high it
+            # was measured from, not the next morning's open
+            t["drawdown_pct"] = (t.trigger_close / t.target_ath - 1) * 100
+            t = t[LEGACY_COLS + ["trigger_close", "exit_date", "exit_price", "reason"]]
         t.to_csv(out, index=False)
         print(f"{label}: {len(t)} signals since {since} -> {out}")
+        if tiers is N500:
+            # The dashboard builder still reads the old file and the old columns.
+            # It is replaced in Phase 5; until then the engine feeds it rather
+            # than the builder being rewritten twice.
+            leg = t[LEGACY_COLS] if len(t) else pd.DataFrame(columns=LEGACY_COLS)
+            leg.to_csv(LEGACY_OUT, index=False)
+            print(f"   also written for the current dashboard -> {LEGACY_OUT}")
         if len(t): print(t.head(30).to_string(index=False))
     return 0
 
@@ -243,9 +275,13 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--verify", metavar="REFERENCE_CSV")
     p.add_argument("--since", default="2026-06-01")
-    p.add_argument("--analysis-end", default="2026-07-27",
-                   help="the reference set was built to this date; live runs use the data end")
+    p.add_argument("--analysis-end", default="auto",
+                   help="'auto' uses the last date in the data. The reference set was "
+                        "built to 2026-07-27, so --verify pins that date itself.")
     a = p.parse_args()
     if a.verify:
-        sys.exit(verify(a.verify, a.analysis_end))
+        # The reference set is fixed in time; verifying against "auto" would
+        # compare two different windows and fail for the wrong reason.
+        end = "2026-07-27" if a.analysis_end == "auto" else a.analysis_end
+        sys.exit(verify(a.verify, end))
     sys.exit(live(a.since, a.analysis_end))
