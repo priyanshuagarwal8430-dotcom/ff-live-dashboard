@@ -94,11 +94,19 @@ FLOAT_FMT = "%.6g"   # matches the seed; keeps daily diffs to the rows that chan
 # pure logic — no network, so all of it is testable offline
 # --------------------------------------------------------------------------
 
-def observed_ratio(hist: pd.DataFrame, new: pd.DataFrame, ex_date: pd.Timestamp):
-    """Price ratio actually seen across an ex-date: last close before it,
+def observed_ratio(new: pd.DataFrame, ex_date: pd.Timestamp):
+    """Price ratio actually seen across an ex-date: the last close before it
     divided by the first close on or after it. A genuine 5:1 split gives ~5.0;
-    an event that does not touch the equity gives ~1.0."""
-    before = hist[hist.Date < ex_date]
+    an event that does not touch the equity gives ~1.0.
+
+    Measured INSIDE the fetched block, never against the stored history. The
+    two are not necessarily on the same scale: when a split has already been
+    applied to our history but the unadjusted feed still serves pre-split prices
+    for the overlap days, comparing across them reports the scale difference
+    rather than the price move, and a real split gets read as a non-event. The
+    fetched block is internally consistent, so the jump inside it is the true
+    effect on the equity."""
+    before = new[new.Date < ex_date]
     after  = new[new.Date >= ex_date]
     if before.empty or after.empty:
         return None
@@ -193,6 +201,31 @@ def check_join(joined: pd.DataFrame, from_date: pd.Timestamp, applied: list):
     return []
 
 
+def rescale_all(df: pd.DataFrame, factor: float) -> pd.DataFrame:
+    """Put an entire series onto a new scale."""
+    out = df.copy()
+    for c in ("Open", "High", "Low", "Close"):
+        out[c] = out[c] / factor
+    if "Volume" in out.columns:
+        out["Volume"] = out["Volume"] * factor
+    return out
+
+
+def overlap_ratio(hist: pd.DataFrame, new: pd.DataFrame):
+    """How the stored history compares with the fetched block on the days they
+    share. Returns (median ratio, spread, n) or None when they do not meet."""
+    j = hist.merge(new, on="Date", suffixes=("_h", "_n"))
+    if j.empty:
+        return None
+    r = (pd.to_numeric(j.Close_h, errors="coerce") /
+         pd.to_numeric(j.Close_n, errors="coerce")).replace([np.inf, -np.inf], np.nan).dropna()
+    if r.empty:
+        return None
+    med = float(r.median())
+    spread = float((r.max() - r.min()) / abs(med)) if med else float("inf")
+    return med, spread, len(r)
+
+
 def check_overlap(hist: pd.DataFrame, new: pd.DataFrame):
     """The fetched block is deliberately started before the stored end date, so
     the two must agree on the days they share. If they do not, the incoming
@@ -255,21 +288,43 @@ def update_one(symbol, hist, new, splits, from_date):
     if new is None or new.empty:
         return None, "no_new_data", ["feed returned nothing"]
 
+    # 1. Normalise the fetched block onto one scale — its own latest one.
+    factor_product = 1.0
     for ex_date, claimed in sorted(splits, key=lambda z: z[0]):
         ex_date = pd.Timestamp(ex_date).normalize()
-        obs = observed_ratio(hist, new, ex_date)
-        verdict, why = vet_action(claimed, obs)
+        verdict, why = vet_action(claimed, observed_ratio(new, ex_date))
         notes.append(f"{ex_date.date()}: {verdict} — {why}")
         if verdict == "quarantine":
             return None, "quarantined", notes
         if verdict == "apply":
-            hist = rescale_before(hist, ex_date, claimed)
-            new  = rescale_before(new,  ex_date, claimed)
+            new = rescale_before(new, ex_date, claimed)
             applied.append((ex_date, claimed))
+            factor_product *= claimed
 
-    overlap = check_overlap(hist, new)
-    if overlap:
-        return None, "quarantined", notes + overlap
+    # 2. Ask the overlap where the stored history sits relative to that scale.
+    #    A ratio of 1 means the history is already current — which is the case
+    #    when an action was applied to it before this run. A ratio equal to the
+    #    actions just applied means the history predates them and must move.
+    #    Anything else is a scale change nobody declared, and is not guessed at.
+    ov = overlap_ratio(hist, new)
+    if ov is None:
+        return None, "quarantined", notes + [
+            "fetched rows do not overlap the stored history, so the join cannot "
+            "be verified"]
+    med, spread, n = ov
+    if spread > 0.02:
+        return None, "quarantined", notes + [
+            f"the overlap is not on one consistent scale across its {n} shared days "
+            f"(spread {spread:.1%}, median ratio {med:.4f})"]
+    if abs(med - 1.0) <= FACTOR_TOL:
+        pass                                    # history already current
+    elif abs(med - factor_product) / factor_product <= FACTOR_TOL:
+        hist = rescale_all(hist, med)           # history predates the action
+        notes.append(f"history rescaled by {med:.4g} to meet the new rows")
+    else:
+        return None, "quarantined", notes + [
+            f"the overlap says the stored history is {med:.4f}x the incoming prices, "
+            f"which no declared action explains (actions applied: {factor_product:.4g})"]
 
     joined = merge(hist, new)
     problems = check_frame(joined) + check_join(joined, pd.Timestamp(from_date), applied)
@@ -278,7 +333,7 @@ def update_one(symbol, hist, new, splits, from_date):
 
     gained = len(joined) - len(hist)
     notes.append(f"{gained} new rows"
-                 + (f", {len(applied)} action(s) applied to history" if applied else ""))
+                 + (f", {len(applied)} corporate action(s) accepted" if applied else ""))
     return joined, "ok", notes
 
 
@@ -367,7 +422,16 @@ def run(symbols=None, dry_run=False):
     if quarantined:
         print(f"\n{len(quarantined)} symbol(s) quarantined and left untouched on disk:")
         print("  " + ", ".join(quarantined[:30]))
-        print("Nothing was published for these. Fix or confirm them before the next run.")
+        print("Their stored prices are unchanged, so nothing wrong was written; they "
+              "are simply a day behind until the cause is understood.")
+    # A single odd symbol must not stop the other 750 from updating: its own
+    # prices were left alone, so nothing bad is published either way. A large
+    # number of them is different — that is the feed or this script misbehaving,
+    # and the run should stop rather than quietly freeze half the universe.
+    limit = max(5, int(0.02 * max(len(files), 1)))
+    if len(quarantined) > limit:
+        print(f"\nFAILING THE RUN: {len(quarantined)} quarantined, above the "
+              f"tolerance of {limit}. This is not a handful of corporate actions.")
         return 1
     return 0
 
@@ -446,6 +510,27 @@ def selftest():
     quiet = base.iloc[95:].copy()
     frame6, status6, _ = update_one("Q", hist, quiet, [], hist.Date.max())
     report("ordinary update appends cleanly", status6 == "ok" and len(frame6) == 120)
+
+    # 6b. the split is already applied to our history but the unadjusted feed
+    #     still serves pre-split prices for the overlap days. This is the real
+    #     KIRLPNU / TDPOWERSYS case, and the first version of this file failed
+    #     it — it compared across hist and new, read the true 2:1 split as a
+    #     non-event, and then quarantined on the scale difference it had just
+    #     created.
+    done = rescale_all(base.iloc[:100].copy(), 5.0)      # history already post-split
+    feed = base.iloc[95:].copy()                          # feed still pre-split
+    for c in ("Open", "High", "Low", "Close"):
+        feed.loc[feed.Date >= ex, c] = feed.loc[feed.Date >= ex, c] / 5.0
+    frame6b, status6b, notes6b = update_one("K", done, feed, [(ex, 5.0)], done.Date.max())
+    passed = status6b == "ok"
+    if passed:
+        d = 1 - frame6b.Close.min() / frame6b.Close.cummax().max()
+        passed = d < 0.05
+        report("split already in our history, feed still pre-split", passed,
+               f"drawdown {d:.2%}")
+    else:
+        report("split already in our history, feed still pre-split", False,
+               notes6b[-1] if notes6b else status6b)
 
     # 7. the feed silently restates the whole series onto another scale
     shifted = base.iloc[95:].copy()
