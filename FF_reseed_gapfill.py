@@ -30,6 +30,11 @@ REPAIRS = {
     "ZEEL":     ("2014-03-03", 22.0, "Bonus Preference Shares 21:1"),
     "DRREDDY":  ("2011-03-17",  7.0, "Bonus Debentures 6:1"),
     "TVSMOTOR": ("2025-08-25",  5.0, "Bonus NCRPS 4:1"),
+    # Found by the systematic sweep in FF_ca_repair.py, not by eye. Same class as
+    # the three above: a factor applied where the equity price did not move.
+    "BRITANNIA":  ("2010-03-08", 2.0, "Bonus Debentures — equity untouched"),
+    "COROMANDEL": ("2012-07-13", 2.0, "factor applied, price did not move"),
+    "NTPC":       ("2015-03-20", 2.0, "Bonus Debentures — equity untouched"),
 }
 
 d = pd.read_parquet(PARQUET)
