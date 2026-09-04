@@ -266,12 +266,12 @@
 <div class="stats">
   <div class="stat-card">
     <div class="stat-label">New qualifiers — since 1-Jun-2026</div>
-    <div class="stat-value">52</div>
-    <div class="stat-sub">45 confident · 7 flagged for CA-verification</div>
+    <div class="stat-value">28</div>
+    <div class="stat-sub">25 confident · 3 flagged for CA-verification</div>
   </div>
   <div class="stat-card">
     <div class="stat-label">Segment split</div>
-    <div class="stat-value">23/15/9/5</div>
+    <div class="stat-value">0/13/10/5</div>
     <div class="stat-sub">Micro / Small / Mid / Large</div>
   </div>
   <div class="stat-card">
@@ -323,68 +323,44 @@
 </div>
 
 <footer>
-  <b>Real, validated data — fully current as of 04 Sep 2026.</b> Showing 52 fresh signals triggered
+  <b>Real, validated data — fully current as of 04 Sep 2026.</b> Showing 28 fresh signals triggered
   since 1-Jun-2026 (SOP's exact re-arm + fundamental logic, cross-verified against the officially validated
   166-trade engine). Fundamentals confirmed only through Jun-26 quarter — the next quarter's fundamentals
-  will trigger the next refresh, which may add a new batch. 7 signal(s) flagged for unusually
+  will trigger the next refresh, which may add a new batch. 3 signal(s) flagged for unusually
   large drawdowns — verify against corporate-action history before treating as confirmed. Click a flagged row for
   its note. Generated automatically by build_dashboard.py on 04-Sep-2026.
 </footer>
 
 <script>
 const data = [
-  {stock:"VGUARD", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:299.05, currentPrice:335.4, target:524.15, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:15.8}}},
-  {stock:"OPTIEMUS", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:395.95, currentPrice:569.3, target:851.2, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:45.0}}},
-  {stock:"MSTCLTD", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:445.0, currentPrice:734.2, target:1107.45, days:94, cap:1095, status:"deep-dd", checkpoints:{"3M":{ret:68.8}}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
-  {stock:"SIGNATURE", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:820.0, currentPrice:796.55, target:1612.9, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-6.1}}},
-  {stock:"JKPAPER", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:361.7, currentPrice:405.8, target:633.75, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:9.6}}},
-  {stock:"JBMA", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:640.0, currentPrice:625.6, target:1190.88, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-2.5}}},
-  {stock:"IGIL", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:362.65, currentPrice:323.5, target:620.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-6.0}}},
-  {stock:"INFY", seg:"large", isNew:true, entryDate:"02-Jun-2026", entryPrice:1232.5, currentPrice:1130.0, target:1999.7, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-8.0}}},
-  {stock:"NAUKRI", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:995.0, currentPrice:1319.8, target:1805.1, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:32.0}}},
-  {stock:"RELAXO", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:321.0, currentPrice:344.75, target:1436.2, days:94, cap:1095, status:"deep-dd", checkpoints:{"3M":{ret:11.5}}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
-  {stock:"HAVELLS", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:1133.0, currentPrice:1154.0, target:2082.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:9.8}}},
   {stock:"GODREJPROP", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:1701.0, currentPrice:1982.0, target:3381.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:18.4}}},
-  {stock:"ITCHOTELS", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:152.5, currentPrice:161.23, target:254.75, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:5.0}}},
-  {stock:"REFEX", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:304.1, currentPrice:282.55, target:573.75, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-7.1}}},
-  {stock:"SUBROS", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:711.5, currentPrice:709.6, target:1194.2, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:0.8}}},
-  {stock:"SUDARSCHEM", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:898.55, currentPrice:1222.8, target:1523.8, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:41.0}}},
-  {stock:"SUPREMEIND", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:3484.0, currentPrice:3475.0, target:6186.3, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:2.2}}},
-  {stock:"CRIZAC", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:220.99, currentPrice:160.29, target:374.25, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-25.1}}},
-  {stock:"TATATECH", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:711.05, currentPrice:800.0, target:1313.0, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:16.9}}},
-  {stock:"TSFINV", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:401.65, currentPrice:404.7, target:690.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-0.1}}},
+  {stock:"HAVELLS", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:1133.0, currentPrice:1154.0, target:2082.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:9.8}}},
+  {stock:"IDEA", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:14.0, currentPrice:15.02, target:84.48, days:94, cap:1095, status:"deep-dd", checkpoints:{"3M":{ret:2.4}}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
+  {stock:"IGIL", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:362.65, currentPrice:323.5, target:620.4, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-6.0}}},
   {stock:"MAPMYINDIA", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:840.45, currentPrice:972.2, target:2531.5, days:94, cap:1095, status:"deep-dd", checkpoints:{"3M":{ret:20.6}}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
+  {stock:"NAUKRI", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:995.0, currentPrice:1319.8, target:1805.1, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:32.0}}},
+  {stock:"SIGNATURE", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:820.0, currentPrice:796.55, target:1612.9, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-6.1}}},
+  {stock:"SUPREMEIND", seg:"mid", isNew:true, entryDate:"02-Jun-2026", entryPrice:3484.0, currentPrice:3475.0, target:6186.3, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:2.2}}},
+  {stock:"TATATECH", seg:"small", isNew:true, entryDate:"02-Jun-2026", entryPrice:711.05, currentPrice:800.0, target:1313.0, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:16.9}}},
   {stock:"TCS", seg:"large", isNew:true, entryDate:"02-Jun-2026", entryPrice:2320.0, currentPrice:2304.0, target:4553.75, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:3.4}}},
-  {stock:"FINPIPE", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:176.5, currentPrice:158.63, target:350.3, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-10.6}}},
-  {stock:"BIRLACORPN", seg:"micro", isNew:true, entryDate:"02-Jun-2026", entryPrice:982.0, currentPrice:887.35, target:1767.1, days:94, cap:1095, status:"tracking", checkpoints:{"3M":{ret:-11.1}}},
-  {stock:"ICICIPRULI", seg:"mid", isNew:true, entryDate:"03-Jun-2026", entryPrice:483.0, currentPrice:494.55, target:791.05, days:93, cap:1095, status:"tracking", checkpoints:{"3M":{ret:2.6}}},
+  {stock:"ITCHOTELS", seg:"mid", isNew:true, entryDate:"03-Jun-2026", entryPrice:152.5, currentPrice:161.23, target:254.75, days:93, cap:1095, status:"tracking", checkpoints:{"3M":{ret:6.0}}},
+  {stock:"INFY", seg:"large", isNew:true, entryDate:"08-Jun-2026", entryPrice:1177.5, currentPrice:1130.0, target:1999.7, days:88, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"SOBHA", seg:"small", isNew:true, entryDate:"09-Jun-2026", entryPrice:1293.2, currentPrice:1263.8, target:2181.15, days:87, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"STYL", seg:"micro", isNew:true, entryDate:"10-Jun-2026", entryPrice:269.0, currentPrice:383.5, target:429.25, days:86, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"LEMONTREE", seg:"small", isNew:true, entryDate:"11-Jun-2026", entryPrice:106.34, currentPrice:104.95, target:177.93, days:85, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"CSBBANK", seg:"micro", isNew:true, entryDate:"29-Jun-2026", entryPrice:327.05, currentPrice:328.55, target:557.45, days:67, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"ICICIPRULI", seg:"mid", isNew:true, entryDate:"11-Jun-2026", entryPrice:465.4, currentPrice:494.55, target:791.05, days:85, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"LEMONTREE", seg:"small", isNew:true, entryDate:"12-Jun-2026", entryPrice:104.29, currentPrice:104.95, target:177.93, days:84, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"ASTRAL", seg:"mid", isNew:true, entryDate:"30-Jun-2026", entryPrice:1381.6, currentPrice:1492.9, target:2417.75, days:66, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"NSLNISP", seg:"small", isNew:true, entryDate:"01-Jul-2026", entryPrice:43.3, currentPrice:46.02, target:70.9, days:65, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"JSFB", seg:"micro", isNew:true, entryDate:"09-Jul-2026", entryPrice:442.0, currentPrice:535.1, target:736.2, days:57, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"SAPPHIRE", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:236.98, currentPrice:228.43, target:381.6, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"SAFARI", seg:"micro", isNew:true, entryDate:"12-Aug-2026", entryPrice:1502.0, currentPrice:1540.4, target:2723.75, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"SHAREINDIA", seg:"micro", isNew:true, entryDate:"12-Aug-2026", entryPrice:167.99, currentPrice:170.5, target:399.49, days:23, cap:1095, status:"deep-dd", checkpoints:{}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
+  {stock:"NSLNISP", seg:"small", isNew:true, entryDate:"23-Jul-2026", entryPrice:42.24, currentPrice:46.02, target:70.9, days:43, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"AARTIIND", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:510.0, currentPrice:492.05, target:1156.55, days:23, cap:1095, status:"deep-dd", checkpoints:{}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
-  {stock:"PNCINFRA", seg:"micro", isNew:true, entryDate:"12-Aug-2026", entryPrice:223.4, currentPrice:183.11, target:559.3, days:23, cap:1095, status:"deep-dd", checkpoints:{}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
-  {stock:"PCBL", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:323.0, currentPrice:317.0, target:577.6, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"DEVYANI", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:142.1, currentPrice:139.28, target:224.7, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"DEEPAKNTR", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:1779.8, currentPrice:1712.4, target:3102.6, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"CMSINFO", seg:"micro", isNew:true, entryDate:"12-Aug-2026", entryPrice:263.05, currentPrice:243.46, target:605.2, days:23, cap:1095, status:"deep-dd", checkpoints:{}, note:"Drawdown magnitude here is unusually large versus typical qualifiers. This has NOT been cross-checked against corporate-action history (splits/bonus/rights) \u2014 verify before treating as a confirmed signal. The original 166-trade backtest excluded ~17 similar CA artifacts."},
   {stock:"BLUEDART", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:5116.0, currentPrice:4991.7, target:9369.45, days:23, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"KANSAINER", seg:"micro", isNew:true, entryDate:"12-Aug-2026", entryPrice:212.97, currentPrice:194.2, target:446.03, days:23, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"DEEPAKNTR", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:1779.8, currentPrice:1712.4, target:3102.6, days:23, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"PCBL", seg:"small", isNew:true, entryDate:"12-Aug-2026", entryPrice:323.0, currentPrice:317.0, target:577.6, days:23, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"TRENT", seg:"large", isNew:true, entryDate:"12-Aug-2026", entryPrice:3000.0, currentPrice:2853.0, target:5489.97, days:23, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"GODREJCP", seg:"large", isNew:true, entryDate:"13-Aug-2026", entryPrice:911.4, currentPrice:878.0, target:1516.7, days:22, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"RALLIS", seg:"micro", isNew:true, entryDate:"18-Aug-2026", entryPrice:212.81, currentPrice:208.82, target:381.05, days:17, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"DABUR", seg:"mid", isNew:true, entryDate:"20-Aug-2026", entryPrice:402.1, currentPrice:380.9, target:667.55, days:15, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"STYRENIX", seg:"micro", isNew:true, entryDate:"24-Aug-2026", entryPrice:2081.6, currentPrice:2043.2, target:3466.8, days:11, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"ACI", seg:"micro", isNew:true, entryDate:"25-Aug-2026", entryPrice:517.0, currentPrice:504.2, target:822.75, days:10, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"UTIAMC", seg:"small", isNew:true, entryDate:"25-Aug-2026", entryPrice:885.0, currentPrice:880.55, target:1475.4, days:10, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"NTPCGREEN", seg:"mid", isNew:true, entryDate:"01-Sep-2026", entryPrice:89.65, currentPrice:89.36, target:148.61, days:3, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"UTIAMC", seg:"small", isNew:true, entryDate:"01-Sep-2026", entryPrice:871.0, currentPrice:880.55, target:1475.4, days:3, cap:1095, status:"tracking", checkpoints:{}},
   {stock:"VBL", seg:"large", isNew:true, entryDate:"01-Sep-2026", entryPrice:404.45, currentPrice:407.6, target:674.12, days:3, cap:1095, status:"tracking", checkpoints:{}},
-  {stock:"JIOFIN", seg:"large", isNew:true, entryDate:"03-Sep-2026", entryPrice:236.9, currentPrice:239.5, target:387.95, days:1, cap:1095, status:"tracking", checkpoints:{}}
+  {stock:"NTPCGREEN", seg:"mid", isNew:true, entryDate:"03-Sep-2026", entryPrice:88.25, currentPrice:89.36, target:148.61, days:1, cap:1095, status:"tracking", checkpoints:{}},
+  {stock:"SAPPHIRE", seg:"small", isNew:true, entryDate:"03-Sep-2026", entryPrice:227.45, currentPrice:228.43, target:381.6, days:1, cap:1095, status:"tracking", checkpoints:{}}
 ];
 
 function fmtPct(v){
