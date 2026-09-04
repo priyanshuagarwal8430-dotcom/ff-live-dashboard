@@ -1,27 +1,22 @@
 # FF — Daily Live Dashboard Update
 # ====================================
-# Runs automatically every trading-day evening (after NSE market close), with
-# zero manual action needed. Does exactly what you used to do by hand in
-# Colab: refresh OHLC -> scan for fresh signals -> rebuild the dashboard ->
-# publish it to a permanent URL (GitHub Pages).
+# Runs every trading-day evening after NSE close: refresh OHLC -> scan for
+# signals -> rebuild the dashboard -> publish to GitHub Pages.
 #
-# You can also trigger it manually any time from the "Actions" tab on
-# GitHub -> select this workflow -> "Run workflow" button. Useful for
-# testing, or if you want a same-minute refresh instead of waiting for the
-# schedule.
+# Can also be triggered by hand from the Actions tab -> this workflow ->
+# "Run workflow".
 
 name: Daily Dashboard Update
 
 on:
   schedule:
-    # 13:30 UTC = 7:00 PM IST, Monday-Friday only (trading days).
-    # This is well after NSE's 3:30 PM close, giving Yahoo Finance time to
-    # publish end-of-day data.
+    # 13:30 UTC = 19:00 IST, Monday-Friday. Well after the 15:30 close, so
+    # Yahoo has published end-of-day data.
     - cron: '30 13 * * 1-5'
-  workflow_dispatch: {}   # adds the manual "Run workflow" button
+  workflow_dispatch: {}
 
 permissions:
-  contents: write   # needed so the workflow can commit the updated dashboard back
+  contents: write
 
 jobs:
   update:
@@ -36,10 +31,21 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install yfinance pandas beautifulsoup4 lxml
+        run: pip install yfinance pandas numpy beautifulsoup4 lxml
 
+      # A fast, network-free proof that the corporate-action logic still
+      # behaves before it is allowed anywhere near the real files. If the
+      # guard that refuses a non-equity bonus ever breaks, the run stops here
+      # instead of writing a 21x cliff into the price history.
+      - name: Updater self-test
+        run: python FF_OHLC_Updater_v2.py --selftest
+
+      # Replaces FF_Yahoo_OHLC_Updater.py, which appended unadjusted rows onto
+      # an adjusted history and manufactured a false signal at every split.
+      # A symbol that fails a gate is left untouched on disk and reported;
+      # a non-zero exit here fails the run rather than publishing bad data.
       - name: Refresh OHLC data
-        run: python FF_Yahoo_OHLC_Updater.py
+        run: python FF_OHLC_Updater_v2.py
 
       - name: Scan for fresh signals
         run: python FF_Fresh_Signal_Scanner.py
@@ -56,10 +62,19 @@ jobs:
         run: |
           git config user.name "FF Automation"
           git config user.email "actions@github.com"
-          git add ohlc_data/ fresh_signals.csv docs/index.html
+          git add ohlc_data/ fresh_signals.csv docs/index.html ohlc_update_report.json ohlc_quarantine.txt
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
-          # Pull-with-rebase before pushing, in case something else (a manual
-          # push, or another workflow) updated the remote while this run was
-          # in progress — avoids the "rejected, fetch first" error.
           git pull --rebase origin main
           git push
+
+      # Runs even when the updater quarantined something, so the evidence is
+      # kept rather than lost with the failed run.
+      - name: Upload the run report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ohlc-update-report
+          path: |
+            ohlc_update_report.json
+            ohlc_quarantine.txt
+          if-no-files-found: ignore

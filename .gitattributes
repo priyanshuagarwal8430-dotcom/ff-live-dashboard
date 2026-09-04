@@ -1,0 +1,15 @@
+# Keep line endings stable across Windows, Linux (GitHub Actions) and OneDrive.
+# Without this every CSV shows as modified on a Windows checkout — 755 phantom
+# "changed" files with not one byte of real content difference.
+* text=auto eol=lf
+*.csv   text eol=lf
+*.py    text eol=lf
+*.yml   text eol=lf
+*.html  text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+
+# Never let a tool decide these are text.
+*.pkl     binary
+*.parquet binary
+*.zip     binary

@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+ohlc_update_report.json
+ohlc_quarantine.txt
