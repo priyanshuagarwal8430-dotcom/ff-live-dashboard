@@ -245,7 +245,11 @@ const COLS = [
      moments. */
   {k:"last",      t:"Last close",         kind:"num"},
   {k:"ret_pct",   t:"Return",             kind:"pct"},
-  {k:"below_ath_at_entry",t:"Below trigger ATH", kind:"dd"},
+  /* Discount at entry is not a column. Entry price and the trigger ATH are both
+     on the row, so the reader can see how far below the high it was bought
+     without a third number telling them - and a column whose label had to carry
+     "at entry" to be unambiguous was carrying too much. It stays in
+     positions.json. */
   {k:"target",    t:"Trigger ATH / target", kind:"mut"},
   {k:"ath_date",  t:"ATH date",           kind:"raw"},
   {k:"progress_pct",t:"Progress", kind:"meter"},
@@ -267,7 +271,6 @@ const CLOSED_COLS = [
   {k:"ret_pct",    t:"Return",       kind:"pct"},
   {k:"days_held",  t:"Days held",    kind:"days"},
   {k:"exit_reason",t:"How it ended", kind:"reason"},
-  {k:"below_ath_at_entry",t:"Below trigger ATH", kind:"dd"},
 ];
 const REASON = {ATH_TARGET:"Target reached", TIME_STOP:"Time cap"};
 
