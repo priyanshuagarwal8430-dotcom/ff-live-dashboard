@@ -47,6 +47,20 @@ jobs:
       - name: Refresh OHLC data
         run: python FF_OHLC_Updater_v2.py
 
+      # The index is a REFERENCE number on the dashboard, not a benchmark the
+      # strategy is measured against - which is exactly why it has to be current.
+      # indices/Nifty500.csv was seeded once from the backtest's benchmark series
+      # and stopped dead on 27 July 2026, because nothing appended to it: the
+      # daily updater refreshes the 751 symbols in ident.csv and the index is not
+      # one of them. A stale reference is worse than none.
+      - name: Index updater self-test
+        run: python FF_index_update.py --selftest
+
+      # Never fatal. A stale index is a flaw on one strip; a failed run stops the
+      # prices, the signals and the ledger.
+      - name: Refresh the Nifty 500 index
+        run: python FF_index_update.py
+
       # The acceptance test: rebuild the whole history from the repository's own
       # files and compare against the reference set. If a change ever breaks the
       # 358-trade reproduction, the run stops here rather than publishing a
@@ -66,15 +80,13 @@ jobs:
       - name: Update the signal ledger
         run: python FF_Ledger.py
 
-      # Replaces FF_build_dashboard.py, which read the scanner's overwritten
-      # output, hardcoded every row as open, and had no exit handling.
-      - name: Build the dashboard
-        run: python FF_build_dashboard_v2.py
-
-      - name: Publish dashboard to GitHub Pages
-        run: |
-          mkdir -p docs
-          cp FF_Live_Tracking_Dashboard.html docs/index.html
+      # Replaces FF_build_dashboard_v2.py, which regenerated the whole page every
+      # run. That is why docs/index.html changed in git daily and collided on
+      # every push. Now the DATA changes and the page does not: docs/index.html
+      # is a hand-written application, committed once, that reads these files.
+      # Nothing in this workflow writes it, which ends that class of conflict.
+      - name: Build the dashboard data
+        run: python FF_dashboard_data.py
 
       - name: Commit and push updated data + dashboard
         run: |
@@ -93,7 +105,7 @@ jobs:
           # not a list: a file that is not there yet must not be fatal.
           for f in ohlc_data fresh_signals.csv signals.csv watchlist_microcap.csv \
                    signal_ledger.csv watchlist_ledger.csv corporate_actions.csv \
-                   FF_Live_Tracking_Dashboard.html docs/index.html; do
+                   indices docs/data; do
             if [ -e "$f" ]; then git add "$f"; else echo "absent, not added: $f"; fi
           done
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"

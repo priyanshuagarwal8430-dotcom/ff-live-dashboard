@@ -1,56 +1,405 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fundamental First — live tracking</title><style>
-:root{color-scheme:dark;
- --surface:#111110; --panel:#1a1a19; --line:#2c2c2a;
- --ink:#ffffff; --ink2:#c3c2b7; --ink3:#8a8a80;
- --series:#3987e5; --track:#26262a;
- --good:#0ca30c; --bad:#d03b3b; --warn:#fab219;}
+<title>Fundamental First — live signals</title>
+<style>
+/* ============================================================== tokens ===
+   Light is the default. Dark is a token swap, nothing else: same type, same
+   spacing, same layout. Every colour is defined on :root first, so a theme
+   block can only ever redefine one, never introduce one. */
+:root{
+  --bg:#eef1f6; --card:#ffffff; --head:#12385f; --headink:#ffffff; --headink2:#9fc0dd;
+  --ink:#0f1c2e; --ink2:#4a5768; --ink3:#8492a6; --line:#e0e5ec; --hover:#f6f8fb;
+  --acc:#2f6fb0; --accfill:rgba(47,111,176,.10); --chip:#eef2f7;
+  --good:#0a7a33; --bad:#c02b21; --track:#e6ebf2; --zero:#b9c2cf;
+  --shadow:0 1px 3px rgba(15,28,46,.07),0 8px 22px -12px rgba(15,28,46,.16);
+}
+:root[data-theme=dark]{
+  --bg:#0e131c; --card:#161d29; --head:#13243a; --headink:#e9eef5; --headink2:#8fa6bd;
+  --ink:#e9eef5; --ink2:#a7b4c6; --ink3:#7c8a9d; --line:#232c3a; --hover:#1b2331;
+  --acc:#5c9fdd; --accfill:rgba(92,159,221,.13); --chip:#1e2836;
+  --good:#4cba6a; --bad:#ec6a5e; --track:#232c3a; --zero:#4a5768;
+  --shadow:none;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--surface);color:var(--ink);
- font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
-h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
-h2{font-size:15px;margin:34px 0 10px;letter-spacing:-.01em}
-.sub{color:var(--ink3);font-size:12.5px;margin:0 0 22px}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 6px}
-.tile{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:13px 15px}
-.tile .k{color:var(--ink3);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
-.tile .v{font-size:23px;font-weight:600;margin-top:5px;letter-spacing:-.02em}
-.tile .n{color:var(--ink3);font-size:11.5px;margin-top:3px}
-.note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);
- border-radius:7px;padding:12px 15px;color:var(--ink2);font-size:12.5px;margin:14px 0}
-.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
-table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:820px}
-th{text-align:left;color:var(--ink3);font-weight:500;font-size:11px;text-transform:uppercase;
- letter-spacing:.06em;padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:10px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
-tr:last-child td{border-bottom:none}
-.n{text-align:right;font-variant-numeric:tabular-nums}
-.pos{color:var(--good)} .neg{color:var(--bad)}
-.tag{font-size:10.5px;padding:2px 7px;border-radius:20px;border:1px solid var(--line);color:var(--ink3)}
-.tag.live{color:var(--good);border-color:var(--good)}
-.bar{position:relative;height:7px;background:var(--track);border-radius:4px;width:130px;display:inline-block;
- vertical-align:middle}
-.bar > i{position:absolute;left:0;top:0;bottom:0;background:var(--series);border-radius:4px;
- box-shadow:0 0 0 2px var(--panel)}
-.empty{padding:26px 15px;color:var(--ink3);font-size:12.5px}
-footer{margin-top:40px;color:var(--ink3);font-size:11.5px;border-top:1px solid var(--line);padding-top:14px}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:1160px;margin:0 auto;padding:0 0 64px}
+
+/* ============================================================== header === */
+.head{background:var(--head);color:var(--headink);padding:24px 26px 60px}
+.head .inner{max-width:1108px;margin:0 auto;
+  display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.head .who{flex:1 1 auto;min-width:0}
+h1{font:700 21px/1.25 inherit;margin:0;letter-spacing:-.01em;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:#2f6fb0;color:#fff;border-radius:4px;padding:3px 7px;white-space:nowrap}
+.asof{color:var(--headink2);font-size:12.5px;margin-top:6px}
+/* The toggle is a flex sibling of the title, not an absolutely positioned
+   overlay. Positioned absolutely it sat on top of the LIVE tag on a phone. */
+.tbtn{flex:0 0 auto;display:flex;gap:7px;align-items:center;cursor:pointer;
+  font:600 11px/1 inherit;letter-spacing:.09em;text-transform:uppercase;
+  background:transparent;color:#cfe0ef;border:1px solid rgba(255,255,255,.28);
+  border-radius:20px;padding:9px 14px}
+.tbtn:hover{border-color:#fff;color:#fff}
+.tbtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7}
+
+/* =============================================================== cards === */
+.body{max-width:1108px;margin:-44px auto 0;padding:0 26px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;
+  box-shadow:var(--shadow);padding:20px 22px;margin-bottom:16px}
+.strip{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.strip .k,.kpi .k{color:var(--ink3);font-size:11px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase}
+.strip .v{font-size:25px;font-weight:700;margin-top:3px;letter-spacing:-.02em}
+.strip .spk{margin-left:auto}
+.spk .ln{stroke:var(--acc);fill:none;stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.spk .ar{fill:var(--accfill)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:16px 18px;box-shadow:var(--shadow)}
+.kpi .v{font-size:25px;font-weight:700;margin-top:5px;letter-spacing:-.02em}
+h2{font:700 15px/1.25 inherit;margin:0 0 3px}
+.sub{color:var(--ink3);font-size:12.5px;margin:0 0 16px}
+.cardhead{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+.cardhead .t{flex:1 1 260px;min-width:0}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input[type=search]{font:13px inherit;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:8px;padding:8px 11px;width:150px}
+input[type=search]:focus{outline:2px solid var(--acc);outline-offset:-1px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:600 11.5px/1 inherit;background:transparent;color:var(--ink2);
+  border:0;padding:9px 15px;cursor:pointer;white-space:nowrap}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--acc);color:#fff}
+
+/* ============================================================== tables === */
+/* When the table is wider than its card it scrolls, and a fade on the right
+   edge is what tells the reader that. Without it the last column just looks
+   cut off. */
+.scroll{overflow-x:auto;position:relative}
+.scroll.over{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent);
+  mask-image:linear-gradient(to right,#000 calc(100% - 34px),transparent)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:right;color:var(--ink3);font-weight:600;font-size:10.5px;
+  letter-spacing:.07em;text-transform:uppercase;padding:0 8px 10px;white-space:nowrap;
+  cursor:pointer;user-select:none}
+th:hover{color:var(--ink)}
+th[aria-sort]:after{content:"";display:inline-block;width:0;height:0;margin-left:5px;
+  border-left:3.5px solid transparent;border-right:3.5px solid transparent}
+th[aria-sort=ascending]:after{border-bottom:4px solid var(--acc)}
+th[aria-sort=descending]:after{border-top:4px solid var(--acc)}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+th:last-child,td:last-child{padding-right:0}
+td{text-align:right;padding:10px 8px;border-top:1px solid var(--line);white-space:nowrap}
+.sub2{display:block;font-size:11px;color:var(--ink3);margin-top:2px;font-variant-numeric:tabular-nums}
+tbody tr:hover{background:var(--hover)}
+.sym{font-weight:700}
+.chip{display:inline-block;font-size:10.5px;font-weight:600;color:var(--ink2);
+  background:var(--chip);border-radius:5px;padding:2px 7px;margin-left:7px}
+.mut{color:var(--ink3)}
+.good{color:var(--good)}.bad{color:var(--bad)}
+.why{font-size:11.5px;font-weight:600;color:var(--ink2);background:var(--chip);
+  border-radius:5px;padding:3px 8px;white-space:nowrap}
+/* the meter, with a below-entry zone on the left */
+.meter{position:relative;display:inline-block;vertical-align:middle;
+  width:104px;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+.meter i{position:absolute;top:0;height:100%;display:block}
+.meter .zero{left:14%;width:1px;background:var(--zero);z-index:2}
+.meter .pos{left:14%;background:var(--acc);border-radius:0 5px 5px 0}
+.meter .neg{background:var(--bad);border-radius:5px 0 0 5px}
+.pnum{display:inline-block;min-width:42px;margin-left:10px;font-size:12.5px}
+.empty{color:var(--ink3);font-size:13px;padding:22px 0;text-align:center}
+footer{color:var(--ink3);font-size:11.5px;line-height:1.75;padding:8px 4px 0}
+.err{background:#fdecea;color:#8a1c14;border:1px solid #f3b8b2;border-radius:10px;
+  padding:14px 16px;margin-bottom:16px;font-size:13px}
+:root[data-theme=dark] .err{background:#2b1614;color:#f0a49c;border-color:#54241f}
+
+/* ============================================================== mobile ===
+   The positions table is 9 columns and about 970px wide against a 390px
+   screen. Left as a table it forces a sideways drag to reach the return
+   column, so below 700px every row becomes a stacked card and each cell
+   carries its own label. No duplicate markup: the labels come from
+   data-label via ::before. */
+@media (max-width:700px){
+  .head{padding:20px 16px 56px}
+  .body{padding:0 16px}
+  .card{padding:16px}
+  h1{font-size:19px}
+  /* Stacked one-per-row the index card cost most of a phone screen before the
+     first position was visible. Two columns halves it. */
+  .strip{display:grid;grid-template-columns:1fr 1fr;gap:16px 18px}
+  .strip .v{font-size:21px}
+  .strip>div:nth-child(3){grid-column:1/-1}
+  .strip .spk{margin-left:0;width:100%;grid-column:1/-1}
+  .strip .spk svg{width:100%;height:56px}
+  input[type=search]{width:100%}
+  .tools{width:100%}
+  .seg{width:100%}
+  .seg button{flex:1}
+  .scroll{overflow-x:visible}
+  table,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  tr{border:1px solid var(--line);border-radius:11px;padding:4px 13px 8px;margin-bottom:11px}
+  tbody tr:hover{background:transparent}
+  td{display:flex;justify-content:space-between;align-items:center;gap:14px;
+     text-align:right;padding:8px 0;border:0;border-bottom:1px dashed var(--line);
+     white-space:normal}
+  td:last-child{border-bottom:0}
+  td::before{content:attr(data-label);color:var(--ink3);font-size:10.5px;font-weight:600;
+     letter-spacing:.06em;text-transform:uppercase;text-align:left;flex:0 0 auto}
+  td.first{font-size:16px;font-weight:700;padding:10px 0 9px;
+     border-bottom:1px solid var(--line);justify-content:flex-start}
+  td.first::before{content:none}
+  .meter{width:96px}
+}
 </style></head><body>
+
 <div class="wrap">
-<h1>Fundamental First — live tracking</h1>
-<p class="sub">Prices to 2026-09-04 &middot; spec v2.0 &middot; record begins 1 June 2026 &middot;
-append-only ledger: a published row is never edited</p>
-<div class="tiles"><div class="tile"><div class="k">Open positions</div><div class="v">28</div><div class="n">all reconstructed &mdash; none published live yet</div></div><div class="tile"><div class="k">Closed trades</div><div class="v">0</div><div class="n">realised, with exit prices</div></div><div class="tile"><div class="k">Median unrealised</div><div class="v">+0.5%</div><div class="n">15 of 28 above entry</div></div><div class="tile"><div class="k">Micro Cap watchlist</div><div class="v">24</div><div class="n">not recommendations</div></div><div class="tile"><div class="k">Vs Nifty 500</div><div class="v">+2.9 pp</div><div class="n">+5.6% against +2.7%, to 2026-07-27</div></div></div>
-<div class="note"><strong>28 of 28 open positions are reconstructed</strong> — computed from history after the fact under the current rules, not published on the day they triggered. They are shown because they are the strategy's real state, not because they are a track record. Only rows marked <em>live</em> were published when they fired.</div><div class="note">The benchmark comparison runs to <strong>2026-07-27</strong>, the last date the Nifty 500 series carries, while prices run to 2026-09-04. The index series is not extended to close the gap.</div><div class="note">Micro Cap is excluded from recommendations and shown separately. Its fundamental flags still need their own eight-quarter rebuild.</div>
-<h2>Open positions &mdash; Nifty 500</h2>
-<div class="scroll"><table><thead><tr><th>Symbol</th><th>Tier</th><th>Record</th><th>Entry date</th><th class="n">Entry</th><th class="n">Now</th><th class="n">Unrealised</th><th class="n">Target</th><th class="n">To target</th><th>Progress</th><th class="n">Days held</th><th class="n">Days to cap</th></tr></thead><tbody><tr><td><strong>NAUKRI</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">995.00</td><td class="n">1,319.80</td><td class="n pos">+32.6%</td><td class="n">1,805.10</td><td class="n">36.8%</td><td><span class="bar"><i style="width:40.1%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>GODREJPROP</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">1,701.00</td><td class="n">1,982.00</td><td class="n pos">+16.5%</td><td class="n">3,381.40</td><td class="n">70.6%</td><td><span class="bar"><i style="width:16.7%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>TATATECH</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">711.05</td><td class="n">800.00</td><td class="n pos">+12.5%</td><td class="n">1,313.00</td><td class="n">64.1%</td><td><span class="bar"><i style="width:14.8%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>NSLNISP</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-07-23</td><td class="n">42.24</td><td class="n">46.02</td><td class="n pos">+8.9%</td><td class="n">70.90</td><td class="n">54.1%</td><td><span class="bar"><i style="width:13.2%"></i></span></td><td class="n">43</td><td class="n">1052</td></tr><tr><td><strong>ASTRAL</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-30</td><td class="n">1,381.60</td><td class="n">1,492.90</td><td class="n pos">+8.1%</td><td class="n">2,417.75</td><td class="n">61.9%</td><td><span class="bar"><i style="width:10.7%"></i></span></td><td class="n">66</td><td class="n">1029</td></tr><tr><td><strong>ICICIPRULI</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-11</td><td class="n">465.40</td><td class="n">494.55</td><td class="n pos">+6.3%</td><td class="n">791.05</td><td class="n">60.0%</td><td><span class="bar"><i style="width:9.0%"></i></span></td><td class="n">85</td><td class="n">1010</td></tr><tr><td><strong>ITCHOTELS</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-03</td><td class="n">152.50</td><td class="n">161.23</td><td class="n pos">+5.7%</td><td class="n">254.75</td><td class="n">58.0%</td><td><span class="bar"><i style="width:8.5%"></i></span></td><td class="n">93</td><td class="n">1002</td></tr><tr><td><strong>MAPMYINDIA</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">840.45</td><td class="n">972.20</td><td class="n pos">+15.7%</td><td class="n">2,531.50</td><td class="n">160.4%</td><td><span class="bar"><i style="width:7.8%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>HAVELLS</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">1,133.00</td><td class="n">1,154.00</td><td class="n pos">+1.9%</td><td class="n">2,082.40</td><td class="n">80.5%</td><td><span class="bar"><i style="width:2.2%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>NTPCGREEN</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-03</td><td class="n">88.25</td><td class="n">89.36</td><td class="n pos">+1.3%</td><td class="n">148.61</td><td class="n">66.3%</td><td><span class="bar"><i style="width:1.8%"></i></span></td><td class="n">1</td><td class="n">1094</td></tr><tr><td><strong>UTIAMC</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-01</td><td class="n">871.00</td><td class="n">880.55</td><td class="n pos">+1.1%</td><td class="n">1,475.40</td><td class="n">67.6%</td><td><span class="bar"><i style="width:1.6%"></i></span></td><td class="n">3</td><td class="n">1092</td></tr><tr><td><strong>IDEA</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">14.00</td><td class="n">15.02</td><td class="n pos">+7.3%</td><td class="n">84.48</td><td class="n">462.4%</td><td><span class="bar"><i style="width:1.4%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>VBL</strong></td><td>Large Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-01</td><td class="n">404.45</td><td class="n">407.60</td><td class="n pos">+0.8%</td><td class="n">674.12</td><td class="n">65.4%</td><td><span class="bar"><i style="width:1.2%"></i></span></td><td class="n">3</td><td class="n">1092</td></tr><tr><td><strong>LEMONTREE</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-12</td><td class="n">104.29</td><td class="n">104.95</td><td class="n pos">+0.6%</td><td class="n">177.93</td><td class="n">69.5%</td><td><span class="bar"><i style="width:0.9%"></i></span></td><td class="n">84</td><td class="n">1011</td></tr><tr><td><strong>SAPPHIRE</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-03</td><td class="n">227.45</td><td class="n">228.43</td><td class="n pos">+0.4%</td><td class="n">381.60</td><td class="n">67.1%</td><td><span class="bar"><i style="width:0.6%"></i></span></td><td class="n">1</td><td class="n">1094</td></tr><tr><td><strong>SUPREMEIND</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">3,484.00</td><td class="n">3,475.00</td><td class="n neg">-0.3%</td><td class="n">6,186.30</td><td class="n">78.0%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>TCS</strong></td><td>Large Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">2,320.00</td><td class="n">2,304.00</td><td class="n neg">-0.7%</td><td class="n">4,553.75</td><td class="n">97.6%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>PCBL</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">323.00</td><td class="n">317.00</td><td class="n neg">-1.9%</td><td class="n">577.60</td><td class="n">82.2%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>AARTIIND</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">510.00</td><td class="n">492.05</td><td class="n neg">-3.5%</td><td class="n">1,156.55</td><td class="n">135.0%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>BLUEDART</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">5,116.00</td><td class="n">4,991.70</td><td class="n neg">-2.4%</td><td class="n">9,369.45</td><td class="n">87.7%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>SIGNATURE</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">820.00</td><td class="n">796.55</td><td class="n neg">-2.9%</td><td class="n">1,612.90</td><td class="n">102.5%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>SOBHA</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-09</td><td class="n">1,293.20</td><td class="n">1,263.80</td><td class="n neg">-2.3%</td><td class="n">2,181.15</td><td class="n">72.6%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">87</td><td class="n">1008</td></tr><tr><td><strong>DEEPAKNTR</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">1,779.80</td><td class="n">1,712.40</td><td class="n neg">-3.8%</td><td class="n">3,102.60</td><td class="n">81.2%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>GODREJCP</strong></td><td>Large Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-13</td><td class="n">911.40</td><td class="n">878.00</td><td class="n neg">-3.7%</td><td class="n">1,516.70</td><td class="n">72.7%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">22</td><td class="n">1073</td></tr><tr><td><strong>INFY</strong></td><td>Large Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-08</td><td class="n">1,177.50</td><td class="n">1,130.00</td><td class="n neg">-4.0%</td><td class="n">1,999.70</td><td class="n">77.0%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">88</td><td class="n">1007</td></tr><tr><td><strong>TRENT</strong></td><td>Large Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">3,000.00</td><td class="n">2,853.00</td><td class="n neg">-4.9%</td><td class="n">5,489.97</td><td class="n">92.4%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>DABUR</strong></td><td>Mid Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-20</td><td class="n">402.10</td><td class="n">380.90</td><td class="n neg">-5.3%</td><td class="n">667.55</td><td class="n">75.3%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">15</td><td class="n">1080</td></tr><tr><td><strong>IGIL</strong></td><td>Small Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">362.65</td><td class="n">323.50</td><td class="n neg">-10.8%</td><td class="n">620.40</td><td class="n">91.8%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr></tbody></table></div>
-<h2>Closed trades</h2>
-<div class="scroll"><div class="empty">No positions have closed yet. The earliest entries are from June 2026 and the time cap is three years, so the first closes will be target hits.</div></div>
-<h2>Micro Cap watchlist &mdash; not recommendations</h2>
-<div class="scroll"><table><thead><tr><th>Symbol</th><th>Tier</th><th>Record</th><th>Entry date</th><th class="n">Entry</th><th class="n">Now</th><th class="n">Unrealised</th><th class="n">Target</th><th class="n">To target</th><th>Progress</th><th class="n">Days held</th><th class="n">Days to cap</th></tr></thead><tbody><tr><td><strong>SUDARSCHEM</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">898.55</td><td class="n">1,222.80</td><td class="n pos">+36.1%</td><td class="n">1,523.80</td><td class="n">24.6%</td><td><span class="bar"><i style="width:51.9%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>MSTCLTD</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">445.00</td><td class="n">734.20</td><td class="n pos">+65.0%</td><td class="n">1,107.45</td><td class="n">50.8%</td><td><span class="bar"><i style="width:43.7%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>OPTIEMUS</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">395.95</td><td class="n">569.30</td><td class="n pos">+43.8%</td><td class="n">851.20</td><td class="n">49.5%</td><td><span class="bar"><i style="width:38.1%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>JSFB</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-07-09</td><td class="n">442.00</td><td class="n">535.10</td><td class="n pos">+21.1%</td><td class="n">736.20</td><td class="n">37.6%</td><td><span class="bar"><i style="width:31.6%"></i></span></td><td class="n">57</td><td class="n">1038</td></tr><tr><td><strong>GNFC</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">495.00</td><td class="n">596.70</td><td class="n pos">+20.5%</td><td class="n">902.85</td><td class="n">51.3%</td><td><span class="bar"><i style="width:24.9%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>JKPAPER</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">361.70</td><td class="n">405.80</td><td class="n pos">+12.2%</td><td class="n">633.75</td><td class="n">56.2%</td><td><span class="bar"><i style="width:16.2%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>VGUARD</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">299.05</td><td class="n">335.40</td><td class="n pos">+12.2%</td><td class="n">524.15</td><td class="n">56.3%</td><td><span class="bar"><i style="width:16.1%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>ACI</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-27</td><td class="n">490.00</td><td class="n">504.20</td><td class="n pos">+2.9%</td><td class="n">822.75</td><td class="n">63.2%</td><td><span class="bar"><i style="width:4.3%"></i></span></td><td class="n">8</td><td class="n">1087</td></tr><tr><td><strong>SAFARI</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">1,502.00</td><td class="n">1,540.40</td><td class="n pos">+2.6%</td><td class="n">2,723.75</td><td class="n">76.8%</td><td><span class="bar"><i style="width:3.1%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>RELAXO</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">321.00</td><td class="n">344.75</td><td class="n pos">+7.4%</td><td class="n">1,436.20</td><td class="n">316.6%</td><td><span class="bar"><i style="width:2.1%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>ALKYLAMINE</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-01</td><td class="n">1,991.00</td><td class="n">2,020.90</td><td class="n pos">+1.5%</td><td class="n">4,622.65</td><td class="n">128.7%</td><td><span class="bar"><i style="width:1.1%"></i></span></td><td class="n">3</td><td class="n">1092</td></tr><tr><td><strong>SHAREINDIA</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">167.99</td><td class="n">170.50</td><td class="n pos">+1.5%</td><td class="n">399.49</td><td class="n">134.3%</td><td><span class="bar"><i style="width:1.1%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>TSFINV</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">401.65</td><td class="n">404.70</td><td class="n pos">+0.8%</td><td class="n">690.40</td><td class="n">70.6%</td><td><span class="bar"><i style="width:1.1%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>CSBBANK</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-29</td><td class="n">327.05</td><td class="n">328.55</td><td class="n pos">+0.5%</td><td class="n">557.45</td><td class="n">69.7%</td><td><span class="bar"><i style="width:0.7%"></i></span></td><td class="n">67</td><td class="n">1028</td></tr><tr><td><strong>RALLIS</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-09-01</td><td class="n">208.00</td><td class="n">208.82</td><td class="n pos">+0.4%</td><td class="n">381.05</td><td class="n">82.5%</td><td><span class="bar"><i style="width:0.5%"></i></span></td><td class="n">3</td><td class="n">1092</td></tr><tr><td><strong>SUBROS</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">711.50</td><td class="n">709.60</td><td class="n neg">-0.3%</td><td class="n">1,194.20</td><td class="n">68.3%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>STYRENIX</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-25</td><td class="n">2,096.00</td><td class="n">2,043.20</td><td class="n neg">-2.5%</td><td class="n">3,466.80</td><td class="n">69.7%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">10</td><td class="n">1085</td></tr><tr><td><strong>CMSINFO</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">263.05</td><td class="n">243.46</td><td class="n neg">-7.4%</td><td class="n">605.20</td><td class="n">148.6%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>REFEX</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">304.10</td><td class="n">282.55</td><td class="n neg">-7.1%</td><td class="n">573.75</td><td class="n">103.1%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>KANSAINER</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">212.97</td><td class="n">194.20</td><td class="n neg">-8.8%</td><td class="n">446.03</td><td class="n">129.7%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>FINPIPE</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">176.50</td><td class="n">158.63</td><td class="n neg">-10.1%</td><td class="n">350.30</td><td class="n">120.8%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>PNCINFRA</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-08-12</td><td class="n">223.40</td><td class="n">183.11</td><td class="n neg">-18.0%</td><td class="n">559.30</td><td class="n">205.4%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">23</td><td class="n">1072</td></tr><tr><td><strong>BIRLACORPN</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">982.00</td><td class="n">887.35</td><td class="n neg">-9.6%</td><td class="n">1,767.10</td><td class="n">99.1%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr><tr><td><strong>CRIZAC</strong></td><td>Micro Cap</td><td><span class="tag ">reconstructed</span></td><td>2026-06-02</td><td class="n">220.99</td><td class="n">160.29</td><td class="n neg">-27.5%</td><td class="n">374.25</td><td class="n">133.5%</td><td><span class="bar"><i style="width:0.0%"></i></span></td><td class="n">94</td><td class="n">1001</td></tr></tbody></table></div>
-<footer>Entry: the close falls to 60% of its running all-time high while Net Sales, PAT and
-diluted EPS are each at an eight-quarter high and all three are positive; entry is the next
-day's open. Exit: the all-time-high close as at the trigger date, fixed then, or a 1,095-day
-cap. No stop loss. Built from signal_ledger.csv.</footer>
-</div></body></html>
+  <div class="head"><div class="inner">
+    <div class="who">
+      <h1>Fundamental First <span class="tag">Live</span></h1>
+      <div class="asof" id="asof">loading…</div>
+    </div>
+    <button class="tbtn" id="theme" aria-label="Switch to dark theme">
+      <span id="ticon"></span><span id="tlabel">Dark</span></button>
+  </div></div>
+
+  <div class="body" id="body">
+    <div class="card"><div class="empty">Loading…</div></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const MOON = '<svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>';
+const SUN  = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7"/></svg>';
+
+/* ---------------------------------------------------------------- theme ---
+   Stored per viewer, in their browser only. Wrapped because a browser set to
+   block site data throws on access rather than returning null. */
+function readTheme(){ try{ return localStorage.getItem("ff-theme"); }catch(e){ return null; } }
+function saveTheme(v){ try{ localStorage.setItem("ff-theme", v); }catch(e){} }
+let dark = readTheme() === "dark";
+function paintTheme(){
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  document.getElementById("ticon").innerHTML = dark ? SUN : MOON;
+  document.getElementById("tlabel").textContent = dark ? "Light" : "Dark";
+  document.getElementById("theme").setAttribute("aria-label",
+    dark ? "Switch to light theme" : "Switch to dark theme");
+}
+paintTheme();
+document.getElementById("theme").addEventListener("click", () => {
+  dark = !dark; saveTheme(dark ? "dark" : "light"); paintTheme();
+});
+
+/* -------------------------------------------------------------- helpers --- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money = v => v == null ? "—" : Number(v).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+/* Signed, always. Green and red are 4.1 apart under deuteranopia, so the sign
+   is what actually carries the meaning. Do not remove it to tidy the column. */
+const sgn = (v,dp=2) => v == null ? "—" : (v >= 0 ? "+" : "−") + Math.abs(v).toFixed(dp);
+const cls = v => v == null ? "mut" : (v >= 0 ? "good" : "bad");
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const dmy = s => { if(!s) return "—"; const [y,m,d] = s.split("-"); return `${d} ${MON[+m-1]} ${y}`; };
+
+function spark(pts,w,h){
+  if(!pts || pts.length < 2) return "";
+  const lo = Math.min(...pts), hi = Math.max(...pts), r = (hi-lo)||1;
+  const X = i => (i/(pts.length-1))*w, Y = v => h-((v-lo)/r)*(h-4)-2;
+  const d = pts.map((v,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)).join(" ");
+  return `<svg class="spkfig" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img"
+    aria-label="Nifty 500, last twelve months"><path class="ar" d="${d} L ${w} ${h} L 0 ${h} Z"/>
+    <path class="ln" d="${d}"/></svg>`;
+}
+function meter(p){
+  if(p == null) return '<span class="mut">—</span>';
+  const pos = Math.max(0, Math.min(100, p)) * 0.86;
+  const neg = Math.min(Math.abs(Math.min(0, p)), 20) / 20 * 14;
+  return `<span class="meter">${neg?`<i class="neg" style="right:86%;width:${neg.toFixed(1)}%"></i>`:""}
+    <i class="zero"></i>${pos?`<i class="pos" style="width:${pos.toFixed(1)}%"></i>`:""}</span>
+    <span class="pnum ${cls(p)}">${sgn(p,0)}%</span>`;
+}
+
+/* ------------------------------------------------------------- rendering --- */
+let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "";
+
+const COLS = [
+  {k:"symbol",   t:"Symbol",             kind:"sym",   first:true},
+  {k:"entry_date",t:"Entry date",        kind:"date"},
+  {k:"entry_price",t:"Entry",            kind:"num"},
+  {k:"last",     t:"Last",               kind:"num"},
+  {k:"ret_pct",  t:"Return",             kind:"pct"},
+  {k:"below_ath_at_entry",t:"Below ATH", kind:"dd"},
+  {k:"trigger_reason", t:"Trigger",      kind:"why"},
+  /* Target and the date it was set are one fact, not two, so they share a cell.
+     Ten columns did not fit 1280px and the last two fell off the edge. */
+  {k:"target",   t:"Target", kind:"target"},
+  {k:"progress_pct",t:"Progress", kind:"meter"},
+];
+
+function cell(r,c){
+  const v = r[c.k];
+  switch(c.kind){
+    case "sym":   return `<span class="sym">${esc(v)}</span><span class="chip">${esc(r.market_type)}</span>`;
+    case "date":  return `<span class="mut">${dmy(v)}</span>`;
+    case "num":   return money(v);
+    case "pct":   return `<span class="${cls(v)}">${sgn(v)}%</span>`;
+    case "dd":    return v == null ? "—" : `${v.toFixed(2)}%`;
+    case "why":   return `<span class="why">${esc(v || "—")}</span>`;
+    case "mut":   return `<span class="mut">${money(v)}</span>`;
+    case "raw":   return `<span class="mut">${esc(v || "—")}</span>`;
+    case "target":return `<span class="mut">${money(v)}</span><span class="sub2">${esc(r.ath_date || "—")}</span>`;
+    case "meter": return meter(v);
+  }
+}
+function tableFor(rows){
+  if(!rows.length) return `<div class="empty">Nothing here yet.</div>`;
+  const head = COLS.map(c =>
+    `<th data-k="${c.k}"${c.k===sortKey?` aria-sort="${sortDir<0?"descending":"ascending"}"`:""}>${c.t}</th>`).join("");
+  const body = rows.map(r => "<tr>" + COLS.map(c =>
+    `<td class="${c.first?"first":""}" data-label="${c.t}">${cell(r,c)}</td>`).join("") + "</tr>").join("");
+  return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function periodTable(rows,periods){
+  if(!rows.length) return `<div class="empty">Nothing here yet.</div>`;
+  const head = `<th>Symbol</th><th>Entry date</th>` + periods.map(p=>`<th>${p}</th>`).join("");
+  const body = rows.map(r => `<tr>
+      <td class="first" data-label="Symbol"><span class="sym">${esc(r.symbol)}</span></td>
+      <td data-label="Entry date"><span class="mut">${dmy(r.entry_date)}</span></td>` +
+      periods.map(p => { const v = r.periods ? r.periods[p] : null;
+        return `<td data-label="${p}">${v==null?'<span class="mut">—</span>':`<span class="${cls(v)}">${sgn(v)}%</span>`}</td>`;
+      }).join("") + "</tr>").join("");
+  return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function newsList(items){
+  if(!items || !items.length)
+    return `<div class="empty">No announcements loaded yet.</div>`;
+  return items.map(n => `<div class="news"><span class="why">${esc(n.category||"")}</span>
+    <span><strong>${esc(n.subject||"")}</strong> · ${esc(n.headline||"")}</span>
+    <span class="mut">${esc(n.date||"")}</span></div>`).join("");
+}
+
+function render(){
+  const m = DATA.meta, ix = DATA.index;
+  const q = query.trim().toUpperCase();
+  const open = (DATA.positions||[]).filter(r => !q || r.symbol.includes(q));
+  const sorted = open.slice().sort((a,b) => {
+    const x = a[sortKey], y = b[sortKey];
+    if(x == null) return 1; if(y == null) return -1;
+    return (typeof x === "string" ? x.localeCompare(y) : x - y) * sortDir;
+  });
+  const chg = ix ? ix.last - ix.prev : null, pct = ix ? 100*chg/ix.prev : null;
+
+  document.getElementById("asof").textContent =
+    `Tracking since ${dmy(m.tracking_since)} · prices as of ${dmy(m.as_of)}`;
+
+  document.getElementById("body").innerHTML = `
+   ${ix ? `<div class="card strip">
+     <div><div class="k">${esc(ix.name)}</div><div class="v">${money(ix.last)}</div></div>
+     <div><div class="k">Day</div><div class="v ${cls(chg)}">${sgn(chg)}
+       <span style="font-size:14px">(${sgn(pct)}%)</span></div></div>
+     <div><div class="k">52-week range</div><div class="v" style="font-size:15px">
+       ${ix.lo.toLocaleString("en-IN")} — ${ix.hi.toLocaleString("en-IN")}</div></div>
+     <div class="spk">${spark(ix.points,300,50)}</div>
+   </div>` : ""}
+
+   <div class="kpis">
+     <div class="kpi"><div class="k">Open positions</div><div class="v">${m.open}</div></div>
+     <div class="kpi"><div class="k">Closed</div><div class="v">${m.closed}</div></div>
+     <div class="kpi"><div class="k">In profit</div><div class="v">${m.in_profit} / ${m.open}</div></div>
+     <div class="kpi"><div class="k">Average return</div>
+       <div class="v ${cls(m.avg_return)}">${sgn(m.avg_return)}%</div></div>
+   </div>
+
+   <div class="card">
+     <div class="cardhead">
+       <div class="t"><h2>Open positions</h2>
+         <p class="sub">Target fixed on the signal date and never moved.
+         <strong>Below ATH</strong> is how far under its high the stock was at entry; the rule
+         fires at 40%. <strong>Trigger</strong> names whichever condition was last to become
+         true, so a deep entry reads as what it is. The date under each target is the day
+         that closing high was printed.</p></div>
+       <div class="tools">
+         <input type="search" id="q" placeholder="Find a symbol" value="${esc(query)}"
+                aria-label="Find a symbol">
+       </div>
+     </div>
+     ${tableFor(sorted)}
+   </div>
+
+   <div class="card"><h2>Performance by holding period</h2>
+     <p class="sub">A column fills only once that period has elapsed since entry.
+     A dash means not yet due — never zero, never an estimate.</p>
+     ${periodTable(sorted, m.periods || [])}
+   </div>
+
+   <div class="card"><h2>Closed trades</h2>
+     <p class="sub">A position closes at its fixed target or at the time cap.</p>
+     ${(DATA.closed||[]).length ? tableFor(DATA.closed)
+        : `<div class="empty">No position has closed yet.</div>`}
+   </div>
+
+   <div class="card">
+     <h2>News</h2>
+     <p class="sub">What touches the portfolio and the index, and what is happening
+     in India and the wider world.</p>
+     <div class="seg" id="nseg">
+       <button data-pane="portfolio" aria-pressed="true">Portfolio &amp; index</button>
+       <button data-pane="macro" aria-pressed="false">India &amp; world</button>
+     </div>
+     <div id="npane">${newsList((DATA.news||{}).portfolio)}</div>
+   </div>
+
+   <footer>For the exclusive use of subscribed clients. Signals are generated by a
+   rules-based process and are not personalised investment advice. Investments in
+   securities are subject to market risks; past performance does not guarantee future
+   results. Registration details and the full disclaimer are to be inserted here.</footer>`;
+
+  document.querySelectorAll(".scroll").forEach(el =>
+    el.classList.toggle("over", el.scrollWidth > el.clientWidth + 2));
+  document.querySelectorAll("th[data-k]").forEach(th => th.addEventListener("click", () => {
+    const k = th.dataset.k;
+    if(k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = -1; }
+    render();
+  }));
+  const qi = document.getElementById("q");
+  if(qi) qi.addEventListener("input", e => {
+    query = e.target.value;
+    render();
+    const n = document.getElementById("q");
+    if(n){ n.focus(); n.setSelectionRange(n.value.length, n.value.length); }
+  });
+  document.querySelectorAll("#nseg button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("#nseg button").forEach(x =>
+      x.setAttribute("aria-pressed", String(x === b)));
+    document.getElementById("npane").innerHTML =
+      newsList((DATA.news||{})[b.dataset.pane]);
+  }));
+}
+
+/* ------------------------------------------------------------------ load --- */
+const FILES = ["meta","positions","closed","index","news"];
+Promise.all(FILES.map(f =>
+  fetch(`data/${f}.json`, {cache:"no-store"})
+    .then(r => r.ok ? r.json() : Promise.reject(new Error(`${f}.json: HTTP ${r.status}`)))
+)).then(vals => {
+  FILES.forEach((f,i) => DATA[f] = vals[i]);
+  render();
+}).catch(err => {
+  document.getElementById("asof").textContent = "could not load";
+  document.getElementById("body").innerHTML =
+    `<div class="err"><strong>The data files did not load.</strong><br>${esc(err.message)}
+     <br><br>This page reads <code>data/*.json</code> from the same folder. Opened
+     straight off disk the browser blocks that; served over http it works.</div>`;
+});
+</script>
+<style>
+.news{padding:12px 0;border-top:1px solid var(--line);display:flex;gap:14px;align-items:baseline}
+.news:first-of-type{border-top:0}
+.news .mut{margin-left:auto;white-space:nowrap}
+@media (max-width:700px){ .news{flex-wrap:wrap;gap:8px} .news .mut{margin-left:0} }
+</style>
+</body></html>
