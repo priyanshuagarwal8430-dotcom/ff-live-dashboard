@@ -177,10 +177,28 @@ def build(tiers, analysis_end, from_date="2012-01-01"):
 N500 = ["Large Cap", "Mid Cap", "Small Cap"]
 MICRO = ["Micro Cap"]
 
+# Phase A replaced the "available 60 days after quarter end" assumption with real
+# results-announcement dates, for the March-2026 and June-2026 quarters only. That
+# legitimately moves twelve 2026 trades and adds three the assumption had
+# destroyed, so the frozen reference no longer matches there. The reference is
+# deliberately NOT regenerated - the published backtest stands as issued - so the
+# guard is scoped to the period the correction did not touch. It still covers 341
+# of the 358 trades, and its job is unchanged: catching a change in the RULES.
+# Raise this date only when the reference is regenerated on purpose.
+FROZEN_BEFORE = "2026-04-01"
+
 
 def verify(ref_path, analysis_end):
     t, mt = build(N500, analysis_end)
     ref = pd.read_csv(ref_path, parse_dates=["trigger_date", "entry_date", "exit_date"])
+    cut = pd.Timestamp(FROZEN_BEFORE)
+    n_e, n_r = len(t), len(ref)
+    t   = t[t.trigger_date < cut].reset_index(drop=True)
+    ref = ref[ref.trigger_date < cut].reset_index(drop=True)
+    print(f"scoped to trigger_date < {cut.date()}: engine {n_e} -> {len(t)}, "
+          f"reference {n_r} -> {len(ref)}")
+    print("  trades after that date carry Phase A's corrected availability dates "
+          "and are not comparable to the frozen reference. See FROZEN_BEFORE.")
     print(f"engine produced {len(t)} trades; reference has {len(ref)}")
     a = set(zip(t.symbol, t.entry_date)); b = set(zip(ref.symbol, ref.entry_date))
     extra, missing = sorted(a - b), sorted(b - a)

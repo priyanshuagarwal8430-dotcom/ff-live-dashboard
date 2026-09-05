@@ -2,3 +2,10 @@ __pycache__/
 *.pyc
 ohlc_update_report.json
 ohlc_quarantine.txt
+
+# local safety copies and one-off scratch, never repository content
+*.bak
+*.superseded.csv
+datefix_out.txt
+fund_flags_v3_datefix.csv
+results_dates_missing.csv
