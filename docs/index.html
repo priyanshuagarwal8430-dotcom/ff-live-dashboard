@@ -224,7 +224,7 @@ function meter(p){
 }
 
 /* ------------------------------------------------------------- rendering --- */
-let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "";
+let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "", cap = "";
 
 const COLS = [
   {k:"symbol",   t:"Symbol",             kind:"sym",   first:true},
@@ -240,6 +240,22 @@ const COLS = [
   {k:"progress_pct",t:"Progress", kind:"meter"},
 ];
 
+/* A closed trade answers different questions: what it returned, how long it
+   took, and how it ended. Progress to target is meaningless once the target is
+   reached, and "last price" is just the exit price. */
+const CLOSED_COLS = [
+  {k:"symbol",     t:"Symbol",      kind:"sym", first:true},
+  {k:"entry_date", t:"Entry date",  kind:"date"},
+  {k:"entry_price",t:"Entry",       kind:"num"},
+  {k:"exit_date",  t:"Exit date",   kind:"date"},
+  {k:"exit_price", t:"Exit",        kind:"num"},
+  {k:"ret_pct",    t:"Return",      kind:"pct"},
+  {k:"days_held",  t:"Days held",   kind:"days"},
+  {k:"exit_reason",t:"How it ended",kind:"reason"},
+  {k:"below_ath_at_entry",t:"Below ATH", kind:"dd"},
+];
+const REASON = {ATH_TARGET:"Target reached", TIME_STOP:"Time cap"};
+
 function cell(r,c){
   const v = r[c.k];
   switch(c.kind){
@@ -252,14 +268,17 @@ function cell(r,c){
     case "mut":   return `<span class="mut">${money(v)}</span>`;
     case "raw":   return `<span class="mut">${esc(v || "—")}</span>`;
     case "target":return `<span class="mut">${money(v)}</span><span class="sub2">${esc(r.ath_date || "—")}</span>`;
+    case "days":  return v == null ? "—" : `${v.toLocaleString("en-IN")}`;
+    case "reason":return `<span class="why">${esc(REASON[v] || v || "—")}</span>`;
     case "meter": return meter(v);
   }
 }
-function tableFor(rows){
+function tableFor(rows, cols){
+  cols = cols || COLS;
   if(!rows.length) return `<div class="empty">Nothing here yet.</div>`;
-  const head = COLS.map(c =>
+  const head = cols.map(c =>
     `<th data-k="${c.k}"${c.k===sortKey?` aria-sort="${sortDir<0?"descending":"ascending"}"`:""}>${c.t}</th>`).join("");
-  const body = rows.map(r => "<tr>" + COLS.map(c =>
+  const body = rows.map(r => "<tr>" + cols.map(c =>
     `<td class="${c.first?"first":""}" data-label="${c.t}">${cell(r,c)}</td>`).join("") + "</tr>").join("");
   return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
@@ -285,7 +304,13 @@ function newsList(items){
 function render(){
   const m = DATA.meta, ix = DATA.index;
   const q = query.trim().toUpperCase();
-  const open = (DATA.positions||[]).filter(r => !q || r.symbol.includes(q));
+  const all = DATA.positions || [];
+  const open = all.filter(r => (!q || r.symbol.includes(q)) && (!cap || r.market_type === cap));
+  const tiers = ["Large Cap","Mid Cap","Small Cap"];
+  const capBtn = (v,label) => {
+    const n = v ? all.filter(r => r.market_type === v).length : all.length;
+    return `<button data-cap="${v}" aria-pressed="${String(cap===v)}">${label} ${n}</button>`;
+  };
   const sorted = open.slice().sort((a,b) => {
     const x = a[sortKey], y = b[sortKey];
     if(x == null) return 1; if(y == null) return -1;
@@ -323,6 +348,8 @@ function render(){
          true, so a deep entry reads as what it is. The date under each target is the day
          that closing high was printed.</p></div>
        <div class="tools">
+         <div class="seg" id="cap">${capBtn("","All")}${tiers.map(t =>
+            capBtn(t, t.replace(" Cap",""))).join("")}</div>
          <input type="search" id="q" placeholder="Find a symbol" value="${esc(query)}"
                 aria-label="Find a symbol">
        </div>
@@ -337,9 +364,12 @@ function render(){
    </div>
 
    <div class="card"><h2>Closed trades</h2>
-     <p class="sub">A position closes at its fixed target or at the time cap.</p>
-     ${(DATA.closed||[]).length ? tableFor(DATA.closed)
-        : `<div class="empty">No position has closed yet.</div>`}
+     <p class="sub">A position closes at its fixed target or at the 1,095-day cap.
+     <strong>Days held</strong> beside <strong>How it ended</strong> is the time it
+     took — for a target that is how long the recovery to the old high ran.</p>
+     ${(DATA.closed||[]).length ? tableFor(DATA.closed, CLOSED_COLS)
+        : `<div class="empty">No position has closed yet. Return at target and the
+           days it took appear here on the first exit.</div>`}
    </div>
 
    <div class="card">
@@ -364,6 +394,9 @@ function render(){
     const k = th.dataset.k;
     if(k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = -1; }
     render();
+  }));
+  document.querySelectorAll("#cap button").forEach(b => b.addEventListener("click", () => {
+    cap = b.dataset.cap; render();
   }));
   const qi = document.getElementById("q");
   if(qi) qi.addEventListener("input", e => {
