@@ -228,11 +228,19 @@ def main():
     held = set(pd.read_csv(LED).symbol.astype(str).str.upper()) if os.path.exists(LED) else set()
     uni  = set(pd.read_csv(IDENT).symbol.astype(str).str.upper()) if os.path.exists(IDENT) else set()
 
-    def dedup(rows):
-        seen, out = set(), []
+    def dedup(rows, per_source=None):
+        """Newest first, no repeats. per_source caps how many any one outlet may
+        contribute: the Economic Times publishes 47 items to Business Standard's
+        21, so a straight date sort hands it the whole block and the reader sees
+        one masthead instead of four."""
+        seen, count, out = set(), {}, []
         for r in sorted(rows, key=lambda x: (x["date"], x["headline"]), reverse=True):
             k = (r["symbol"], r["headline"][:70])
             if k in seen: continue
+            if per_source:
+                c = count.get(r["source"], 0)
+                if c >= per_source: continue
+                count[r["source"]] = c + 1
             seen.add(k); out.append(r)
         return out
 
@@ -241,7 +249,7 @@ def main():
                portfolio=[r for r in nse if r["symbol"] in held][:KEEP["portfolio"]],
                market=[r for r in nse if r["symbol"] in uni and r["symbol"] not in held][:KEEP["market"]],
                policy=dedup(policy)[:KEEP["policy"]],
-               press=dedup(press)[:KEEP["press"]])
+               press=dedup(press, per_source=8)[:KEEP["press"]])
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
 
@@ -251,6 +259,8 @@ def main():
     if UNPARSED: print(f"  dates that would not parse: {len(UNPARSED)} - {UNPARSED[:3]}")
     print(f"  -> {OUT}: holdings {len(out['portfolio'])}, market {len(out['market'])}, "
           f"policy {len(out['policy'])}, press {len(out['press'])}")
+    from collections import Counter
+    print(f"  press by outlet: {dict(Counter(i['source'] for i in out['press']))}")
     for k in ("portfolio", "policy", "press"):
         for i in out[k][:3]:
             print(f"       {k:9} {i['date']}  {i['symbol']:16} [{i['category']}] {i['headline'][:58]}")
