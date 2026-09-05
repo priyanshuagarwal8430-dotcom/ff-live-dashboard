@@ -60,8 +60,16 @@ jobs:
       - name: Scan for signals
         run: python FF_Signal_Engine_v2.py --since 2026-06-01
 
+      # The ledger is what makes the record a record: append-only, exits filled
+      # once, and a signal the scanner stops producing is KEPT and reported
+      # rather than deleted.
+      - name: Update the signal ledger
+        run: python FF_Ledger.py
+
+      # Replaces FF_build_dashboard.py, which read the scanner's overwritten
+      # output, hardcoded every row as open, and had no exit handling.
       - name: Build the dashboard
-        run: python FF_build_dashboard.py
+        run: python FF_build_dashboard_v2.py
 
       - name: Publish dashboard to GitHub Pages
         run: |
@@ -76,7 +84,8 @@ jobs:
           # content: they are in .gitignore and are kept as the run artifact
           # below. Naming them here made git add fail with exit 1 and took the
           # whole run down after every other step had succeeded.
-          git add ohlc_data/ fresh_signals.csv signals.csv watchlist_microcap.csv docs/index.html
+          git add ohlc_data/ fresh_signals.csv signals.csv watchlist_microcap.csv \
+                  signal_ledger.csv watchlist_ledger.csv corporate_actions.csv docs/index.html
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
           git pull --rebase origin main
           git push
