@@ -24,11 +24,13 @@
 body{margin:0;background:var(--bg);color:var(--ink);
   font:14px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   -webkit-text-size-adjust:100%}
-.wrap{max-width:1160px;margin:0 auto;padding:0 0 64px}
+/* A ten-column table of prices wants room. The page was 1160px, which left a
+   third of the table hidden behind the scroll fade on a 1440px screen. */
+.wrap{max-width:1360px;margin:0 auto;padding:0 0 64px}
 
 /* ============================================================== header === */
 .head{background:var(--head);color:var(--headink);padding:24px 26px 60px}
-.head .inner{max-width:1108px;margin:0 auto;
+.head .inner{max-width:1308px;margin:0 auto;
   display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
 .head .who{flex:1 1 auto;min-width:0}
 h1{font:700 21px/1.25 inherit;margin:0;letter-spacing:-.01em;
@@ -46,7 +48,7 @@ h1{font:700 21px/1.25 inherit;margin:0;letter-spacing:-.01em;
 .tbtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7}
 
 /* =============================================================== cards === */
-.body{max-width:1108px;margin:-44px auto 0;padding:0 26px}
+.body{max-width:1308px;margin:-44px auto 0;padding:0 26px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:13px;
   box-shadow:var(--shadow);padding:20px 22px;margin-bottom:16px}
 .strip{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
@@ -105,7 +107,7 @@ tbody tr:hover{background:var(--hover)}
   border-radius:5px;padding:3px 8px;white-space:nowrap}
 /* the meter, with a below-entry zone on the left */
 .meter{position:relative;display:inline-block;vertical-align:middle;
-  width:104px;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
+  width:92px;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
 .meter i{position:absolute;top:0;height:100%;display:block}
 .meter .zero{left:14%;width:1px;background:var(--zero);z-index:2}
 .meter .pos{left:14%;background:var(--acc);border-radius:0 5px 5px 0}
@@ -214,6 +216,14 @@ function spark(pts,w,h){
     aria-label="Nifty 500, last twelve months"><path class="ar" d="${d} L ${w} ${h} L 0 ${h} Z"/>
     <path class="ln" d="${d}"/></svg>`;
 }
+/* Days elapsed against the 1,095-day cap: how much of the position's allowed
+   life has run, and so how much is left. */
+function dmeter(d, cap){
+  if(d == null) return '<span class="mut">—</span>';
+  const w = Math.max(0, Math.min(100, 100 * d / (cap || 1095)));
+  return `<span class="meter"><i class="pos" style="left:0;width:${w.toFixed(1)}%"></i></span>
+    <span class="pnum mut">${d.toLocaleString("en-IN")}</span>`;
+}
 function meter(p){
   if(p == null) return '<span class="mut">—</span>';
   const pos = Math.max(0, Math.min(100, p)) * 0.86;
@@ -227,18 +237,23 @@ function meter(p){
 let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "", cap = "";
 
 const COLS = [
-  {k:"symbol",   t:"Symbol",             kind:"sym",   first:true},
-  {k:"entry_date",t:"Entry date",        kind:"date"},
-  {k:"entry_price",t:"Entry",            kind:"num"},
-  {k:"last",     t:"Last",               kind:"num"},
-  {k:"ret_pct",  t:"Return",             kind:"pct"},
-  {k:"below_ath_at_entry",t:"Below ATH", kind:"dd"},
-  {k:"trigger_reason", t:"Trigger",      kind:"why"},
-  /* Target and the date it was set are one fact, not two, so they share a cell.
-     Ten columns did not fit 1280px and the last two fell off the edge. */
-  {k:"target",   t:"Target", kind:"target"},
+  {k:"symbol",    t:"Symbol",             kind:"sym", first:true},
+  {k:"entry_date",t:"Entry date",         kind:"date"},
+  {k:"entry_price",t:"Entry price",       kind:"num"},
+  /* "Last close", not "Previous close": the page updates after the close, so on
+     that evening the figure IS the day's close. "Last close" is true at both
+     moments. */
+  {k:"last",      t:"Last close",         kind:"num"},
+  {k:"ret_pct",   t:"Return",             kind:"pct"},
+  {k:"below_ath_at_entry",t:"Below trigger ATH", kind:"dd"},
+  {k:"target",    t:"Trigger ATH / target", kind:"mut"},
+  {k:"ath_date",  t:"ATH date",           kind:"raw"},
   {k:"progress_pct",t:"Progress", kind:"meter"},
+  {k:"days_since_entry",t:"Days held",    kind:"days_meter"},
 ];
+/* trigger_reason is deliberately NOT a column. It stays in positions.json as the
+   cross-check for a deep entry; an advisory publishes the signal, not the
+   mechanics behind it. */
 
 /* A closed trade answers different questions: what it returned, how long it
    took, and how it ended. Progress to target is meaningless once the target is
@@ -246,13 +261,13 @@ const COLS = [
 const CLOSED_COLS = [
   {k:"symbol",     t:"Symbol",      kind:"sym", first:true},
   {k:"entry_date", t:"Entry date",  kind:"date"},
-  {k:"entry_price",t:"Entry",       kind:"num"},
-  {k:"exit_date",  t:"Exit date",   kind:"date"},
-  {k:"exit_price", t:"Exit",        kind:"num"},
-  {k:"ret_pct",    t:"Return",      kind:"pct"},
-  {k:"days_held",  t:"Days held",   kind:"days"},
-  {k:"exit_reason",t:"How it ended",kind:"reason"},
-  {k:"below_ath_at_entry",t:"Below ATH", kind:"dd"},
+  {k:"entry_price",t:"Entry price",  kind:"num"},
+  {k:"exit_date",  t:"Exit date",    kind:"date"},
+  {k:"exit_price", t:"Exit price",   kind:"num"},
+  {k:"ret_pct",    t:"Return",       kind:"pct"},
+  {k:"days_held",  t:"Days held",    kind:"days"},
+  {k:"exit_reason",t:"How it ended", kind:"reason"},
+  {k:"below_ath_at_entry",t:"Below trigger ATH", kind:"dd"},
 ];
 const REASON = {ATH_TARGET:"Target reached", TIME_STOP:"Time cap"};
 
@@ -271,6 +286,7 @@ function cell(r,c){
     case "days":  return v == null ? "—" : `${v.toLocaleString("en-IN")}`;
     case "reason":return `<span class="why">${esc(REASON[v] || v || "—")}</span>`;
     case "meter": return meter(v);
+    case "days_meter": return dmeter(v, r.cap_days);
   }
 }
 function tableFor(rows, cols){
@@ -342,11 +358,7 @@ function render(){
    <div class="card">
      <div class="cardhead">
        <div class="t"><h2>Open positions</h2>
-         <p class="sub">Target fixed on the signal date and never moved.
-         <strong>Below ATH</strong> is how far under its high the stock was at entry; the rule
-         fires at 40%. <strong>Trigger</strong> names whichever condition was last to become
-         true, so a deep entry reads as what it is. The date under each target is the day
-         that closing high was printed.</p></div>
+         <p class="sub">The target is fixed on the signal date and never moved.</p></div>
        <div class="tools">
          <div class="seg" id="cap">${capBtn("","All")}${tiers.map(t =>
             capBtn(t, t.replace(" Cap",""))).join("")}</div>
@@ -358,15 +370,14 @@ function render(){
    </div>
 
    <div class="card"><h2>Performance by holding period</h2>
-     <p class="sub">A column fills only once that period has elapsed since entry.
-     A dash means not yet due — never zero, never an estimate.</p>
+     <p class="sub">A column fills once that period has elapsed since entry.
+     A dash means not yet due.</p>
      ${periodTable(sorted, m.periods || [])}
    </div>
 
    <div class="card"><h2>Closed trades</h2>
-     <p class="sub">A position closes at its fixed target or at the 1,095-day cap.
-     <strong>Days held</strong> beside <strong>How it ended</strong> is the time it
-     took — for a target that is how long the recovery to the old high ran.</p>
+     <p class="sub">A position closes at its target or at the 1,095-day cap.
+     <strong>Days held</strong> is the time it took.</p>
      ${(DATA.closed||[]).length ? tableFor(DATA.closed, CLOSED_COLS)
         : `<div class="empty">No position has closed yet. Return at target and the
            days it took appear here on the first exit.</div>`}
@@ -374,8 +385,7 @@ function render(){
 
    <div class="card">
      <h2>News</h2>
-     <p class="sub">What touches the portfolio and the index, and what is happening
-     in India and the wider world.</p>
+     <p class="sub">The portfolio and the index, and the wider market.</p>
      <div class="seg" id="nseg">
        <button data-pane="portfolio" aria-pressed="true">Portfolio &amp; index</button>
        <button data-pane="macro" aria-pressed="false">India &amp; world</button>
@@ -383,10 +393,10 @@ function render(){
      <div id="npane">${newsList((DATA.news||{}).portfolio)}</div>
    </div>
 
-   <footer>For the exclusive use of subscribed clients. Signals are generated by a
-   rules-based process and are not personalised investment advice. Investments in
-   securities are subject to market risks; past performance does not guarantee future
-   results. Registration details and the full disclaimer are to be inserted here.</footer>`;
+   <footer>For subscribed clients. Signals follow a fixed rule set and are not
+   personalised advice. Investments in securities carry market risk; past performance
+   does not indicate future results. Registration details and full disclaimer to be
+   inserted here.</footer>`;
 
   document.querySelectorAll(".scroll").forEach(el =>
     el.classList.toggle("over", el.scrollWidth > el.clientWidth + 2));

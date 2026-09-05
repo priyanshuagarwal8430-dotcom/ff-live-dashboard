@@ -30,6 +30,7 @@ OUT   = "docs/data"
 LED, WATCH = "signal_ledger.csv", "watchlist_ledger.csv"
 IDX, FLAGS, OHLC = "indices/Nifty500.csv", "fund_flags_v3.csv", "ohlc_data"
 THRESHOLD = 0.60
+CAP_DAYS  = 1095          # the strategy's time stop; the days meter runs against it
 PERIODS = [("3M", 3), ("6M", 6), ("1Y", 12), ("1.5Y", 18),
            ("2Y", 24), ("2.5Y", 30), ("3Y", 36)]
 SINCE = "2026-06-01"
@@ -112,6 +113,12 @@ def rows(path, end, kind):
             below_ath_at_entry=round(abs(float(r.drawdown_pct)), 2),
             price_crossed_on=cross, qualified_on=qual, trigger_reason=why,
             status=r.status,
+            # Days elapsed against the 1,095-day cap: how much of the position's
+            # allowed life has run. trigger_reason stays in the data even though
+            # the page no longer shows it - it is the cross-check for a deep entry.
+            days_since_entry=int(((pd.Timestamp(r.exit_date) if closed
+                                   else pd.Timestamp(end)) - r.entry_date).days),
+            cap_days=CAP_DAYS,
         )
         if kind == "position":
             stop = r.exit_date if closed else None
