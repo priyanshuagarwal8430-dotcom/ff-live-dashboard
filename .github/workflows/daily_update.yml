@@ -93,11 +93,18 @@ jobs:
           # not a list: a file that is not there yet must not be fatal.
           for f in ohlc_data fresh_signals.csv signals.csv watchlist_microcap.csv \
                    signal_ledger.csv watchlist_ledger.csv corporate_actions.csv \
-                   docs/index.html; do
+                   FF_Live_Tracking_Dashboard.html docs/index.html; do
             if [ -e "$f" ]; then git add "$f"; else echo "absent, not added: $f"; fi
           done
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
-          git pull --rebase origin main
+          # --autostash, because the failure this guards against is not a
+          # missing filename but a whole class: the pipeline writes a tracked
+          # file nobody added, and rebase then refuses to run. That took the
+          # run down on 5 September after every other step had succeeded --
+          # the builder rewrote FF_Live_Tracking_Dashboard.html once the ledger
+          # changed from 28 positions to 19. Naming that file is the fix for
+          # today; autostash is the fix for the next one.
+          git pull --rebase --autostash origin main
           git push
 
       # Runs even when the updater quarantined something, so the evidence is
