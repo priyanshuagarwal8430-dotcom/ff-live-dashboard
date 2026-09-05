@@ -84,8 +84,18 @@ jobs:
           # content: they are in .gitignore and are kept as the run artifact
           # below. Naming them here made git add fail with exit 1 and took the
           # whole run down after every other step had succeeded.
-          git add ohlc_data/ fresh_signals.csv signals.csv watchlist_microcap.csv \
-                  signal_ledger.csv watchlist_ledger.csv corporate_actions.csv docs/index.html
+          # Add only what exists. corporate_actions.csv is written by the NSE
+          # bhavcopy updater, which is not wired yet, so on a Yahoo-only run it
+          # is legitimately absent -- and naming an absent path makes git add
+          # exit 128 and takes the whole run down after every other step has
+          # succeeded. That is exactly the failure the comment above describes,
+          # repeated with a different file, which is why this is now a loop and
+          # not a list: a file that is not there yet must not be fatal.
+          for f in ohlc_data fresh_signals.csv signals.csv watchlist_microcap.csv \
+                   signal_ledger.csv watchlist_ledger.csv corporate_actions.csv \
+                   docs/index.html; do
+            if [ -e "$f" ]; then git add "$f"; else echo "absent, not added: $f"; fi
+          done
           git diff --quiet --cached || git commit -m "Automated daily update: $(date +'%Y-%m-%d')"
           git pull --rebase origin main
           git push
