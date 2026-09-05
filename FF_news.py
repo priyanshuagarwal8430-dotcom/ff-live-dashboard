@@ -62,12 +62,23 @@ KEEP_RE = re.compile(r"""
 |resignation|appointment\s+of\s+(managing|chief|whole)
 """, re.I | re.X)
 
-# A paid equity advisory does not carry these, however lively they are.
-DROP_RE = re.compile(r"""
- cricket|\bipl\b|\bt20\b|\bodi\b|world\s+cup|football|kabaddi|tennis|olympic
-|live\s+stream|match\s+(preview|report)|playing\s+xi
-|box\s+office|bollywood|movie|film\b|trailer|web\s+series|actor|actress|celebrit
-|horoscope|astrolog|recipe|lifestyle|travel\s+guide|wedding|fashion
+# A press item must EARN its place. The first run let through "Women's Asia Cup
+# 2026: India Bundle Pakistan Out For 55" because the deny-list had cricket, T20
+# and world cup but not Asia Cup - and it always will miss the next word. A
+# general news feed cannot be filtered by listing what to exclude, only by
+# requiring what to include.
+PRESS_KEEP_RE = re.compile(r"""
+ market|stock|share|equity|index|nifty|sensex|bse|nse|ipo|listing
+|rupee|dollar|bond|yield|inflation|cpi|wpi|gdp|repo|rbi|sebi|fed\b|ecb
+|earnings|profit|revenue|margin|results|guidance|dividend|buyback|stake
+|crude|oil|gold|silver|metal|commodit
+|fii|dii|fund|investor|mutual\s+fund|portfolio|valuation|rating
+|bank|nbfc|credit|loan|deposit|liquidit
+|tax|gst|budget|tariff|trade\s+deal|export|import|econom|fiscal|deficit
+|acquisi|merger|deal|order\s+book|capex|expansion
+|tender\s+offer|open\s+offer|takeover|divest|stake\s+sale|block\s+deal
+|brokerage|target\s+price|upgrade|downgrade|quarter|\bq[1-4]\b|fy\d{2}
+|revenue|turnover|sales|output|production|contract|tariff|duty
 """, re.I | re.X)
 
 OFFICIAL = [("RBI", "https://www.rbi.org.in/pressreleases_rss.xml"),
@@ -78,7 +89,7 @@ PRESS = [("Economic Times", "https://economictimes.indiatimes.com/markets/rssfee
          ("Mint", "https://www.livemint.com/rss/markets"),
          ("NDTV Profit", "https://feeds.feedburner.com/ndtvprofit-latest")]
 
-log = []
+log, UNPARSED = [], []
 def note(m): log.append(m)
 
 def clean(t):
@@ -89,9 +100,22 @@ def clean(t):
     return re.sub(r"\s+", " ", t).strip()
 
 def norm_date(v):
+    """SEBI dates the first run as "04 Sep, 2026 +0530" - a comma and an offset -
+    and the whole feed silently vanished: 30 items fetched, 0 kept, no error. So
+    the offset and comma come off first, two parse orders are tried, and a
+    failure is counted rather than swallowed."""
     if not v: return None
-    t = pd.to_datetime(str(v), errors="coerce", dayfirst=True, utc=True)
-    return None if pd.isna(t) else str(t.date())
+    # The offset must be preceded by whitespace. Without that guard the pattern
+    # ate the year out of "04-09-2026", leaving "04-09", which parsed as nothing.
+    t = re.sub(r"\s+[+-]\d{4}\s*$", "", str(v)).replace(",", " ")
+    t = re.sub(r"\s+", " ", t).strip()
+    # An ISO date must not be read day-first: "2026-09-04" came back as 9 April.
+    orders = [{}] if re.match(r"^\d{4}-\d{1,2}-", t) else [dict(dayfirst=True), {}]
+    for kw in orders:
+        d = pd.to_datetime(t, errors="coerce", **kw)
+        if not pd.isna(d): return str(d.date())
+    UNPARSED.append(str(v)[:40])
+    return None
 
 # ------------------------------------------------------------------- NSE ---
 def nse_session():
@@ -182,7 +206,8 @@ def from_rss(feeds, full, cutoff_days, tag):
             head = clean(t.group(1)) if t else None
             when = norm_date(clean(d.group(1))) if d else None
             if not head or not when or when < cut: continue
-            if DROP_RE.search(head): continue
+            # Official feeds are already on-topic; the press needs a reason.
+            if not full and not PRESS_KEEP_RE.search(head): continue
             out.append(dict(date=when, symbol=name, category=tag, headline=head[:190],
                             url=clean(l.group(1)) if l else None, source=name,
                             full=bool(full)))
@@ -220,7 +245,10 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
 
+    if UNPARSED:
+        print(f"  {'dates unparsed':24} {len(UNPARSED)}  e.g. {UNPARSED[:2]}")
     print("\n".join(log))
+    if UNPARSED: print(f"  dates that would not parse: {len(UNPARSED)} - {UNPARSED[:3]}")
     print(f"  -> {OUT}: holdings {len(out['portfolio'])}, market {len(out['market'])}, "
           f"policy {len(out['policy'])}, press {len(out['press'])}")
     for k in ("portfolio", "policy", "press"):
