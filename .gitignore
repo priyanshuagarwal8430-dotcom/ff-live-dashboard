@@ -9,3 +9,4 @@ ohlc_quarantine.txt
 datefix_out.txt
 fund_flags_v3_datefix.csv
 results_dates_missing.csv
+*.done

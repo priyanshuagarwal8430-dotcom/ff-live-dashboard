@@ -318,9 +318,13 @@ function newsList(items){
     const head = n.url
       ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline||"")}</a>`
       : esc(n.headline || "");
-    return `<div class="news"><span class="why">${esc(n.category||"")}</span>
-      <span><strong>${esc(n.symbol||n.source||"")}</strong> · ${head}
-      ${n.detail ? `<span class="sub2">${esc(n.detail)}</span>` : ""}</span>
+    /* An NSE filing is the company's own document, so the symbol leads and the
+       filing type is the chip. A press item is somebody's writing, so the
+       outlet's name is the chip and nothing pretends to be a fact about a
+       stock. The reader can always tell which they are looking at. */
+    const feed = n.source === n.symbol;
+    return `<div class="news"><span class="why">${esc(feed ? n.symbol : (n.category||""))}</span>
+      <span>${feed ? "" : `<strong>${esc(n.symbol||"")}</strong> · `}${head}</span>
       <span class="mut">${esc(dmy(n.date))}</span></div>`;
   }).join("");
 }
@@ -330,9 +334,11 @@ function newsList(items){
 function newsPane(which){
   const N = DATA.news || {};
   if(which === "macro"){
-    return newsList(N.macro) ||
-      `<div class="empty">Not connected yet. NSE covers company filings only;
-       a separate source for policy, inflation and global cues is being settled.</div>`;
+    const a = newsList(N.policy), b = newsList(N.press);
+    if(!a && !b) return `<div class="empty">Nothing in the last few days.</div>`;
+    return (a ? `<p class="sub" style="margin:2px 0 0">Policy and regulation · RBI and SEBI</p>${a}` : "")
+         + (b ? `<p class="sub" style="margin:26px 0 0">In the market · headlines from the
+                 Indian financial press. Follow one to read it at the source.</p>${b}` : "");
   }
   const a = newsList(N.portfolio), b = newsList(N.market);
   if(!a && !b) return `<div class="empty">No announcements in the last seven days.</div>`;
@@ -408,7 +414,7 @@ function render(){
 
    <div class="card">
      <h2>News</h2>
-     <p class="sub">Company filings from NSE. Headlines link to the source.</p>
+     <p class="sub">Filings from NSE, and what the market is reading.</p>
      <div class="seg" id="nseg">
        <button data-pane="portfolio" aria-pressed="true">Portfolio &amp; index</button>
        <button data-pane="macro" aria-pressed="false">India &amp; world</button>

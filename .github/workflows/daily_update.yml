@@ -61,14 +61,6 @@ jobs:
       - name: Refresh the Nifty 500 index
         run: python FF_index_update.py
 
-      # TEMPORARY probe: does NSE answer a GitHub runner? Phase A proved it answers
-      # Colab, which is a different network and says nothing about this one. The
-      # news feed, the results-date refresh and the bhavcopy switch all wait on
-      # this one answer. Read only, never fatal. Remove this step and the script
-      # once the answer is in.
-      - name: NSE reachability probe (temporary)
-        run: python FF_nse_probe.py
-
       # The acceptance test: rebuild the whole history from the repository's own
       # files and compare against the reference set. If a change ever breaks the
       # 358-trade reproduction, the run stops here rather than publishing a
@@ -102,12 +94,6 @@ jobs:
       # news card is a flaw on one card; a failed run stops everything.
       - name: Build the news feed
         run: python FF_news.py
-
-      # TEMPORARY: which macro feeds answer this runner? NSE has nothing on RBI
-      # policy, CPI or global cues, so the "India & world" pane needs a different
-      # source and this asks which ones exist before anything is built on one.
-      - name: Macro feed probe (temporary)
-        run: python FF_rss_probe.py
 
       - name: Commit and push updated data + dashboard
         run: |
