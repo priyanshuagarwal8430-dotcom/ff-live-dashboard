@@ -96,6 +96,19 @@ jobs:
       - name: Build the dashboard data
         run: python FF_dashboard_data.py
 
+      # NSE filings for the portfolio and the index: results, board meetings,
+      # corporate actions, Regulation 30 disclosures. Public documents filed by
+      # the companies themselves, so no licensing question. Never fatal - a stale
+      # news card is a flaw on one card; a failed run stops everything.
+      - name: Build the news feed
+        run: python FF_news.py
+
+      # TEMPORARY: which macro feeds answer this runner? NSE has nothing on RBI
+      # policy, CPI or global cues, so the "India & world" pane needs a different
+      # source and this asks which ones exist before anything is built on one.
+      - name: Macro feed probe (temporary)
+        run: python FF_rss_probe.py
+
       - name: Commit and push updated data + dashboard
         run: |
           git config user.name "FF Automation"

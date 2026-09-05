@@ -313,11 +313,31 @@ function periodTable(rows,periods){
   return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function newsList(items){
-  if(!items || !items.length)
-    return `<div class="empty">No announcements loaded yet.</div>`;
-  return items.map(n => `<div class="news"><span class="why">${esc(n.category||"")}</span>
-    <span><strong>${esc(n.subject||"")}</strong> · ${esc(n.headline||"")}</span>
-    <span class="mut">${esc(n.date||"")}</span></div>`).join("");
+  if(!items || !items.length) return "";
+  return items.map(n => {
+    const head = n.url
+      ? `<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.headline||"")}</a>`
+      : esc(n.headline || "");
+    return `<div class="news"><span class="why">${esc(n.category||"")}</span>
+      <span><strong>${esc(n.symbol||n.source||"")}</strong> · ${head}
+      ${n.detail ? `<span class="sub2">${esc(n.detail)}</span>` : ""}</span>
+      <span class="mut">${esc(dmy(n.date))}</span></div>`;
+  }).join("");
+}
+/* The portfolio pane is layered: what touches a position first, then the rest of
+   the index. The macro pane is deliberately empty and says so - NSE has nothing
+   on policy or global cues, and the outlets that do own that copy. */
+function newsPane(which){
+  const N = DATA.news || {};
+  if(which === "macro"){
+    return newsList(N.macro) ||
+      `<div class="empty">Not connected yet. NSE covers company filings only;
+       a separate source for policy, inflation and global cues is being settled.</div>`;
+  }
+  const a = newsList(N.portfolio), b = newsList(N.market);
+  if(!a && !b) return `<div class="empty">No announcements in the last seven days.</div>`;
+  return (a ? `<p class="sub" style="margin:2px 0 0">Your holdings</p>${a}` : "")
+       + (b ? `<p class="sub" style="margin:26px 0 0">Across the Nifty 500</p>${b}` : "");
 }
 
 function render(){
@@ -388,12 +408,12 @@ function render(){
 
    <div class="card">
      <h2>News</h2>
-     <p class="sub">The portfolio and the index, and the wider market.</p>
+     <p class="sub">Company filings from NSE. Headlines link to the source.</p>
      <div class="seg" id="nseg">
        <button data-pane="portfolio" aria-pressed="true">Portfolio &amp; index</button>
        <button data-pane="macro" aria-pressed="false">India &amp; world</button>
      </div>
-     <div id="npane">${newsList((DATA.news||{}).portfolio)}</div>
+     <div id="npane">${newsPane("portfolio")}</div>
    </div>
 
    <footer>For subscribed clients. Signals follow a fixed rule set and are not
@@ -421,8 +441,7 @@ function render(){
   document.querySelectorAll("#nseg button").forEach(b => b.addEventListener("click", () => {
     document.querySelectorAll("#nseg button").forEach(x =>
       x.setAttribute("aria-pressed", String(x === b)));
-    document.getElementById("npane").innerHTML =
-      newsList((DATA.news||{})[b.dataset.pane]);
+    document.getElementById("npane").innerHTML = newsPane(b.dataset.pane);
   }));
 }
 
@@ -444,6 +463,9 @@ Promise.all(FILES.map(f =>
 </script>
 <style>
 .news{padding:12px 0;border-top:1px solid var(--line);display:flex;gap:14px;align-items:baseline}
+.news a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.news a:hover{border-bottom-color:var(--acc);color:var(--acc)}
+.news .why{flex:0 0 auto;min-width:108px;text-align:center}
 .news:first-of-type{border-top:0}
 .news .mut{margin-left:auto;white-space:nowrap}
 @media (max-width:700px){ .news{flex-wrap:wrap;gap:8px} .news .mut{margin-left:0} }
