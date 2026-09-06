@@ -99,12 +99,34 @@ td{text-align:right;padding:10px 8px;border-top:1px solid var(--line);white-spac
 .sub2{display:block;font-size:11px;color:var(--ink3);margin-top:2px;font-variant-numeric:tabular-nums}
 tbody tr:hover{background:var(--hover)}
 .sym{font-weight:700}
+.tick{color:inherit;text-decoration:none;border-bottom:1px dotted var(--ink3)}
+.tick:hover{color:var(--acc);border-bottom-color:var(--acc)}
 .chip{display:inline-block;font-size:10.5px;font-weight:600;color:var(--ink2);
   background:var(--chip);border-radius:5px;padding:2px 7px;margin-left:7px}
 .mut{color:var(--ink3)}
 .good{color:var(--good)}.bad{color:var(--bad)}
 .why{font-size:11.5px;font-weight:600;color:var(--ink2);background:var(--chip);
   border-radius:5px;padding:3px 8px;white-space:nowrap}
+/* News tints. The label is still the carrier - the colour only groups, so a
+   reader who cannot separate these hues loses nothing. Every tint is defined
+   for both themes; none is left to inherit. */
+[data-cat]{--t:var(--ink2); --tb:var(--chip)}
+[data-cat="Results"]         {--t:#1c5b96; --tb:#e3eefa}
+[data-cat="Corporate action"]{--t:#8a5a10; --tb:#fdf0dd}
+[data-cat="Board meeting"]   {--t:#5b3b8c; --tb:#efe8fa}
+[data-cat="Deal"]            {--t:#0a6b63; --tb:#dcf2f0}
+[data-cat="Order win"]       {--t:#0a7a33; --tb:#e0f3e6}
+[data-cat="Policy"]          {--t:#12385f; --tb:#e6edf5}
+[data-cat="Press"]           {--t:#6b5330; --tb:#f3eee4}
+:root[data-theme=dark] [data-cat]{--t:var(--ink2); --tb:#1e2836}
+:root[data-theme=dark] [data-cat="Results"]         {--t:#7fb6ea; --tb:#152b42}
+:root[data-theme=dark] [data-cat="Corporate action"]{--t:#e0b45f; --tb:#33280f}
+:root[data-theme=dark] [data-cat="Board meeting"]   {--t:#b79ce6; --tb:#241a38}
+:root[data-theme=dark] [data-cat="Deal"]            {--t:#5cc8bd; --tb:#0f2b29}
+:root[data-theme=dark] [data-cat="Order win"]       {--t:#69c583; --tb:#12291a}
+:root[data-theme=dark] [data-cat="Policy"]          {--t:#9fc0dd; --tb:#16283c}
+:root[data-theme=dark] [data-cat="Press"]           {--t:#d3bd94; --tb:#2b2416}
+.news .why{color:var(--t);background:var(--tb)}
 /* the meter, with a below-entry zone on the left */
 .meter{position:relative;display:inline-block;vertical-align:middle;
   width:92px;height:8px;background:var(--track);border-radius:5px;overflow:hidden}
@@ -114,6 +136,31 @@ tbody tr:hover{background:var(--hover)}
 .meter .neg{background:var(--bad);border-radius:5px 0 0 5px}
 .pnum{display:inline-block;min-width:42px;margin-left:10px;font-size:12.5px}
 .empty{color:var(--ink3);font-size:13px;padding:22px 0;text-align:center}
+/* Collapsible sections. On a phone the holding-period table is nineteen stacked
+   cards of nine rows each, and the news sat below all of it. It now starts
+   closed, and the choice is remembered per viewer. */
+.acc{display:flex;align-items:center;gap:10px;width:100%;background:transparent;
+  border:0;padding:0;cursor:pointer;color:inherit;text-align:left;font:inherit}
+.acc h2{flex:1 1 auto;margin:0}
+.acc .chev{flex:0 0 auto;width:9px;height:9px;border-right:2px solid var(--ink3);
+  border-bottom:2px solid var(--ink3);transform:rotate(45deg);margin:0 4px 4px 0;
+  transition:transform .15s}
+.acc[aria-expanded=false] .chev{transform:rotate(-45deg);margin:0 4px 0 0}
+.acc:hover .chev{border-color:var(--acc)}
+.acc .count{flex:0 0 auto;font-size:11px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink3);background:var(--chip);
+  border-radius:5px;padding:3px 8px}
+.panel[hidden]{display:none}
+/* Nineteen positions is nineteen stacked cards on a phone, and the news sat at
+   the far end of them. Collapsing the holding-period table helped; this makes
+   the distance irrelevant. */
+.jump{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.jump a{font:600 11.5px/1 inherit;letter-spacing:.03em;text-decoration:none;
+  color:var(--ink2);background:var(--card);border:1px solid var(--line);
+  border-radius:8px;padding:9px 13px}
+.jump a:hover{color:var(--acc);border-color:var(--acc)}
+html{scroll-behavior:smooth}
+:target{scroll-margin-top:14px}
 footer{color:var(--ink3);font-size:11.5px;line-height:1.75;padding:8px 4px 0}
 .err{background:#fdecea;color:#8a1c14;border:1px solid #f3b8b2;border-radius:10px;
   padding:14px 16px;margin-bottom:16px;font-size:13px}
@@ -207,6 +254,10 @@ const cls = v => v == null ? "mut" : (v >= 0 ? "good" : "bad");
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const dmy = s => { if(!s) return "—"; const [y,m,d] = s.split("-"); return `${d} ${MON[+m-1]} ${y}`; };
 
+/* The symbol opens that stock's chart at TradingView in a new tab. A link, not
+   an embedded widget: embedding carries their terms, a link carries none. */
+const chartUrl = sym => `https://www.tradingview.com/chart/?symbol=NSE%3A${encodeURIComponent(String(sym||"").trim())}`;
+
 function spark(pts,w,h){
   if(!pts || pts.length < 2) return "";
   const lo = Math.min(...pts), hi = Math.max(...pts), r = (hi-lo)||1;
@@ -235,6 +286,12 @@ function meter(p){
 
 /* ------------------------------------------------------------- rendering --- */
 let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "", cap = "";
+/* Sections start closed unless the viewer opened them before. */
+const OPEN_DEFAULT = {perf:false, closed:false};
+function open2(k){
+  try{ const v = localStorage.getItem("ff-open-"+k); if(v !== null) return v; }catch(e){}
+  return String(OPEN_DEFAULT[k]);
+}
 
 const COLS = [
   {k:"symbol",    t:"Symbol",             kind:"sym", first:true},
@@ -277,7 +334,8 @@ const REASON = {ATH_TARGET:"Target reached", TIME_STOP:"Time cap"};
 function cell(r,c){
   const v = r[c.k];
   switch(c.kind){
-    case "sym":   return `<span class="sym">${esc(v)}</span><span class="chip">${esc(r.market_type)}</span>`;
+    case "sym":   return `<a class="sym tick" href="${chartUrl(v)}" target="_blank"
+      rel="noopener">${esc(v)}</a><span class="chip">${esc(r.market_type)}</span>`;
     case "date":  return `<span class="mut">${dmy(v)}</span>`;
     case "num":   return money(v);
     case "pct":   return `<span class="${cls(v)}">${sgn(v)}%</span>`;
@@ -305,7 +363,8 @@ function periodTable(rows,periods){
   if(!rows.length) return `<div class="empty">Nothing here yet.</div>`;
   const head = `<th>Symbol</th><th>Entry date</th>` + periods.map(p=>`<th>${p}</th>`).join("");
   const body = rows.map(r => `<tr>
-      <td class="first" data-label="Symbol"><span class="sym">${esc(r.symbol)}</span></td>
+      <td class="first" data-label="Symbol"><a class="sym tick" href="${chartUrl(r.symbol)}"
+        target="_blank" rel="noopener">${esc(r.symbol)}</a></td>
       <td data-label="Entry date"><span class="mut">${dmy(r.entry_date)}</span></td>` +
       periods.map(p => { const v = r.periods ? r.periods[p] : null;
         return `<td data-label="${p}">${v==null?'<span class="mut">—</span>':`<span class="${cls(v)}">${sgn(v)}%</span>`}</td>`;
@@ -323,8 +382,15 @@ function newsList(items){
        outlet's name is the chip and nothing pretends to be a fact about a
        stock. The reader can always tell which they are looking at. */
     const feed = n.source === n.symbol;
-    return `<div class="news"><span class="why">${esc(feed ? n.symbol : (n.category||""))}</span>
-      <span>${feed ? "" : `<strong>${esc(n.symbol||"")}</strong> · `}${head}</span>
+    /* An NSE item names a stock, so its symbol links to that stock's chart. A
+       press item names an outlet, which is not a ticker and must not pretend to
+       be one. */
+    const who = feed ? esc(n.symbol||"")
+      : `<a class="tick" href="${chartUrl(n.symbol)}" target="_blank" rel="noopener"
+           >${esc(n.symbol||"")}</a> · `;
+    return `<div class="news" data-cat="${esc(n.category||"")}">
+      <span class="why">${esc(feed ? n.symbol : (n.category||""))}</span>
+      <span>${feed ? "" : who}${head}</span>
       <span class="mut">${esc(dmy(n.date))}</span></div>`;
   }).join("");
 }
@@ -384,10 +450,16 @@ function render(){
        <div class="v ${cls(m.avg_return)}">${sgn(m.avg_return)}%</div></div>
    </div>
 
-   <div class="card">
+   <nav class="jump" aria-label="Jump to a section">
+     <a href="#s-pos">Positions</a><a href="#s-perf">Performance</a>
+     <a href="#s-closed">Closed</a><a href="#s-news">News</a>
+   </nav>
+
+   <div class="card" id="s-pos">
      <div class="cardhead">
        <div class="t"><h2>Open positions</h2>
-         <p class="sub">The target is fixed on the signal date and never moved.</p></div>
+         <p class="sub">The target is fixed on the signal date and never moved.
+         Tap a symbol to open its chart.</p></div>
        <div class="tools">
          <div class="seg" id="cap">${capBtn("","All")}${tiers.map(t =>
             capBtn(t, t.replace(" Cap",""))).join("")}</div>
@@ -398,21 +470,31 @@ function render(){
      ${tableFor(sorted)}
    </div>
 
-   <div class="card"><h2>Performance by holding period</h2>
-     <p class="sub">A column fills once that period has elapsed since entry.
-     A dash means not yet due.</p>
-     ${periodTable(sorted, m.periods || [])}
+   <div class="card" id="s-perf">
+     <button class="acc" data-sec="perf" aria-expanded="${open2("perf")}">
+       <h2>Performance by holding period</h2>
+       <span class="count">${sorted.length}</span><span class="chev"></span></button>
+     <div class="panel" ${open2("perf")==="true"?"":"hidden"}>
+       <p class="sub" style="margin-top:10px">A column fills once that period has
+       elapsed since entry. A dash means not yet due.</p>
+       ${periodTable(sorted, m.periods || [])}
+     </div>
    </div>
 
-   <div class="card"><h2>Closed trades</h2>
-     <p class="sub">A position closes at its target or at the 1,095-day cap.
-     <strong>Days held</strong> is the time it took.</p>
-     ${(DATA.closed||[]).length ? tableFor(DATA.closed, CLOSED_COLS)
-        : `<div class="empty">No position has closed yet. Return at target and the
-           days it took appear here on the first exit.</div>`}
+   <div class="card" id="s-closed">
+     <button class="acc" data-sec="closed" aria-expanded="${open2("closed")}">
+       <h2>Closed trades</h2>
+       <span class="count">${m.closed}</span><span class="chev"></span></button>
+     <div class="panel" ${open2("closed")==="true"?"":"hidden"}>
+       <p class="sub" style="margin-top:10px">A position closes at its target or at
+       the 1,095-day cap. <strong>Days held</strong> is the time it took.</p>
+       ${(DATA.closed||[]).length ? tableFor(DATA.closed, CLOSED_COLS)
+          : `<div class="empty">No position has closed yet. Return at target and the
+             days it took appear here on the first exit.</div>`}
+     </div>
    </div>
 
-   <div class="card">
+   <div class="card" id="s-news">
      <h2>News</h2>
      <p class="sub">Filings from NSE, and what the market is reading.</p>
      <div class="seg" id="nseg">
@@ -433,6 +515,12 @@ function render(){
     const k = th.dataset.k;
     if(k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = -1; }
     render();
+  }));
+  document.querySelectorAll(".acc").forEach(b => b.addEventListener("click", () => {
+    const on = b.getAttribute("aria-expanded") !== "true";
+    b.setAttribute("aria-expanded", String(on));
+    b.parentElement.querySelector(".panel").hidden = !on;
+    try{ localStorage.setItem("ff-open-"+b.dataset.sec, String(on)); }catch(e){}
   }));
   document.querySelectorAll("#cap button").forEach(b => b.addEventListener("click", () => {
     cap = b.dataset.cap; render();
@@ -468,9 +556,18 @@ Promise.all(FILES.map(f =>
 });
 </script>
 <style>
-.news{padding:12px 0;border-top:1px solid var(--line);display:flex;gap:14px;align-items:baseline}
-.news a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
-.news a:hover{border-bottom-color:var(--acc);color:var(--acc)}
+.news{padding:11px 0 11px 12px;border-top:1px solid var(--line);display:flex;gap:13px;
+  align-items:baseline;border-left:3px solid transparent;transition:border-color .12s}
+.news[data-cat]{border-left-color:var(--tb)}
+.news:hover{background:var(--hover);border-left-color:var(--t)}
+/* border-bottom draws under EVERY wrapped line, so a three-line headline on a
+   phone came out triple-underlined and looked like a mistake. The underline
+   arrives on hover instead, where it belongs. */
+.news a{color:var(--ink);text-decoration:none}
+.news a:hover{color:var(--acc);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px}
+.news .tick{border-bottom:1px dotted var(--ink3)}
+.news .tick:hover{text-decoration:none;border-bottom-color:var(--acc)}
 .news .why{flex:0 0 auto;min-width:108px;text-align:center}
 .news:first-of-type{border-top:0}
 .news .mut{margin-left:auto;white-space:nowrap}
