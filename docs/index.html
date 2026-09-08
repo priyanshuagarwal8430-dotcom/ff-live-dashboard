@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fundamental First — live signals</title>
+<title>Finsights Fundamental Dashboard</title>
 <style>
 /* ============================================================== tokens ===
    Light is the default. Dark is a token swap, nothing else: same type, same
@@ -151,6 +151,52 @@ tbody tr:hover{background:var(--hover)}
   text-transform:uppercase;color:var(--ink3);background:var(--chip);
   border-radius:5px;padding:3px 8px}
 .panel[hidden]{display:none}
+
+/* ---- market strip. Ten instruments times six columns is a table, not cards:
+   stacked on a phone it would be sixty rows before the first position. So the
+   longer windows hide below 760px and name / price / 1D stay. */
+.mkt td,.mkt th{padding:9px 8px}
+.mkt .nm{font-weight:600}
+.mkt .sub2{font-weight:400}
+.mnote{color:var(--ink3);font-size:12px;line-height:1.55;margin:12px 0 0;
+  max-width:82ch}
+@media (max-width:760px){
+  .mkt .w{display:none}
+  .mkt table,.mkt tbody,.mkt tr,.mkt td{display:table-row-group}
+  .mkt table{display:table}.mkt tbody{display:table-row-group}
+  .mkt tr{display:table-row;border:0;border-radius:0;padding:0;margin:0}
+  /* No horizontal padding put the price hard against the 1D figure -
+     "24,812.40+0.42%" read as one number. The gap goes on the left of every
+     cell but the first, which stays flush with the card edge. */
+  .mkt td,.mkt th{display:table-cell;text-align:right;border:0;
+    border-top:1px solid var(--line);padding:10px 0 10px 16px;white-space:nowrap}
+  .mkt th{border-top:0}
+  .mkt td::before{content:none}
+  .mkt td.first,.mkt th:first-child{font-weight:600;text-align:left;padding-left:0}
+  /* The card layout's td.first carries a bottom rule; here it left a stub of a
+     line hanging under the last instrument, the width of one column. */
+  .mkt td.first{font-size:14px;border-bottom:0}
+  .mkt thead{display:table-header-group}
+}
+
+/* ---- information button and its dialog ---- */
+.ibtn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:50%;border:1.5px solid var(--ink3);
+  background:transparent;color:var(--ink3);cursor:pointer;font:700 12px/1 serif}
+.ibtn:hover{border-color:var(--acc);color:var(--acc)}
+.modal{position:fixed;inset:0;background:rgba(8,14,24,.55);display:flex;
+  align-items:center;justify-content:center;padding:18px;z-index:60}
+.modal[hidden]{display:none}
+.modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  max-width:720px;width:100%;max-height:88vh;overflow:auto;padding:22px}
+.modal h3{font:700 16px/1.25 inherit;margin:0 0 3px}
+.modal .x{float:right;background:transparent;border:0;color:var(--ink3);
+  font:400 22px/1 inherit;cursor:pointer;padding:0 2px}
+.modal .x:hover{color:var(--ink)}
+.mtable td:first-child{text-align:left;color:var(--ink2)}
+.mtable td{padding:9px 8px;font-variant-numeric:tabular-nums}
+.note{font-size:11.5px;color:var(--ink3);line-height:1.7;margin-top:16px;
+  padding-top:12px;border-top:1px solid var(--line)}
 /* Nineteen positions is nineteen stacked cards on a phone, and the news sat at
    the far end of them. Collapsing the holding-period table helped; this makes
    the distance irrelevant. */
@@ -209,7 +255,7 @@ footer{color:var(--ink3);font-size:11.5px;line-height:1.75;padding:8px 4px 0}
 <div class="wrap">
   <div class="head"><div class="inner">
     <div class="who">
-      <h1>Fundamental First <span class="tag">Live</span></h1>
+      <h1>Finsights Fundamental Dashboard <span class="tag">Live</span></h1>
       <div class="asof" id="asof">loading…</div>
     </div>
     <button class="tbtn" id="theme" aria-label="Switch to dark theme">
@@ -256,6 +302,40 @@ const dmy = s => { if(!s) return "—"; const [y,m,d] = s.split("-"); return `${
 
 /* The symbol opens that stock's chart at TradingView in a new tab. A link, not
    an embedded widget: embedding carries their terms, a link carries none. */
+/* Backtested outcomes, 2012 to July 2026, computed from the 279 trades that have
+   actually closed. NOT the live record. The methodology document's headline win
+   rate of 76.0% is taken over all 358 signals including the 79 still open at
+   mark-to-market; on the 279 that closed it is 78.9%. Every figure here is on the
+   closed basis, because "did it reach its target" cannot be asked of a position
+   still running - and the panel says so. */
+/* ts_loss is the median of the LOSING cap exits only, not of all of them. It sits
+   next to ts_win because the two answer one question together: how often the cap
+   exit loses, and how much it loses when it does. Reading ts_median alone hides
+   that - a bucket that is 52% winners and median +4.8% overall still carries a
+   median loss of 31% on the half that lost. */
+const BACKTEST = {
+ All:  {resolved:279, open:79, ath_months:16.8, ath_pct:55.9, ath_median:75.0,
+        ts_pct:44.1, ts_win:52.0, ts_median:4.8,  ts_loss:-31.3, win:78.9, median:68.7},
+ Large:{resolved:54,  open:8,  ath_months:16.8, ath_pct:63.0, ath_median:76.0,
+        ts_pct:37.0, ts_win:45.0, ts_median:-4.7, ts_loss:-35.5, win:79.6, median:69.2},
+ Mid:  {resolved:80,  open:23, ath_months:16.3, ath_pct:52.5, ath_median:71.9,
+        ts_pct:47.5, ts_win:55.3, ts_median:6.0,  ts_loss:-30.8, win:78.8, median:67.2},
+ Small:{resolved:145, open:48, ath_months:17.0, ath_pct:55.2, ath_median:76.7,
+        ts_pct:44.8, ts_win:52.3, ts_median:8.7,  ts_loss:-32.0, win:78.6, median:69.9}};
+/* A share of trades and a return are not the same kind of number. A win rate of
+   78.9% is not "+78.9%": the sign and the colour belong only to returns, where
+   they carry meaning. Rows are tagged so the two never render alike.
+   n = count, mo = months, sh = share of trades, ret = signed return. */
+const MROWS = [
+ ["Trades closed","resolved","n"],["Average months to reach the high","ath_months","mo"],
+ ["Reached the high","ath_pct","sh"],["Median return, reached the high","ath_median","ret"],
+ ["Hit the 1,095-day cap","ts_pct","sh"],["Win rate at the cap","ts_win","sh"],
+ ["Median return at the cap","ts_median","ret"],
+ ["Median loss when the cap exit loses","ts_loss","ret"],
+ ["Overall win rate","win","sh"],
+ ["Overall median return","median","ret"]];
+let seg = "All";
+
 const chartUrl = sym => `https://www.tradingview.com/chart/?symbol=NSE%3A${encodeURIComponent(String(sym||"").trim())}`;
 
 function spark(pts,w,h){
@@ -287,7 +367,7 @@ function meter(p){
 /* ------------------------------------------------------------- rendering --- */
 let DATA = {}, sortKey = "ret_pct", sortDir = -1, query = "", cap = "";
 /* Sections start closed unless the viewer opened them before. */
-const OPEN_DEFAULT = {perf:false, closed:false};
+const OPEN_DEFAULT = {mkt:true, perf:false, closed:false};
 function open2(k){
   try{ const v = localStorage.getItem("ff-open-"+k); if(v !== null) return v; }catch(e){}
   return String(OPEN_DEFAULT[k]);
@@ -397,6 +477,46 @@ function newsList(items){
 /* The portfolio pane is layered: what touches a position first, then the rest of
    the index. The macro pane is deliberately empty and says so - NSE has nothing
    on policy or global cues, and the outlets that do own that copy. */
+function marketTable(){
+  const M = DATA.market || {};
+  const rows = M.rows || [];
+  if(!rows.length) return `<div class="empty">The market feed did not load.</div>`;
+  const w = c => `<th class="w">${c}</th>`;
+  return `<div class="scroll mkt"><table><thead><tr><th>Instrument</th><th>Last</th>
+    <th>1D</th>${w("1W")}${w("1M")}${w("6M")}${w("1Y")}</tr></thead><tbody>` +
+    rows.map(x => `<tr>
+      <td class="first nm" data-label="Instrument">${esc(x.n)}</td>
+      <td data-label="Last">${esc(x.p)}</td>
+      <td data-label="1D" class="${cls(x.d)}">${x.d==null?"—":sgn(x.d)+"%"}</td>
+      ${["w","m","s","y"].map(k =>
+        `<td class="w ${cls(x[k])}">${x[k]==null?"—":sgn(x[k])+"%"}</td>`).join("")}
+      </tr>`).join("") +
+    `</tbody></table>
+    <p class="mnote">Gold and crude are the international contracts converted at
+     USD/INR — they carry no import duty, so they read below an MCX screen.
+     Every window is calendar days: 7, 30, 182, 365. The Nifty rows come from
+     NSE, which does not publish a six-month change; that column is built from
+     this dashboard\u2019s own daily record and stays blank until it reaches back
+     six months.</p></div>`;
+}
+function metricsTable(){
+  const cols = ["All","Large","Mid","Small"];
+  const head = `<tr><th>Backtested outcome</th>` +
+    cols.map(c => `<th${c===seg?' aria-sort="descending"':''}>${c}</th>`).join("") + `</tr>`;
+  const body = MROWS.map(([lbl,k,kind]) => `<tr><td>${lbl}</td>` +
+    cols.map(c => {
+      const v = BACKTEST[c][k];
+      const col = kind === "ret" ? cls(v) : "";
+      const txt = v == null ? "—"
+                : kind === "ret" ? sgn(v,1) + "%"
+                : kind === "sh"  ? v.toFixed(1) + "%"
+                : kind === "mo"  ? v.toFixed(1)
+                : v.toLocaleString("en-IN");
+      return `<td class="${c===seg?"":"mut"} ${col}">${txt}</td>`;
+    }).join("") + `</tr>`).join("");
+  return `<div class="scroll"><table class="mtable"><thead>${head}</thead>
+    <tbody>${body}</tbody></table></div>`;
+}
 function newsPane(which){
   const N = DATA.news || {};
   if(which === "macro"){
@@ -450,14 +570,25 @@ function render(){
        <div class="v ${cls(m.avg_return)}">${sgn(m.avg_return)}%</div></div>
    </div>
 
+   <div class="card" id="s-mkt">
+     <button class="acc" data-sec="mkt" aria-expanded="${open2("mkt")}">
+       <h2>Markets</h2><span class="count">${(DATA.market&&DATA.market.rows||[]).length}</span><span class="chev"></span></button>
+     <div class="panel" ${open2("mkt")==="true"?"":"hidden"}>
+       <p class="sub" style="margin-top:10px">Reference only. Nothing here is
+       compared against the strategy.</p>
+       ${marketTable()}
+     </div>
+   </div>
+
    <nav class="jump" aria-label="Jump to a section">
-     <a href="#s-pos">Positions</a><a href="#s-perf">Performance</a>
+     <a href="#s-mkt">Markets</a><a href="#s-pos">Positions</a><a href="#s-perf">Performance</a>
      <a href="#s-closed">Closed</a><a href="#s-news">News</a>
    </nav>
 
    <div class="card" id="s-pos">
      <div class="cardhead">
-       <div class="t"><h2>Open positions</h2>
+       <div class="t"><h2 style="display:flex;align-items:center;gap:9px">Open positions
+         <button class="ibtn" id="info" aria-label="Backtested outcomes">i</button></h2>
          <p class="sub">The target is fixed on the signal date and never moved.
          Tap a symbol to open its chart.</p></div>
        <div class="tools">
@@ -504,6 +635,30 @@ function render(){
      <div id="npane">${newsPane("portfolio")}</div>
    </div>
 
+   <div class="modal" id="modal" hidden>
+     <div class="box" role="dialog" aria-modal="true" aria-labelledby="mt">
+       <button class="x" id="mx" aria-label="Close">&times;</button>
+       <h3 id="mt">Backtested outcomes</h3>
+       <p class="sub">2012 to July 2026, on the 279 signals that have closed.
+       This is not the live record above.</p>
+       <div class="seg" id="segsw" style="margin-bottom:14px">
+         ${["All","Large","Mid","Small"].map(c =>
+           `<button data-seg="${c}" aria-pressed="${String(c===seg)}">${c}</button>`).join("")}
+       </div>
+       <div id="mbody">${metricsTable()}</div>
+       <p class="note">Backtested, not live. A further 79 signals were still open at
+       the end of the test and are excluded here, because whether a position reached
+       its target cannot be asked of one still running. The last cap row is the
+       median of the losing cap exits only, so it reads alongside the win rate
+       above it rather than in place of the median beside it. The methodology document's
+       headline win rate of 76.0% is taken over all 358 signals including those 79 at
+       mark-to-market; on the 279 that closed it is 78.9%. Quarterly results are
+       assumed available 60 days after quarter end — measured against real
+       announcement dates that assumption runs a median 17 days late, and never
+       early. Past performance does not indicate future results.</p>
+     </div>
+   </div>
+
    <footer>For subscribed clients. Signals follow a fixed rule set and are not
    personalised advice. Investments in securities carry market risk; past performance
    does not indicate future results. Registration details and full disclaimer to be
@@ -515,6 +670,17 @@ function render(){
     const k = th.dataset.k;
     if(k === sortKey) sortDir = -sortDir; else { sortKey = k; sortDir = -1; }
     render();
+  }));
+  const modal = document.getElementById("modal");
+  document.getElementById("info").addEventListener("click", () => modal.hidden = false);
+  document.getElementById("mx").addEventListener("click", () => modal.hidden = true);
+  modal.addEventListener("click", e => { if(e.target === modal) modal.hidden = true; });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") modal.hidden = true; });
+  document.querySelectorAll("#segsw button").forEach(b => b.addEventListener("click", () => {
+    seg = b.dataset.seg;
+    document.querySelectorAll("#segsw button").forEach(x =>
+      x.setAttribute("aria-pressed", String(x.dataset.seg === seg)));
+    document.getElementById("mbody").innerHTML = metricsTable();
   }));
   document.querySelectorAll(".acc").forEach(b => b.addEventListener("click", () => {
     const on = b.getAttribute("aria-expanded") !== "true";
@@ -541,11 +707,18 @@ function render(){
 
 /* ------------------------------------------------------------------ load --- */
 const FILES = ["meta","positions","closed","index","news"];
+/* market.json is fetched but NOT required. The strip is reference material;
+   the positions are the product. A market feed that fails must not take the
+   whole page down with it, so it resolves to null and the section hides. */
 Promise.all(FILES.map(f =>
   fetch(`data/${f}.json`, {cache:"no-store"})
     .then(r => r.ok ? r.json() : Promise.reject(new Error(`${f}.json: HTTP ${r.status}`)))
-)).then(vals => {
+).concat([
+  fetch("data/market.json", {cache:"no-store"})
+    .then(r => r.ok ? r.json() : null).catch(() => null)
+])).then(vals => {
   FILES.forEach((f,i) => DATA[f] = vals[i]);
+  DATA.market = vals[FILES.length] || null;
   render();
 }).catch(err => {
   document.getElementById("asof").textContent = "could not load";

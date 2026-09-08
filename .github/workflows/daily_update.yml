@@ -31,7 +31,10 @@ jobs:
           python-version: '3.12'
 
       - name: Install dependencies
-        run: pip install yfinance pandas numpy beautifulsoup4 lxml
+        # requests is named explicitly: it arrives as a yfinance dependency
+        # today, but FF_market_update.py and FF_news.py import it directly and
+        # must not rest on someone else's dependency tree staying the same.
+        run: pip install yfinance pandas numpy beautifulsoup4 lxml requests
 
       # A fast, network-free proof that the corporate-action logic still
       # behaves before it is allowed anywhere near the real files. If the
@@ -79,6 +82,16 @@ jobs:
       # rather than deleted.
       - name: Update the signal ledger
         run: python FF_Ledger.py
+
+      - name: Market strip self-test
+        run: python FF_market_update.py --selftest
+
+      # Never fatal, and never a required input. The strip is reference
+      # material; the positions are the product. The script exits 0 whatever
+      # happens, and the page fetches market.json optionally - if it is absent
+      # the section says so and everything else still renders.
+      - name: Refresh the market strip
+        run: python FF_market_update.py
 
       # Replaces FF_build_dashboard_v2.py, which regenerated the whole page every
       # run. That is why docs/index.html changed in git daily and collided on
