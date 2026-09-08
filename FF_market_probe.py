@@ -1,5 +1,16 @@
 """
-FF_market_probe.py  --  probe v3. One-shot, not part of the daily run.
+FF_market_probe.py  --  probe v4. One-shot, not part of the daily run.
+
+v3 answered nothing. It sent "Accept-Encoding: gzip, deflate, br"; NSE replied
+in brotli; requests cannot decode brotli without a package the runner lacks, so
+every body came back as mojibake - including /api/allIndices and the G-Sec feed,
+both of which had parsed perfectly in v2. That was a self-inflicted wound from
+one header. v4 drops br and prints Content-Encoding on every call so the same
+mistake cannot hide again.
+
+The one thing v3 did establish: visiting the historical-data page during warm-up
+yields an "nsit" cookie that v2 never had, and nsit is what NSE gates its
+historical endpoints on. So A is worth asking once more.
 
 What v2 established, so v3 does not repeat it:
 
@@ -61,7 +72,11 @@ def session():
         "User-Agent": UA,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "en-GB,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
+        # NOT br. requests decompresses gzip and deflate on its own but needs a
+        # separate brotli package for br, which the runner does not have. v3 asked
+        # for br, got it, could not decode it, and turned every response into
+        # mojibake - including two endpoints that had parsed fine in v2.
+        "Accept-Encoding": "gzip, deflate",
         "Upgrade-Insecure-Requests": "1",
         "Sec-Fetch-Dest": "document",
         "Sec-Fetch-Mode": "navigate",
@@ -96,7 +111,12 @@ def api(s, url, referer):
         print(f"    {type(e).__name__}: {e}"[:94])
         return None
     ct = (r.headers.get("content-type") or "")[:38]
-    print(f"    HTTP {r.status_code}  {len(r.content):9,d} bytes  {ct}")
+    enc = r.headers.get("content-encoding") or "none"
+    print(f"    HTTP {r.status_code}  {len(r.content):9,d} bytes  {ct}  "
+          f"encoding={enc}")
+    if enc not in ("none", "gzip", "deflate", "identity"):
+        print(f"    WARNING: {enc} is not decoded by requests here - any body "
+              f"below is raw bytes, not the real answer.")
     if "json" not in ct:
         body = (r.text or "").strip().replace("\n", " ")
         print(f"    NOT JSON. server said, first 400 chars:")
