@@ -251,8 +251,12 @@ def append_history(rows, today):
             continue
         if any(d == today for d, _ in have.get(label, [])):
             continue
+        # Two decimals, not 6 significant figures. An index level has 5 digits
+        # before the point, so 6sf silently dropped 23089.95 to 23090 on the
+        # very first row written. The error is tiny, and that is exactly why it
+        # would never have been noticed in the 6M figure it feeds.
         new.append({"date": today.isoformat(), "index": label,
-                    "close": f"{r['raw']:.6g}"})
+                    "close": f"{r['raw']:.2f}"})
     if not new:
         return 0
     os.makedirs(os.path.dirname(HIST) or ".", exist_ok=True)
