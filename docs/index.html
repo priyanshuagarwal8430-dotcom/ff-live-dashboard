@@ -46,6 +46,19 @@ h1{font:700 21px/1.25 inherit;margin:0;letter-spacing:-.01em;
   border-radius:20px;padding:9px 14px}
 .tbtn:hover{border-color:#fff;color:#fff}
 .tbtn svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.7}
+/* The countdown and Refresh sit with the theme toggle rather than floating
+   over the title - the same lesson the theme button already learned when it
+   was absolutely positioned and landed on the LIVE tag on a phone. */
+.hactions{flex:0 0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cdown{color:var(--headink2);font-size:12px;font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.tbtn[disabled]{opacity:.55;cursor:default}
+.tbtn svg.spin{animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.tbtn svg.spin{animation:none}}
+@media (max-width:700px){
+  .hactions{width:100%;justify-content:space-between}
+}
 
 /* =============================================================== cards === */
 .body{max-width:1308px;margin:-44px auto 0;padding:0 26px}
@@ -258,8 +271,14 @@ footer{color:var(--ink3);font-size:11.5px;line-height:1.75;padding:8px 4px 0}
       <h1>Finsights Fundamental Dashboard <span class="tag">Live</span></h1>
       <div class="asof" id="asof">loading…</div>
     </div>
-    <button class="tbtn" id="theme" aria-label="Switch to dark theme">
-      <span id="ticon"></span><span id="tlabel">Dark</span></button>
+    <div class="hactions">
+      <span class="cdown" id="cdown" aria-live="off"></span>
+      <button class="tbtn" id="refresh">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-.6 4"/>
+          <path d="M20 5v6h-6"/></svg><span id="rlabel">Refresh now</span></button>
+      <button class="tbtn" id="theme" aria-label="Switch to dark theme">
+        <span id="ticon"></span><span id="tlabel">Dark</span></button>
+    </div>
   </div></div>
 
   <div class="body" id="body">
@@ -710,23 +729,67 @@ const FILES = ["meta","positions","closed","index","news"];
 /* market.json is fetched but NOT required. The strip is reference material;
    the positions are the product. A market feed that fails must not take the
    whole page down with it, so it resolves to null and the section hides. */
-Promise.all(FILES.map(f =>
-  fetch(`data/${f}.json`, {cache:"no-store"})
-    .then(r => r.ok ? r.json() : Promise.reject(new Error(`${f}.json: HTTP ${r.status}`)))
-).concat([
-  fetch("data/market.json", {cache:"no-store"})
-    .then(r => r.ok ? r.json() : null).catch(() => null)
-])).then(vals => {
-  FILES.forEach((f,i) => DATA[f] = vals[i]);
-  DATA.market = vals[FILES.length] || null;
-  render();
-}).catch(err => {
-  document.getElementById("asof").textContent = "could not load";
-  document.getElementById("body").innerHTML =
-    `<div class="err"><strong>The data files did not load.</strong><br>${esc(err.message)}
-     <br><br>This page reads <code>data/*.json</code> from the same folder. Opened
-     straight off disk the browser blocks that; served over http it works.</div>`;
+
+/* The data behind this page is rebuilt once a day by the workflow, not tick by
+   tick. So this does not make the page live - it re-reads the same files and
+   picks up the daily rebuild without anyone reloading, and it defeats the
+   browser cache, which is the real reason a left-open tab shows yesterday.
+   Most refreshes will therefore change nothing, and the "prices as of" line
+   is what says so. */
+const REFRESH_MS = 5 * 60 * 1000;
+let nextAt = 0, ticking = null, busy = false;
+
+function loadAll(){
+  if(busy) return Promise.resolve();
+  busy = true;
+  const btn = document.getElementById("refresh");
+  const icon = btn && btn.querySelector("svg");
+  if(icon) icon.classList.add("spin");
+  if(btn) btn.disabled = true;
+  const bust = "?t=" + Date.now();
+  return Promise.all(FILES.map(f =>
+    fetch(`data/${f}.json` + bust, {cache:"no-store"})
+      .then(r => r.ok ? r.json() : Promise.reject(new Error(`${f}.json: HTTP ${r.status}`)))
+  ).concat([
+    fetch("data/market.json" + bust, {cache:"no-store"})
+      .then(r => r.ok ? r.json() : null).catch(() => null)
+  ])).then(vals => {
+    FILES.forEach((f,i) => DATA[f] = vals[i]);
+    DATA.market = vals[FILES.length] || null;
+    render();
+  }).catch(err => {
+    document.getElementById("asof").textContent = "could not load";
+    document.getElementById("body").innerHTML =
+      `<div class="err"><strong>The data files did not load.</strong><br>${esc(err.message)}
+       <br><br>This page reads <code>data/*.json</code> from the same folder. Opened
+       straight off disk the browser blocks that; served over http it works.</div>`;
+  }).then(() => {
+    busy = false;
+    if(icon) icon.classList.remove("spin");
+    if(btn) btn.disabled = false;
+    nextAt = Date.now() + REFRESH_MS;
+  });
+}
+
+function tick(){
+  const el = document.getElementById("cdown");
+  if(!el) return;
+  const left = Math.max(0, nextAt - Date.now());
+  const m = Math.floor(left / 60000), sec = Math.floor((left % 60000) / 1000);
+  el.textContent = busy ? "checking…"
+    : `auto-refresh in ${m}:${String(sec).padStart(2,"0")}`;
+  if(!busy && left <= 0) loadAll();
+}
+
+document.getElementById("refresh").addEventListener("click", loadAll);
+/* A background tab throttles timers, so the countdown drifts and can sit at
+   0:00 for minutes. Coming back to the tab is itself a moment worth checking. */
+document.addEventListener("visibilitychange", () => {
+  if(!document.hidden && Date.now() >= nextAt) loadAll();
 });
+loadAll();
+ticking = setInterval(tick, 1000);
+tick();
 </script>
 <style>
 .news{padding:11px 0 11px 12px;border-top:1px solid var(--line);display:flex;gap:13px;
